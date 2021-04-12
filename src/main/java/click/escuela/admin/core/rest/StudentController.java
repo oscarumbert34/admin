@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
-@RequestMapping(path = "/student")
+@RequestMapping(path = "/school/{schoolId}/student")
 public class StudentController {
 
 	@Autowired
@@ -32,7 +32,7 @@ public class StudentController {
 	
 	@Operation(summary = "Get student by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
-	@GetMapping(value = "/school/{schoolId}")
+	@GetMapping(value = "")
 	public ResponseEntity<?> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId));
 	}
@@ -45,12 +45,12 @@ public class StudentController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{schoolId}")
 	public ResponseEntity<?> update() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/{schoolId}")
 	public ResponseEntity<?> delete() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}

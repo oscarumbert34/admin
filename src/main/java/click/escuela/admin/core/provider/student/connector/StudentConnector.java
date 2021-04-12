@@ -23,7 +23,7 @@ public class StudentConnector implements Connector<StudentDTO>{
 	}
 	
 	public void create(StudentApi studentApi) throws TransactionException{
-		studentController.create(studentApi);
+		studentController.create(studentApi.getSchool(),studentApi);
 	}
 	
 	

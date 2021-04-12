@@ -18,9 +18,9 @@ import click.escuela.admin.core.provider.student.api.StudentApi;
 public interface StudentController {
 
 
-	@GetMapping(value = "/school/student/school/{schoolId}")
+	@GetMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
 	public List getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException;
 	
-	@PostMapping(value = "/school/student")
-	public String create( @RequestBody @Validated StudentApi studentApi) throws TransactionException;
+	@PostMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
+	public String create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi) throws TransactionException;
 }
