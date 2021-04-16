@@ -25,5 +25,13 @@ public class StudentApi extends PersonApi{
 	@NotBlank(message = "School cannot be null")
 	@JsonProperty(value = "school", required = true)
 	private String school;
+	
+	@NotBlank(message = "Grade cannot be null")
+	@JsonProperty(value = "grade", required = true)
+	private String grade;
+	
+	@NotBlank(message = "Division cannot be null")
+	@JsonProperty(value = "division", required = true)
+	private String division;
 
 }

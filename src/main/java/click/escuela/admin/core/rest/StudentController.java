@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.StudentApi;
+import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
-@RequestMapping(path = "/student")
+@RequestMapping(path = "/school/{schoolId}/student")
 public class StudentController {
 
 	@Autowired
@@ -32,7 +33,7 @@ public class StudentController {
 	
 	@Operation(summary = "Get student by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
-	@GetMapping(value = "/school/{schoolId}")
+ 	@GetMapping(value = "")	
 	public ResponseEntity<?> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId));
 	}
@@ -44,14 +45,18 @@ public class StudentController {
 		studentService.create(studentApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> update() {
+	
+	@Operation(summary = "Update student by studentId", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> update( 
+			@RequestBody @Validated StudentUpdateApi studentUpdateApi) throws TransactionException {
+		studentService.update(studentUpdateApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<?> delete() {
+ 	@DeleteMapping(value = "/{schoolId}")	
+ 	public ResponseEntity<?> delete() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 }

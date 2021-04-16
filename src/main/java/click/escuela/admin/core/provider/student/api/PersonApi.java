@@ -25,6 +25,11 @@ public class PersonApi {
 	@Size(max = 50, message = "Name must be 50 characters")
 	@JsonProperty(value = "name", required = true)
 	private String name;
+	
+	@NotBlank(message = "Surname cannot be empty")
+	@Size(max = 50, message = "surname must be 50 characters")
+	@JsonProperty(value = "surname", required = true)
+	private String surname;
 
 	@NotBlank(message = "Document cannot be empty")
 	@Size(min = 7, max = 9, message = "Document must be between 7 and 9 characters")
@@ -32,7 +37,6 @@ public class PersonApi {
 	private String document;
 
 	@NotBlank(message = "Gender cannot be null")
-	// @Pattern(regexp="^[0-9]{1,2}$",message="Edad incorrecta")
 	@JsonProperty(value = "gender", required = true)
 	private String gender;
 
