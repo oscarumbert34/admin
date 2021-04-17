@@ -44,8 +44,7 @@ public class StudentController {
 	public ResponseEntity<?> create(@RequestBody @Validated StudentApi studentApi) throws TransactionException {
 		studentService.create(studentApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
-	}
-	
+	}	
 	@Operation(summary = "Update student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
