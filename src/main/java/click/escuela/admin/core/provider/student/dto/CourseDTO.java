@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class CourseDTO {
 
-	private String name;
+	private String NAME;
 	private List<StudentDTO> students;
 }
