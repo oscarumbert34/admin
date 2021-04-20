@@ -17,7 +17,8 @@ import lombok.Setter;
 @JsonInclude(Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(description = "Student Api")
-public class StudentUpdateApi  extends StudentApi {
+public class StudentUpdateApi extends StudentApi {
+	
 	@Valid
 	@NotNull(message = "Id cannot be null")
 	@JsonProperty(value = "id", required = true)

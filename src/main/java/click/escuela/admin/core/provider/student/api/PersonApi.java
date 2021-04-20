@@ -12,13 +12,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Person Api")
+@AllArgsConstructor
+@NoArgsConstructor
 public class PersonApi {
 
 	@NotBlank(message = "Name cannot be empty")
