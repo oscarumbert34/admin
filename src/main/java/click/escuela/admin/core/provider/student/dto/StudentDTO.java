@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import click.escuela.admin.core.enumator.EducationLevels;
 import lombok.Getter;
 import lombok.Setter;
 @Getter
@@ -30,6 +31,9 @@ public class StudentDTO {
 	
 	@JsonProperty(value = "division")
 	private String division;
+	
+	@JsonProperty(value = "level")
+	private EducationLevels level;
 	
 	@JsonProperty(value = "birthday")
 	private LocalDate birthday;
