@@ -9,42 +9,43 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import click.escuela.admin.core.api.CourseApi;
+import click.escuela.admin.core.enumator.CourseEnum;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.dto.CourseDTO;
 import click.escuela.admin.core.provider.student.service.impl.CourseServiceImpl;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
-@RequestMapping(value = "/courses")
-@Validated
+@RequestMapping(path = "/school/{schoolId}/course")
 public class CourseController {
 
 	@Autowired
 	private CourseServiceImpl courseService;
 
-	@ApiOperation(value = "Get students by courseId", response = CourseDTO.class, notes = "Get students by courseId")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Students"),
-			@ApiResponse(code = 401, message = "Students") })
-	@GetMapping(value = "/{courseId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> getStudents(
-			@ApiParam(value = "Course id", required = true) @RequestParam("courseId") String courseId) throws TransactionException {
-		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(courseService.getByCourse(courseId));
+	//Metodo de prueba
+	@Operation(summary = "Get all the courses", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CourseDTO.class))) })
+	@GetMapping(value = "/getAll", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> getAllCourses() throws TransactionException {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(courseService.findAll());
 	}
 
-	@ApiOperation(value = "Create a Course", response = CourseDTO.class, notes = "Create a Course")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Students"),
-			@ApiResponse(code = 401, message = "Students") })
-	@PostMapping(value = "")
-	public ResponseEntity<?> create() {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	@Operation(summary = "Create Course", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> create(
+		 @RequestBody @Validated CourseApi courseApi) throws TransactionException {
+		
+		courseService.create(courseApi);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseEnum.CREATE_OK);
 	}
 
 	@PutMapping(value = "/{courseId}")
