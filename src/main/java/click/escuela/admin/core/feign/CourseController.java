@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import click.escuela.admin.core.api.CourseApi;
@@ -21,4 +22,9 @@ public interface CourseController {
 	@PostMapping(value = "/click-escuela/student-core/school/{schoolId}/course")
 	public String create(@PathVariable("schoolId") String schoolId,@RequestBody @Validated CourseApi courseApi) throws TransactionException;
 	
+	@PutMapping(value = "/click-escuela/student-core/school/{schoolId}/course/{idCourse}/student/add/{idStudent}")
+	public String addStudent(@PathVariable("schoolId") String schoolId,@PathVariable("idCourse") String idCourse, @PathVariable("idStudent") String idStudent) throws TransactionException;
+	
+	@PutMapping(value = "/click-escuela/student-core/school/{schoolId}/course/{idCourse}/student/del/{idStudent}")
+	public String deleteStudent(@PathVariable("schoolId") String schoolId,@PathVariable("idCourse") String idCourse, @PathVariable("idStudent") String idStudent) throws TransactionException;
 }

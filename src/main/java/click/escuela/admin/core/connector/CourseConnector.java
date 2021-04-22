@@ -24,4 +24,13 @@ public class CourseConnector {
 	public List<CourseDTO> getAllCourses() throws TransactionException{
 		return courseController.getAllCourses("1234");
 	}
+	
+	public void addStudent(String idCourse, String idStudent)throws TransactionException {
+		courseController.addStudent("1234",idCourse, idStudent);
+	}
+
+	public void deleteStudent(String idCourse, String idStudent)throws TransactionException {
+		courseController.deleteStudent("1234",idCourse, idStudent);
+		
+	}
 }

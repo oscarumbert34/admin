@@ -24,5 +24,12 @@ public class CourseServiceImpl {
 		return courseConnector.getAllCourses();
 	}
 
-	
+	public void addStudent(String idCourse, String idStudent) throws TransactionException {
+		courseConnector.addStudent(idCourse, idStudent);
+	}
+
+	public void deleteStudent(String idCourse, String idStudent) throws TransactionException {
+		courseConnector.deleteStudent(idCourse, idStudent);
+
+	}
 }
