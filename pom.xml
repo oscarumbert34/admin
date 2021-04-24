@@ -15,7 +15,6 @@
 	<name>admin-core</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-	<properties>
  		 <sonar.projectKey>oscarumbert34_admin</sonar.projectKey>
  		 <sonar.organization>oscarumbert34</sonar.organization>
   		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
