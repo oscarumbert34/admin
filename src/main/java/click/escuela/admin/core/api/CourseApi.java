@@ -10,4 +10,6 @@ public class CourseApi {
 
 	private String name;
 	private List<String> students;
+	//esto es un comentario
+	private String name2;
 }
