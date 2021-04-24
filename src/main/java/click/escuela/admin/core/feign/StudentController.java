@@ -21,9 +21,11 @@ public interface StudentController {
 	public List getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException;
 	
 	@PostMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
-	public String create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi) throws TransactionException;
+	public String create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi)
+			throws TransactionException;
 
-  @PutMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
-	public String update(@PathVariable("schoolId") String schoolId,@RequestBody @Validated StudentUpdateApi studentUpdateApi) throws TransactionException;
-	
+	@PutMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
+	public String update(@PathVariable("schoolId") String schoolId,
+			@RequestBody @Validated StudentUpdateApi studentUpdateApi) throws TransactionException;
+
 }
