@@ -25,12 +25,12 @@ public class StudentConnector implements Connector<StudentDTO>{
 	}
 	
 	public void create(StudentApi studentApi) throws TransactionException{
-		studentController.create(studentApi.getSchool(),studentApi);	
+		studentController.create(String.valueOf(studentApi.getSchoolId()),studentApi);	
 	}
 
 	
-	public void update( StudentUpdateApi studentUpdateApi) throws TransactionException{
-		studentController.update(studentUpdateApi.getSchool(),studentUpdateApi);	
+	public void update(StudentApi studentApi) throws TransactionException{
+		studentController.update(String.valueOf(studentApi.getSchoolId()),studentApi);	
 		}	
 
 }

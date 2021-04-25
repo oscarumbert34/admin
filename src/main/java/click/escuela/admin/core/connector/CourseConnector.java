@@ -17,12 +17,12 @@ public class CourseConnector {
 	@Autowired
 	private CourseController courseController;
 	
-	public void create(CourseApi courseApi) throws TransactionException{
-		 courseController.create("1234",courseApi);
+	public void create(String schoolId, CourseApi courseApi) throws TransactionException{
+		 courseController.create(schoolId,courseApi);
 	}
 	
-	public List<CourseDTO> getAllCourses() throws TransactionException{
-		return courseController.getAllCourses("1234");
+	public List<CourseDTO> getAllCourses(String schoolId) throws TransactionException{
+		return courseController.getAllCourses(schoolId);
 	}
 	
 	public void addStudent(String idCourse, String idStudent)throws TransactionException {

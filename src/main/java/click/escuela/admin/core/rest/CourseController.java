@@ -35,16 +35,16 @@ public class CourseController {
 	@Operation(summary = "Get all the courses", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CourseDTO.class))) })
 	@GetMapping(value = "/getAll", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> getAllCourses() throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(courseService.findAll());
+	public ResponseEntity<?> getAllCourses(@PathVariable("schoolId") String schoolId) throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(courseService.findAll(schoolId));
 	}
 
 	@Operation(summary = "Create Course", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> create(@RequestBody @Validated CourseApi courseApi) throws TransactionException {
+	public ResponseEntity<?> create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated CourseApi courseApi) throws TransactionException {
 
-		courseService.create(courseApi);
+		courseService.create(schoolId,courseApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseEnum.CREATE_OK);
 	}
 

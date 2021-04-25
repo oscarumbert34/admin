@@ -16,12 +16,12 @@ public class CourseServiceImpl {
 	@Autowired
 	private CourseConnector courseConnector;
 
-	public void create(CourseApi courseApi) throws TransactionException {
-		courseConnector.create(courseApi);
+	public void create(String schoolId, CourseApi courseApi) throws TransactionException {
+		courseConnector.create(schoolId,courseApi);
 	}
 
-	public List<CourseDTO> findAll() throws TransactionException {
-		return courseConnector.getAllCourses();
+	public List<CourseDTO> findAll(String schoolId) throws TransactionException {
+		return courseConnector.getAllCourses(schoolId);
 	}
 
 	public void addStudent(String idCourse, String idStudent) throws TransactionException {

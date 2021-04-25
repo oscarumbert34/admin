@@ -33,9 +33,8 @@ public class CourseApi {
 	
 	@JsonProperty(value = "countStudent", required = true)
 	private Integer countStudent;
-
-	@NotBlank(message = "Teacher cannot be empty")
-	@Size(max = 50, message = "Teacher must be 50 characters")
-	@JsonProperty(value = "teacher", required = true)
-	private String teacher;
+	
+	@NotNull(message = "School cannot be null")
+	@JsonProperty(value = "schoolId", required = true)
+	private Integer schoolId;
 }
