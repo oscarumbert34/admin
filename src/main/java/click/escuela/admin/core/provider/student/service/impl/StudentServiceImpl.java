@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.StudentApi;
+import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.connector.StudentConnector;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
 
@@ -22,6 +23,10 @@ public class StudentServiceImpl {
 	
 	public void create(StudentApi studentApi)  throws TransactionException{
 		studentConnector.create(studentApi);
+	}
+
+	public void update(StudentUpdateApi studentUpdateApi)throws TransactionException {
+		studentConnector.update(studentUpdateApi);
 	}
 	
 }
