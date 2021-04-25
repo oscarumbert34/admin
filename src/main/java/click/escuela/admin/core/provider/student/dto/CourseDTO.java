@@ -10,5 +10,5 @@ import lombok.Setter;
 public class CourseDTO {
 
 	private String name;
-	private List<StudentDTO> STUDENTS;
+	private List<StudentDTO> students;
 }
