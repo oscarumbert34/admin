@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.enumator.StudentEnum;
-import click.escuela.admin.core.exception.TransactionException;
-import click.escuela.admin.core.provider.student.api.StudentApi;
-import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
-import click.escuela.admin.core.provider.student.dto.StudentDTO;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
+import click.escuela.student.api.StudentApi;
+import click.escuela.student.api.StudentUpdateApi;
+import click.escuela.student.dto.StudentDTO;
+import click.escuela.student.exception.TransactionException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

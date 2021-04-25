@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.dto.CourseDTO;
 import click.escuela.admin.core.provider.student.service.impl.CourseServiceImpl;
+import click.escuela.student.exception.TransactionException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponses;

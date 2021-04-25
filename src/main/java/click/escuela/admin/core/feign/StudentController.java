@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import click.escuela.admin.core.exception.TransactionException;
-import click.escuela.admin.core.provider.student.api.StudentApi;
-import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
+import click.escuela.student.api.StudentApi;
+import click.escuela.student.api.StudentUpdateApi;
+import click.escuela.student.exception.TransactionException;
 
 
 @FeignClient(name = "students", url = "localhost:8090")
