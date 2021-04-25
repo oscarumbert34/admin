@@ -2,7 +2,7 @@ package click.escuela.admin.core.connector;
 
 import java.util.List;
 
-import click.escuela.student.exception.TransactionException;
+import click.escuela.admin.core.exception.TransactionException;
 
 public interface Connector<T> {
 

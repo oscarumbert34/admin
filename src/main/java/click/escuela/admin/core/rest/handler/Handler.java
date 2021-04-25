@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import click.escuela.admin.core.exception.ErrorStudent;
-import click.escuela.student.exception.TransactionException;
+import click.escuela.admin.core.exception.TransactionException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 

@@ -2,7 +2,6 @@ package click.escuela.admin.core.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -15,15 +14,15 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import click.escuela.admin.core.enumator.GenderType;
+import click.escuela.admin.core.enumator.StudentEnum;
+import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.feign.StudentController;
+import click.escuela.admin.core.provider.student.api.AdressApi;
+import click.escuela.admin.core.provider.student.api.ParentApi;
+import click.escuela.admin.core.provider.student.api.StudentApi;
+import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.connector.StudentConnector;
-import click.escuela.student.api.AdressApi;
-import click.escuela.student.api.ParentApi;
-import click.escuela.student.api.StudentApi;
-import click.escuela.student.api.StudentUpdateApi;
-import click.escuela.student.enumerator.GenderType;
-import click.escuela.student.enumerator.StudentEnum;
-import click.escuela.student.exception.TransactionException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudentConnectorTest {

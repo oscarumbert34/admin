@@ -29,16 +29,16 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import click.escuela.admin.core.enumator.GenderType;
+import click.escuela.admin.core.enumator.StudentEnum;
+import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.student.api.AdressApi;
+import click.escuela.admin.core.provider.student.api.ParentApi;
+import click.escuela.admin.core.provider.student.api.StudentApi;
+import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
 import click.escuela.admin.core.rest.StudentController;
 import click.escuela.admin.core.rest.handler.Handler;
-import click.escuela.student.api.AdressApi;
-import click.escuela.student.api.ParentApi;
-import click.escuela.student.api.StudentApi;
-import click.escuela.student.api.StudentUpdateApi;
-import click.escuela.student.enumerator.GenderType;
-import click.escuela.student.enumerator.StudentEnum;
-import click.escuela.student.exception.TransactionException;
 
 @EnableWebMvc
 @RunWith(MockitoJUnitRunner.class)
