@@ -13,24 +13,30 @@ import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
 
 @Service
-public class StudentConnector implements Connector<StudentDTO>{
+public class StudentConnector implements Connector<StudentDTO> {
 
 	@Autowired
 	private StudentController studentController;
-	
-	
+
 	@Override
 	public List<StudentDTO> getBySchool(String id) throws TransactionException {
 		return studentController.getBySchool(id);
 	}
+
+	public StudentDTO getById(String schoolId, String studentId) throws TransactionException {
+		return studentController.getById(schoolId, studentId);
+	}
 	
-	public void create(StudentApi studentApi) throws TransactionException{
-		studentController.create(String.valueOf(studentApi.getSchoolId()),studentApi);	
+	public List<StudentDTO> getByCourse(String schoolId, String courseId) throws TransactionException {
+		return studentController.getByCourse(schoolId, courseId);
 	}
 
-	
-	public void update(StudentApi studentApi) throws TransactionException{
-		studentController.update(String.valueOf(studentApi.getSchoolId()),studentApi);	
-		}	
+	public void create(StudentApi studentApi) throws TransactionException {
+		studentController.create(String.valueOf(studentApi.getSchoolId()), studentApi);
+	}
+
+	public void update(StudentApi studentApi) throws TransactionException {
+		studentController.update(String.valueOf(studentApi.getSchoolId()), studentApi);
+	}
 
 }

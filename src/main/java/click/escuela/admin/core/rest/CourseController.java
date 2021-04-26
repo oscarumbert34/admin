@@ -31,20 +31,13 @@ public class CourseController {
 	@Autowired
 	private CourseServiceImpl courseService;
 
-	// Metodo de prueba
-	@Operation(summary = "Get all the courses", responses = {
-			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CourseDTO.class))) })
-	@GetMapping(value = "/getAll", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> getAllCourses(@PathVariable("schoolId") String schoolId) throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(courseService.findAll(schoolId));
-	}
-
 	@Operation(summary = "Create Course", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated CourseApi courseApi) throws TransactionException {
+	public ResponseEntity<?> create(@PathVariable("schoolId") String schoolId,
+			@RequestBody @Validated CourseApi courseApi) throws TransactionException {
 
-		courseService.create(schoolId,courseApi);
+		courseService.create(schoolId, courseApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseEnum.CREATE_OK);
 	}
 
@@ -53,7 +46,7 @@ public class CourseController {
 	@PutMapping(value = "/{idCourse}/student/add/{idStudent}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> addStudent(@PathVariable("idCourse") String idCourse,
 			@PathVariable("idStudent") String idStudent) throws TransactionException {
-		courseService.addStudent(idCourse,idStudent);
+		courseService.addStudent(idCourse, idStudent);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseEnum.UPDATE_OK);
 	}
 
@@ -62,7 +55,7 @@ public class CourseController {
 	@PutMapping(value = "/{idCourse}/student/del/{idStudent}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> deleteStudent(@PathVariable("idCourse") String idCourse,
 			@PathVariable("idStudent") String idStudent) throws TransactionException {
-		courseService.deleteStudent( idCourse,idStudent);
+		courseService.deleteStudent(idCourse, idStudent);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseEnum.UPDATE_OK);
 	}
 

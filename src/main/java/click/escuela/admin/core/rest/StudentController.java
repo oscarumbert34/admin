@@ -31,12 +31,28 @@ public class StudentController {
 
 	@Autowired
 	private StudentServiceImpl studentService;
-	
+
 	@Operation(summary = "Get student by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
- 	@GetMapping(value = "")	
+	@GetMapping(value = "")
 	public ResponseEntity<?> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId));
+	}
+
+	@Operation(summary = "Get student by studentId", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
+	@GetMapping("/{studentId}")
+	public ResponseEntity<?> getById(@PathVariable("schoolId") String schoolId, @PathVariable("studentId") String studentId)
+			throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId));
+	}
+
+	@Operation(summary = "Get student by courseId", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
+	@GetMapping(value = "course/{courseId}")
+	public ResponseEntity<?> getByCourse(@PathVariable("schoolId") String schoolId,
+			@PathVariable("courseId") String courseId) throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getByCourse(schoolId, courseId));
 	}
 
 	@Operation(summary = "Create student", responses = {
@@ -46,19 +62,18 @@ public class StudentController {
 		studentService.create(studentApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.CREATE_OK);
 	}
-	
 
 	@Operation(summary = "Update student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> update( 
-			@RequestBody @Validated StudentUpdateApi studentUpdateApi) throws TransactionException {
+	public ResponseEntity<?> update(@RequestBody @Validated StudentUpdateApi studentUpdateApi)
+			throws TransactionException {
 		studentService.update(studentUpdateApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.UPDATE_OK);
 	}
 
- 	@DeleteMapping(value = "/{schoolId}")	
- 	public ResponseEntity<?> delete() {
+	@DeleteMapping(value = "/{schoolId}")
+	public ResponseEntity<?> delete() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 }
