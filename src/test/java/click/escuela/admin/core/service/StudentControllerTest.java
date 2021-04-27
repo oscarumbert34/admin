@@ -29,7 +29,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.StudentEnum;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
@@ -68,14 +67,15 @@ public class StudentControllerTest {
 		ReflectionTestUtils.setField(studentController, "studentService", studentService);
 		
 		adressApi = new AdressApi("Calle falsa","6458","Nogues");
-		parentApi = ParentApi.builder().adressApi(adressApi).
-				birthday(LocalDate.now()).cellPhone("3534543").document("33543534").
-				email("oscar.umnbetrqgmail.com").gender("F").name("oscar").surname("umbert").build();
+		parentApi = ParentApi.builder().adressApi(adressApi).birthday(LocalDate.now()).cellPhone("3534543")
+				.document("33543534").email("oscar.umnbetrqgmail.com").gender("FEMALE")
+				.name("oscar").surname("umbert").build();
 		
 		
 		studentApi = StudentApi.builder().adressApi(adressApi).birthday(LocalDate.now()).document("32333222")
-				.cellPhone("4534543").division("C").grade("3°").email("oscar@gmail.com").
-				gender(GenderType.MALE.toString()).name("oscar").surname("umbert").parentApi(parentApi).schoolId(1234).build();
+				.cellPhone("4534543").division("C").grade("3°").email("oscar@gmail.com")
+				.level("SECUNDARIO").gender("Male").name("oscar")
+				.surname("umbert").parentApi(parentApi).schoolId(1234).build();
 		
 		studentUpdateApi = new StudentUpdateApi(studentApi);
 		studentUpdateApi.setId(UUID.randomUUID().toString());
