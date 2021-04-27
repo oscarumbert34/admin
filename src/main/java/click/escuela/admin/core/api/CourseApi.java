@@ -8,16 +8,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import click.escuela.admin.core.provider.student.api.ParentApi;
+import click.escuela.admin.core.provider.student.api.PersonApi;
+import click.escuela.admin.core.provider.student.api.StudentApi;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Course Api")
+@SuperBuilder
 public class CourseApi {
 
 	@NotNull(message = "Year cannot be empty")

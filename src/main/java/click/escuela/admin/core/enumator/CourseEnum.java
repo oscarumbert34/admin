@@ -5,7 +5,7 @@ public enum CourseEnum {
 	CREATE_OK("CREATED_STUDENT","Se creó el curso correctamente"),
 	CREATE_ERROR("CREATE_ERROR","No se pudo crear el curso correctamente"),
 	UPDATE_OK("UPDATE_STUDENT","Se modificó el curso correctamente"),
-	UPDATE_ERROR("UPDATE_ERROR","No se pudo curso el estudiante correctamente"),
+	UPDATE_ERROR("UPDATE_ERROR","No se pudo modificar el curso correctamente"),
 	DELETE_OK("DELETE_STUDENT","se eliminó el curso correctamente");
 
 	private String code;
