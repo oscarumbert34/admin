@@ -42,8 +42,8 @@ public class StudentController {
 	@Operation(summary = "Get student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping("/{studentId}")
-	public ResponseEntity<?> getById(@PathVariable("schoolId") String schoolId, @PathVariable("studentId") String studentId)
-			throws TransactionException {
+	public ResponseEntity<?> getById(@PathVariable("schoolId") String schoolId,
+			@PathVariable("studentId") String studentId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId));
 	}
 
@@ -58,7 +58,8 @@ public class StudentController {
 	@Operation(summary = "Create student", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> create(@RequestBody @Validated StudentApi studentApi) throws TransactionException {
+	public ResponseEntity<StudentEnum> create(@RequestBody @Validated StudentApi studentApi)
+			throws TransactionException {
 		studentService.create(studentApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.CREATE_OK);
 	}

@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
@@ -23,13 +25,14 @@ import lombok.Setter;
 @Schema(description = "Person Api")
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class PersonApi {
 
 	@NotBlank(message = "Name cannot be empty")
 	@Size(max = 50, message = "Name must be 50 characters")
 	@JsonProperty(value = "name", required = true)
 	private String name;
-	
+
 	@NotBlank(message = "Surname cannot be empty")
 	@Size(max = 50, message = "surname must be 50 characters")
 	@JsonProperty(value = "surname", required = true)

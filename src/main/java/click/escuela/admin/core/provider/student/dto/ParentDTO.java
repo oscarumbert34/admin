@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import click.escuela.admin.core.enumator.GenderType;
 import lombok.Getter;
 import lombok.Setter;
 

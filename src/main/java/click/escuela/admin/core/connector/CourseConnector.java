@@ -14,7 +14,7 @@ public class CourseConnector {
 	private StudentController courseController;
 	
 	public void create(String schoolId, CourseApi courseApi) throws TransactionException{
-		 courseController.create(schoolId,courseApi);
+		 courseController.createCourse(schoolId,courseApi);
 	}
 	
 	public void addStudent(String idCourse, String idStudent)throws TransactionException {

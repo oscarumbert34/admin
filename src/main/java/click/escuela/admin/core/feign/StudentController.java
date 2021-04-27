@@ -31,16 +31,16 @@ public interface StudentController {
 			throws TransactionException;
 
 	@PostMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
-	public String create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi)
+	public String createStudent(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi)
 			throws TransactionException;
 
 	@PutMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
-	public String update(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi)
+	public String updateStudent(@PathVariable("schoolId") String schoolId, @RequestBody @Validated StudentApi studentApi)
 			throws TransactionException;
 
 	// CourseController
 	@PostMapping(value = "/click-escuela/student-core/school/{schoolId}/course")
-	public String create(@PathVariable("schoolId") String schoolId, @RequestBody @Validated CourseApi courseApi)
+	public String createCourse(@PathVariable("schoolId") String schoolId, @RequestBody @Validated CourseApi courseApi)
 			throws TransactionException;
 
 	@PutMapping(value = "/click-escuela/student-core/school/{schoolId}/course/{idCourse}/student/add/{idStudent}")
