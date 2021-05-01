@@ -17,12 +17,12 @@ public class CourseConnector {
 		 courseController.createCourse(schoolId,courseApi);
 	}
 	
-	public void addStudent(String idCourse, String idStudent)throws TransactionException {
-		courseController.addStudent("1234",idCourse, idStudent);
+	public void addStudent(String schoolId,String idCourse, String idStudent)throws TransactionException {
+		courseController.addStudent(schoolId,idCourse, idStudent);
 	}
 
-	public void deleteStudent(String idCourse, String idStudent)throws TransactionException {
-		courseController.deleteStudent("1234",idCourse, idStudent);
+	public void deleteStudent(String schoolId,String idCourse, String idStudent)throws TransactionException {
+		courseController.deleteStudent(schoolId,idCourse, idStudent);
 		
 	}
 }

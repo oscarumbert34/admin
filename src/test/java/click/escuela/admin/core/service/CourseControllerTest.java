@@ -3,7 +3,10 @@ package click.escuela.admin.core.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -96,7 +99,7 @@ public class CourseControllerTest {
 	}
 
 	@Test
-	public void whenCreateCoutStudentEmpty() throws JsonProcessingException, Exception {
+	public void whenCreateCountStudentEmpty() throws JsonProcessingException, Exception {
 
 		courseApi.setCountStudent(null);
 		MvcResult result = mockMvc.perform(post("/school/{schoolId}/course", "123")
@@ -116,6 +119,72 @@ public class CourseControllerTest {
 				.andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("School cannot be null");
+
+	}
+	
+	@Test
+	public void whenAddStudentOk() throws JsonProcessingException, Exception {
+
+		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",UUID.randomUUID().toString(),UUID.randomUUID().toString())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains(CourseEnum.UPDATE_OK.name());
+
+	}
+	
+	@Test
+	public void whenAddStudentIdCourseEmpty() throws JsonProcessingException, Exception {
+
+		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",EMPTY,UUID.randomUUID().toString())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains("");
+
+	}
+	
+	@Test
+	public void whenAddStudentIdStudentEmpty() throws JsonProcessingException, Exception {
+
+		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",UUID.randomUUID().toString(),EMPTY)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains("");
+	}
+
+	
+	@Test
+	public void whenDeleteStudentOk() throws JsonProcessingException, Exception {
+
+		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",UUID.randomUUID().toString(),UUID.randomUUID().toString())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains(CourseEnum.UPDATE_OK.name());
+
+	}
+	
+	@Test
+	public void whenDeleteStudentIdCourseEmpty() throws JsonProcessingException, Exception {
+
+		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",EMPTY,UUID.randomUUID().toString())
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains("");
+
+	}
+	
+	@Test
+	public void whenDeleteStudentIdStudentEmpty() throws JsonProcessingException, Exception {
+
+		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",UUID.randomUUID().toString(),EMPTY)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains("");
 
 	}
 

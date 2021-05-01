@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import click.escuela.admin.core.api.CourseApi;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,5 +61,8 @@ public class StudentApi extends PersonApi {
 	@NotBlank(message = "Level cannot be null")
 	@JsonProperty(value = "level", required = true)
 	private String level;
+	
+	@JsonProperty(value = "courseApi", required = false)
+	private CourseApi courseApi;
 
 }

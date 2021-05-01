@@ -12,6 +12,7 @@ import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.PersonApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,9 +23,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Course Api")
+@AllArgsConstructor
 @SuperBuilder
 public class CourseApi {
-
+	@JsonProperty(value = "gradeId", required = false)
+	private String gradeId;
+	
 	@NotNull(message = "Year cannot be empty")
 	@JsonProperty(value = "year", required = true)
 	private Integer year;

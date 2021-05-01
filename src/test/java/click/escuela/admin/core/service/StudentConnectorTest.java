@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,11 +32,18 @@ public class StudentConnectorTest {
 	
 	@Mock
 	private StudentController studentController;
+	
 	private StudentApi studentApi;
 	private StudentUpdateApi studentUpdateApi;
+	private UUID studentId;
+	private UUID idCourse;
+	private Integer schoolId;
 	
 	@Before
 	public void setUp() throws TransactionException {
+		studentId=UUID.randomUUID();
+		idCourse=UUID.randomUUID();
+		schoolId=1234;
 		
 		ParentApi parentApi = new ParentApi();
 		parentApi.setAdressApi(new AdressApi());
@@ -97,6 +105,68 @@ public class StudentConnectorTest {
 
 			  studentConnector.create(studentApi);
 		}).withMessage(StudentEnum.CREATE_ERROR.getDescription());
+	}
+	
+	@Test
+	public void whenGetByIdIsOk() {
+		boolean hasError = false;
+		try {
+			studentConnector.getById(schoolId.toString(), studentId.toString());
+		} catch (Exception e) {
+			hasError = true;
+		}
+		assertThat(hasError).isFalse();
+	}
+	
+	@Test
+	public void whenGetByIdIsError() throws TransactionException {
+		schoolId=1234;
+		studentId=UUID.randomUUID();
+		Mockito.when(studentController.getById(schoolId.toString(), studentId.toString())).thenThrow(TransactionException.class);
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			studentConnector.getById(schoolId.toString(), studentId.toString());
+		}).withMessage(null);
+	}
+	
+	@Test
+	public void whengetBySchoolIsOk() {
+		boolean hasError = false;
+		try {
+			studentConnector.getBySchool(schoolId.toString());
+		} catch (Exception e) {
+			hasError = true;
+		}
+		assertThat(hasError).isFalse();
+	}
+	
+	@Test
+	public void whenGetgetBySchoolIsError() throws TransactionException {
+		schoolId=2143;
+		Mockito.when(studentController.getBySchool(schoolId.toString())).thenThrow(TransactionException.class);
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			studentConnector.getBySchool(schoolId.toString());
+		}).withMessage(null);
+	}
+	
+	@Test
+	public void whenGetByIdCourseIsOK() throws TransactionException{
+		boolean hasError = false;
+		try {
+			studentConnector.getByCourse(schoolId.toString(),idCourse.toString());
+		} catch (Exception e) {
+			hasError = true;
+		}
+		assertThat(hasError).isFalse();
+	}
+	
+	@Test
+	public void whenGetByIdCourseIsError() throws TransactionException {
+		schoolId=2143;
+		idCourse=UUID.randomUUID();
+		Mockito.when(studentController.getByCourse(schoolId.toString(),idCourse.toString())).thenThrow(TransactionException.class);
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			studentConnector.getByCourse(schoolId.toString(),idCourse.toString());
+		}).withMessage(null);
 	}
 	
 }
