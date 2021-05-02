@@ -29,6 +29,7 @@ public class StudentUpdateApi extends StudentApi {
 	public StudentUpdateApi(StudentApi studenApi) {
 		super(studenApi.getName(), studenApi.getSurname(), studenApi.getDocument(), studenApi.getGender(),
 				studenApi.getBirthday(), studenApi.getAdressApi(), studenApi.getCellPhone(), studenApi.getEmail(),
-				studenApi.getParentApi(), studenApi.getSchool(), studenApi.getGrade(), studenApi.getDivision());
+				studenApi.getParentApi(), studenApi.getSchoolId(), studenApi.getGrade(), studenApi.getDivision(),
+				studenApi.getLevel());
 	}
 }

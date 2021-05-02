@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import click.escuela.admin.core.enumator.GenderType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ public class ParentDTO {
 	private String document;
 	
 	@JsonProperty(value = "gender")
-	private GenderType gender;
+	private String gender;
 	
 	@JsonProperty(value = "birthday")
 	private LocalDate birthday;

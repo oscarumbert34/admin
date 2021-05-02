@@ -1,5 +1,7 @@
 package click.escuela.admin.core.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,34 +33,50 @@ public class StudentController {
 
 	@Autowired
 	private StudentServiceImpl studentService;
-	
+
 	@Operation(summary = "Get student by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
- 	@GetMapping(value = "")	
-	public ResponseEntity<?> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
+	@GetMapping(value = "")
+	public ResponseEntity<List<StudentDTO>> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId));
+	}
+
+	@Operation(summary = "Get student by studentId", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
+	@GetMapping("/{studentId}")
+	public ResponseEntity<StudentDTO> getById(@PathVariable("schoolId") String schoolId,
+			@PathVariable("studentId") String studentId) throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId));
+	}
+
+	@Operation(summary = "Get student by courseId", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
+	@GetMapping(value = "course/{courseId}")
+	public ResponseEntity<List<StudentDTO>> getByCourse(@PathVariable("schoolId") String schoolId,
+			@PathVariable("courseId") String courseId) throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getByCourse(schoolId, courseId));
 	}
 
 	@Operation(summary = "Create student", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<StudentEnum> create(@RequestBody @Validated StudentApi studentApi) throws TransactionException {
+	public ResponseEntity<StudentEnum> create(@RequestBody @Validated StudentApi studentApi)
+			throws TransactionException {
 		studentService.create(studentApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.CREATE_OK);
 	}
-	
 
 	@Operation(summary = "Update student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<StudentEnum> update( 
-			@RequestBody @Validated StudentUpdateApi studentUpdateApi) throws TransactionException {
+	public ResponseEntity<StudentEnum> update(@RequestBody @Validated StudentUpdateApi studentUpdateApi)
+			throws TransactionException {
 		studentService.update(studentUpdateApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.UPDATE_OK);
 	}
 
- 	@DeleteMapping(value = "/{schoolId}")	
- 	public ResponseEntity<?> delete() {
+	@DeleteMapping(value = "/{schoolId}")
+	public ResponseEntity<?> delete() {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 }
