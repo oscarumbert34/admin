@@ -27,9 +27,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import click.escuela.admin.core.api.CourseApi;
 import click.escuela.admin.core.enumator.CourseEnum;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.student.api.CourseApi;
 import click.escuela.admin.core.provider.student.service.impl.CourseServiceImpl;
 import click.escuela.admin.core.rest.CourseController;
 import click.escuela.admin.core.rest.handler.Handler;

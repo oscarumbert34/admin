@@ -1,5 +1,7 @@
 package click.escuela.admin.core.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,14 +37,14 @@ public class StudentController {
 	@Operation(summary = "Get student by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping(value = "")
-	public ResponseEntity<?> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
+	public ResponseEntity<List<StudentDTO>> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId));
 	}
 
 	@Operation(summary = "Get student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping("/{studentId}")
-	public ResponseEntity<?> getById(@PathVariable("schoolId") String schoolId,
+	public ResponseEntity<StudentDTO> getById(@PathVariable("schoolId") String schoolId,
 			@PathVariable("studentId") String studentId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId));
 	}
@@ -50,7 +52,7 @@ public class StudentController {
 	@Operation(summary = "Get student by courseId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping(value = "course/{courseId}")
-	public ResponseEntity<?> getByCourse(@PathVariable("schoolId") String schoolId,
+	public ResponseEntity<List<StudentDTO>> getByCourse(@PathVariable("schoolId") String schoolId,
 			@PathVariable("courseId") String courseId) throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getByCourse(schoolId, courseId));
 	}
@@ -67,7 +69,7 @@ public class StudentController {
 	@Operation(summary = "Update student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> update(@RequestBody @Validated StudentUpdateApi studentUpdateApi)
+	public ResponseEntity<StudentEnum> update(@RequestBody @Validated StudentUpdateApi studentUpdateApi)
 			throws TransactionException {
 		studentService.update(studentUpdateApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.UPDATE_OK);

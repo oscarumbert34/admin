@@ -15,11 +15,11 @@ import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import click.escuela.admin.core.api.CourseApi;
 import click.escuela.admin.core.connector.CourseConnector;
 import click.escuela.admin.core.enumator.CourseEnum;
 import click.escuela.admin.core.enumator.StudentEnum;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.student.api.CourseApi;
 import click.escuela.admin.core.provider.student.service.impl.CourseServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)

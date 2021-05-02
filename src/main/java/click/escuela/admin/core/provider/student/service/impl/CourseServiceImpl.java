@@ -3,9 +3,9 @@ package click.escuela.admin.core.provider.student.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import click.escuela.admin.core.api.CourseApi;
 import click.escuela.admin.core.connector.CourseConnector;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.student.api.CourseApi;
 
 @Service
 public class CourseServiceImpl {

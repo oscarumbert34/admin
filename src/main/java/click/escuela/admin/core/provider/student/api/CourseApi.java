@@ -1,4 +1,4 @@
-package click.escuela.admin.core.api;
+package click.escuela.admin.core.provider.student.api;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -8,9 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import click.escuela.admin.core.provider.student.api.ParentApi;
-import click.escuela.admin.core.provider.student.api.PersonApi;
-import click.escuela.admin.core.provider.student.api.StudentApi;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
