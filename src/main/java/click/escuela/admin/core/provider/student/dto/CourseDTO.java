@@ -27,5 +27,5 @@ public class CourseDTO {
 	private Integer countStudent;
 
 	@JsonProperty(value = "teacher")
-	private String teacher;;
+	private String teacher;
 }
