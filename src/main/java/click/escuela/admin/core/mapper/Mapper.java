@@ -12,6 +12,10 @@ import click.escuela.admin.core.provider.student.dto.SchoolDTO;
 
 @Component
 public class Mapper{
+	
+	private Mapper() {
+		//not called
+	}
 
 	private static ModelMapper modelMapper = new ModelMapper();
 
