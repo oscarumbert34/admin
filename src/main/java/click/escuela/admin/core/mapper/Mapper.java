@@ -11,10 +11,10 @@ import click.escuela.admin.core.provider.student.api.SchoolApi;
 import click.escuela.admin.core.provider.student.dto.SchoolDTO;
 
 @Component
-public class Mapper{
-	
+public class Mapper {
+
 	private Mapper() {
-		//not called
+		throw new IllegalStateException("Utility class");
 	}
 
 	private static ModelMapper modelMapper = new ModelMapper();
