@@ -1,6 +1,5 @@
 package click.escuela.admin.core.mapper;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +16,7 @@ public class Mapper{
 	private static ModelMapper modelMapper = new ModelMapper();
 
 	public static School mapperToSchool(SchoolApi schoolApi) {
-		School school = modelMapper.map(schoolApi, School.class);
-		return school;
+		return modelMapper.map(schoolApi, School.class);
 	}
 
 	public static List<SchoolDTO> mapperToSchoolsDTO(List<School> schools) {
