@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface ServiceGeneric<T, S> {
 
-	public S getById(Long id);
+	public S getById(String id);
 
 	public List<S> getAll();
 
-	public void create(S dto);
+	public void create(T entity);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public void update(S dto);
+	public void update(T entity);
 
 }

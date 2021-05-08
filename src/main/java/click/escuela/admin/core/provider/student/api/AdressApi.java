@@ -29,7 +29,8 @@ public class AdressApi {
 	@Valid
 	private String street;
 
-	@JsonProperty(value = "number", required = false)
+	@NotBlank(message = "Number cannot be null")
+	@JsonProperty(value = "number", required = true)
 	@Size(min = 2, max = 6, message = "Number must be between 2 and 6 characters")
 	@Valid
 	private String number;
