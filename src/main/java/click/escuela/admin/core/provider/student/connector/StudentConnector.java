@@ -22,8 +22,8 @@ public class StudentConnector implements Connector<StudentDTO> {
 		return studentController.getBySchool(id);
 	}
 
-	public StudentDTO getById(String schoolId, String studentId) throws TransactionException {
-		return studentController.getById(schoolId, studentId);
+	public StudentDTO getById(String schoolId, String studentId, Boolean fullDetail) throws TransactionException {
+		return studentController.getById(schoolId, studentId, fullDetail);
 	}
 
 	public List<StudentDTO> getByCourse(String schoolId, String courseId) throws TransactionException {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.enumator.StudentEnum;
@@ -45,8 +46,8 @@ public class StudentController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping("/{studentId}")
 	public ResponseEntity<StudentDTO> getById(@PathVariable("schoolId") String schoolId,
-			@PathVariable("studentId") String studentId) throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId));
+			@PathVariable("studentId") String studentId, @RequestParam("fullDetail") Boolean fullDetail) throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId,fullDetail));
 	}
 
 	@Operation(summary = "Get student by courseId", responses = {
