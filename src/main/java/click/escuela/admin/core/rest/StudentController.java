@@ -38,24 +38,28 @@ public class StudentController {
 	@Operation(summary = "Get student by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping(value = "")
-	public ResponseEntity<List<StudentDTO>> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId));
+	public ResponseEntity<List<StudentDTO>> getBySchool(@PathVariable("schoolId") String schoolId,
+			@RequestParam("fullDetail") Boolean fullDetail) throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getBySchool(schoolId, fullDetail));
 	}
 
 	@Operation(summary = "Get student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping("/{studentId}")
 	public ResponseEntity<StudentDTO> getById(@PathVariable("schoolId") String schoolId,
-			@PathVariable("studentId") String studentId, @RequestParam("fullDetail") Boolean fullDetail) throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId,fullDetail));
+			@PathVariable("studentId") String studentId, @RequestParam("fullDetail") Boolean fullDetail)
+			throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getById(schoolId, studentId, fullDetail));
 	}
 
 	@Operation(summary = "Get student by courseId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
 	@GetMapping(value = "course/{courseId}")
 	public ResponseEntity<List<StudentDTO>> getByCourse(@PathVariable("schoolId") String schoolId,
-			@PathVariable("courseId") String courseId) throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(studentService.getByCourse(schoolId, courseId));
+			@PathVariable("courseId") String courseId, @RequestParam("fullDetail") Boolean fullDetail)
+			throws TransactionException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(studentService.getByCourse(schoolId, courseId, fullDetail));
 	}
 
 	@Operation(summary = "Create student", responses = {

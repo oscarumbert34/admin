@@ -23,15 +23,17 @@ public interface StudentController {
 
 	// StudentController
 	@GetMapping(value = "/click-escuela/student-core/school/{schoolId}/student/{studentId}")
-	public StudentDTO getById(@PathVariable("schoolId") String schoolId, @PathVariable("studentId") String studentId, @RequestParam("fullDetail") Boolean fullDetail)
-			throws TransactionException;
+	public StudentDTO getById(@PathVariable("schoolId") String schoolId, @PathVariable("studentId") String studentId,
+			@RequestParam("fullDetail") Boolean fullDetail) throws TransactionException;
 
 	@GetMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
-	public List<StudentDTO> getBySchool(@PathVariable("schoolId") String schoolId) throws TransactionException;
+	public List<StudentDTO> getBySchool(@PathVariable("schoolId") String schoolId,
+			@RequestParam("fullDetail") Boolean fullDetail) throws TransactionException;
 
 	@GetMapping(value = "/click-escuela/student-core/school/{schoolId}/student/course/{courseId}")
 	public List<StudentDTO> getByCourse(@PathVariable("schoolId") String schoolId,
-			@PathVariable("courseId") String courseId) throws TransactionException;
+			@PathVariable("courseId") String courseId, @RequestParam("fullDetail") Boolean fullDetail)
+			throws TransactionException;
 
 	@PostMapping(value = "/click-escuela/student-core/school/{schoolId}/student")
 	public String createStudent(@PathVariable("schoolId") String schoolId,

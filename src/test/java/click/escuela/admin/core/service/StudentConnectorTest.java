@@ -38,12 +38,14 @@ public class StudentConnectorTest {
 	private UUID studentId;
 	private UUID idCourse;
 	private Integer schoolId;
+	private Boolean fullDetail;
 	
 	@Before
 	public void setUp() throws TransactionException {
 		studentId=UUID.randomUUID();
 		idCourse=UUID.randomUUID();
 		schoolId=1234;
+		fullDetail=false;
 		
 		ParentApi parentApi = new ParentApi();
 		parentApi.setAdressApi(new AdressApi());
@@ -111,7 +113,7 @@ public class StudentConnectorTest {
 	public void whenGetByIdIsOk() {
 		boolean hasError = false;
 		try {
-			studentConnector.getById(schoolId.toString(), studentId.toString());
+			studentConnector.getById(schoolId.toString(), studentId.toString(),fullDetail);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -122,9 +124,9 @@ public class StudentConnectorTest {
 	public void whenGetByIdIsError() throws TransactionException {
 		schoolId=1234;
 		studentId=UUID.randomUUID();
-		Mockito.when(studentController.getById(schoolId.toString(), studentId.toString())).thenThrow(TransactionException.class);
+		Mockito.when(studentController.getById(schoolId.toString(), studentId.toString(),fullDetail)).thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentConnector.getById(schoolId.toString(), studentId.toString());
+			studentConnector.getById(schoolId.toString(), studentId.toString(),fullDetail);
 		}).withMessage(null);
 	}
 	
@@ -132,7 +134,7 @@ public class StudentConnectorTest {
 	public void whengetBySchoolIsOk() {
 		boolean hasError = false;
 		try {
-			studentConnector.getBySchool(schoolId.toString());
+			studentConnector.getBySchool(schoolId.toString(),fullDetail);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -142,9 +144,9 @@ public class StudentConnectorTest {
 	@Test
 	public void whenGetgetBySchoolIsError() throws TransactionException {
 		schoolId=2143;
-		Mockito.when(studentController.getBySchool(schoolId.toString())).thenThrow(TransactionException.class);
+		Mockito.when(studentController.getBySchool(schoolId.toString(),fullDetail)).thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentConnector.getBySchool(schoolId.toString());
+			studentConnector.getBySchool(schoolId.toString(),fullDetail);
 		}).withMessage(null);
 	}
 	
@@ -152,7 +154,7 @@ public class StudentConnectorTest {
 	public void whenGetByIdCourseIsOK() throws TransactionException{
 		boolean hasError = false;
 		try {
-			studentConnector.getByCourse(schoolId.toString(),idCourse.toString());
+			studentConnector.getByCourse(schoolId.toString(),idCourse.toString(),fullDetail);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -163,9 +165,9 @@ public class StudentConnectorTest {
 	public void whenGetByIdCourseIsError() throws TransactionException {
 		schoolId=2143;
 		idCourse=UUID.randomUUID();
-		Mockito.when(studentController.getByCourse(schoolId.toString(),idCourse.toString())).thenThrow(TransactionException.class);
+		Mockito.when(studentController.getByCourse(schoolId.toString(),idCourse.toString(),fullDetail)).thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentConnector.getByCourse(schoolId.toString(),idCourse.toString());
+			studentConnector.getByCourse(schoolId.toString(),idCourse.toString(),fullDetail);
 		}).withMessage(null);
 	}
 	

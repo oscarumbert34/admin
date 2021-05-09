@@ -18,16 +18,16 @@ public class StudentConnector implements Connector<StudentDTO> {
 	private StudentController studentController;
 
 	@Override
-	public List<StudentDTO> getBySchool(String id) throws TransactionException {
-		return studentController.getBySchool(id);
+	public List<StudentDTO> getBySchool(String id, Boolean fullDetail) throws TransactionException {
+		return studentController.getBySchool(id,fullDetail);
 	}
 
 	public StudentDTO getById(String schoolId, String studentId, Boolean fullDetail) throws TransactionException {
 		return studentController.getById(schoolId, studentId, fullDetail);
 	}
 
-	public List<StudentDTO> getByCourse(String schoolId, String courseId) throws TransactionException {
-		return studentController.getByCourse(schoolId, courseId);
+	public List<StudentDTO> getByCourse(String schoolId, String courseId, Boolean fullDetail) throws TransactionException {
+		return studentController.getByCourse(schoolId, courseId,fullDetail);
 	}
 
 	public void create(StudentApi studentApi) throws TransactionException {

@@ -1,16 +1,22 @@
 package click.escuela.admin.core.provider.student.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 public class StudentDTO {
 
@@ -52,4 +58,8 @@ public class StudentDTO {
 
 	@JsonProperty(value = "parent")
 	private ParentDTO parent;
+	
+	@JsonProperty(value = "bills")
+	private List<BillDTO> bills;
+
 }
