@@ -45,7 +45,7 @@ public class StudentServiceTest {
 		studentId = UUID.randomUUID();
 		idCourse = UUID.randomUUID();
 		schoolId = 1234;
-		fullDetail=true;
+		fullDetail = true;
 
 		ParentApi parentApi = new ParentApi();
 		parentApi.setAdressApi(new AdressApi());
@@ -117,7 +117,7 @@ public class StudentServiceTest {
 	public void whenGetByIdIsOk() {
 		boolean hasError = false;
 		try {
-			studentServiceImpl.getById(schoolId.toString(), studentId.toString(),fullDetail);
+			studentServiceImpl.getById(schoolId.toString(), studentId.toString(), fullDetail);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -128,10 +128,10 @@ public class StudentServiceTest {
 	public void whenGetByIdIsError() throws TransactionException {
 		schoolId = 1234;
 		studentId = UUID.randomUUID();
-		Mockito.when(studentConnector.getById(schoolId.toString(), studentId.toString(),fullDetail))
+		Mockito.when(studentConnector.getById(schoolId.toString(), studentId.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentServiceImpl.getById(schoolId.toString(), studentId.toString(),fullDetail);
+			studentServiceImpl.getById(schoolId.toString(), studentId.toString(), fullDetail);
 		}).withMessage(null);
 	}
 
@@ -139,7 +139,7 @@ public class StudentServiceTest {
 	public void whengetBySchoolIsOk() {
 		boolean hasError = false;
 		try {
-			studentServiceImpl.getBySchool(schoolId.toString(),fullDetail);
+			studentServiceImpl.getBySchool(schoolId.toString(), fullDetail);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -149,9 +149,10 @@ public class StudentServiceTest {
 	@Test
 	public void whenGetgetBySchoolIsError() throws TransactionException {
 		schoolId = 2143;
-		Mockito.when(studentConnector.getBySchool(schoolId.toString(),fullDetail)).thenThrow(TransactionException.class);
+		Mockito.when(studentConnector.getBySchool(schoolId.toString(), fullDetail))
+				.thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentServiceImpl.getBySchool(schoolId.toString(),fullDetail);
+			studentServiceImpl.getBySchool(schoolId.toString(), fullDetail);
 		}).withMessage(null);
 	}
 
@@ -159,7 +160,7 @@ public class StudentServiceTest {
 	public void whenGetByIdCourseIsOK() throws TransactionException {
 		boolean hasError = false;
 		try {
-			studentServiceImpl.getByCourse(schoolId.toString(), idCourse.toString(),fullDetail);
+			studentServiceImpl.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -170,10 +171,10 @@ public class StudentServiceTest {
 	public void whenGetByIdCourseIsError() throws TransactionException {
 		schoolId = 2143;
 		idCourse = UUID.randomUUID();
-		Mockito.when(studentConnector.getByCourse(schoolId.toString(), idCourse.toString(),fullDetail))
+		Mockito.when(studentConnector.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentServiceImpl.getByCourse(schoolId.toString(), idCourse.toString(),fullDetail);
+			studentServiceImpl.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail);
 		}).withMessage(null);
 	}
 }
