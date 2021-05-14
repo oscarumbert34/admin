@@ -121,67 +121,74 @@ public class CourseControllerTest {
 		assertThat(response).contains("School cannot be null");
 
 	}
-	
+
 	@Test
 	public void whenAddStudentOk() throws JsonProcessingException, Exception {
 
-		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",UUID.randomUUID().toString(),UUID.randomUUID().toString())
-				.contentType(MediaType.APPLICATION_JSON))
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",
+						UUID.randomUUID().toString(), UUID.randomUUID().toString())
+								.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains(CourseEnum.UPDATE_OK.name());
 
 	}
-	
+
 	@Test
 	public void whenAddStudentIdCourseEmpty() throws JsonProcessingException, Exception {
 
-		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",EMPTY,UUID.randomUUID().toString())
-				.contentType(MediaType.APPLICATION_JSON))
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123", EMPTY,
+						UUID.randomUUID().toString()).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("");
 
 	}
-	
+
 	@Test
 	public void whenAddStudentIdStudentEmpty() throws JsonProcessingException, Exception {
 
-		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",UUID.randomUUID().toString(),EMPTY)
-				.contentType(MediaType.APPLICATION_JSON))
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/course/{idCourse}/student/add/{idStudent}", "123",
+						UUID.randomUUID().toString(), EMPTY).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("");
 	}
 
-	
 	@Test
 	public void whenDeleteStudentOk() throws JsonProcessingException, Exception {
 
-		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",UUID.randomUUID().toString(),UUID.randomUUID().toString())
-				.contentType(MediaType.APPLICATION_JSON))
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",
+						UUID.randomUUID().toString(), UUID.randomUUID().toString())
+								.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains(CourseEnum.UPDATE_OK.name());
 
 	}
-	
+
 	@Test
 	public void whenDeleteStudentIdCourseEmpty() throws JsonProcessingException, Exception {
 
-		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",EMPTY,UUID.randomUUID().toString())
-				.contentType(MediaType.APPLICATION_JSON))
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123", EMPTY,
+						UUID.randomUUID().toString()).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("");
 
 	}
-	
+
 	@Test
 	public void whenDeleteStudentIdStudentEmpty() throws JsonProcessingException, Exception {
 
-		MvcResult result = mockMvc.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",UUID.randomUUID().toString(),EMPTY)
-				.contentType(MediaType.APPLICATION_JSON))
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/course/{idCourse}/student/del/{idStudent}", "123",
+						UUID.randomUUID().toString(), EMPTY).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("");
