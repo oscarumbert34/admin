@@ -15,7 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import click.escuela.admin.core.connector.BillConnector;
-import click.escuela.admin.core.enumator.BillEnum;
+import click.escuela.admin.core.enumator.BillMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.BillApi;
@@ -57,11 +57,11 @@ public class BillConnectorTest {
 	public void whenCreateIsError() throws TransactionException {
 
 		when(billController.createBill(Mockito.any(), Mockito.any(), Mockito.any())).thenThrow(
-				new TransactionException(BillEnum.CREATE_ERROR.getCode(), BillEnum.CREATE_ERROR.getDescription()));
+				new TransactionException(BillMessage.CREATE_ERROR.getCode(), BillMessage.CREATE_ERROR.getDescription()));
 
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 
 			billConnector.create(schoolId, studentId, billApi);
-		}).withMessage(BillEnum.CREATE_ERROR.getDescription());
+		}).withMessage(BillMessage.CREATE_ERROR.getDescription());
 	}
 }

@@ -16,8 +16,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import click.escuela.admin.core.connector.CourseConnector;
-import click.escuela.admin.core.enumator.CourseEnum;
-import click.escuela.admin.core.enumator.StudentEnum;
+import click.escuela.admin.core.enumator.CourseMessage;
+import click.escuela.admin.core.enumator.StudentMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.CourseApi;
@@ -61,12 +61,12 @@ public class CourseConnectorTest {
 	public void whenCreateIsError() throws TransactionException {
 
 		when(courseController.createCourse(Mockito.any(), Mockito.any())).thenThrow(
-				new TransactionException(CourseEnum.CREATE_ERROR.getCode(), CourseEnum.CREATE_ERROR.getDescription()));
+				new TransactionException(CourseMessage.CREATE_ERROR.getCode(), CourseMessage.CREATE_ERROR.getDescription()));
 
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 
 			courseConnector.create(schoolId, courseApi);
-		}).withMessage(CourseEnum.CREATE_ERROR.getDescription());
+		}).withMessage(CourseMessage.CREATE_ERROR.getDescription());
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class CourseConnectorTest {
 
 	@Test
 	public void whenAddStudentIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentEnum.UPDATE_ERROR.getCode(), StudentEnum.UPDATE_ERROR.getDescription()))
+		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()))
 				.when(courseController).addStudent(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
 		;
 		String otherId = "";
@@ -90,7 +90,7 @@ public class CourseConnectorTest {
 
 			courseConnector.addStudent(otherId, idCourse, idStudent);
 			;
-		}).withMessage(StudentEnum.UPDATE_ERROR.getDescription());
+		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 
 	}
 
@@ -107,7 +107,7 @@ public class CourseConnectorTest {
 
 	@Test
 	public void whenDeleteStudentIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentEnum.UPDATE_ERROR.getCode(), StudentEnum.UPDATE_ERROR.getDescription()))
+		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()))
 				.when(courseController).deleteStudent(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
 		;
 		String otherId = "";
@@ -115,7 +115,7 @@ public class CourseConnectorTest {
 
 			courseConnector.deleteStudent(otherId, idCourse, idStudent);
 			;
-		}).withMessage(StudentEnum.UPDATE_ERROR.getDescription());
+		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 
 	}
 }

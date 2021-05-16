@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import click.escuela.admin.core.enumator.BillEnum;
+import click.escuela.admin.core.enumator.BillMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.service.impl.BillServiceImpl;
@@ -30,12 +30,12 @@ public class BillController {
 	@Operation(summary = "Create Bill", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(value = "/{studentId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<BillEnum> create(@PathVariable("schoolId") String schoolId,
+	public ResponseEntity<BillMessage> create(@PathVariable("schoolId") String schoolId,
 			@Parameter(name = "Student id", required = true) @PathVariable("studentId") String studentId,
 			@RequestBody @Validated BillApi billApi) throws TransactionException {
 
 		billService.create(schoolId, studentId, billApi);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(BillEnum.CREATE_OK);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(BillMessage.CREATE_OK);
 	}
 
 }
