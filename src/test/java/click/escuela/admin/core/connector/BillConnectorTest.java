@@ -1,4 +1,4 @@
-package click.escuela.admin.core.service;
+package click.escuela.admin.core.connector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

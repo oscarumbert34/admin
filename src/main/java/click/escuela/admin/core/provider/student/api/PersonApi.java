@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -51,6 +52,7 @@ public class PersonApi {
 	@JsonProperty(value = "birthday", required = true)
 	private LocalDate birthday;
 
+	@NotNull(message = "Adress cannot be null")
 	@JsonProperty(value = "adress", required = true)
 	@Valid
 	private AdressApi adressApi;
