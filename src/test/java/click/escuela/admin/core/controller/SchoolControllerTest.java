@@ -1,4 +1,4 @@
-package click.escuela.admin.core.service;
+package click.escuela.admin.core.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import click.escuela.admin.core.enumator.CourseEnum;
+import click.escuela.admin.core.enumator.CourseMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.SchoolApi;
 import click.escuela.admin.core.rest.SchoolController;
@@ -68,7 +68,7 @@ public class SchoolControllerTest {
 				.perform(post("/school").contentType(MediaType.APPLICATION_JSON).content(toJson(schoolApi)))
 				.andExpect(status().is2xxSuccessful()).andReturn();
 		String response = result.getResponse().getContentAsString();
-		assertThat(response).contains(CourseEnum.CREATE_OK.name());
+		assertThat(response).contains(CourseMessage.CREATE_OK.name());
 
 	}
 

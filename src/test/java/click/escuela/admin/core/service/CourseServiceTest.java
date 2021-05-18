@@ -16,8 +16,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import click.escuela.admin.core.connector.CourseConnector;
-import click.escuela.admin.core.enumator.CourseEnum;
-import click.escuela.admin.core.enumator.StudentEnum;
+import click.escuela.admin.core.enumator.CourseMessage;
+import click.escuela.admin.core.enumator.StudentMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.CourseApi;
 import click.escuela.admin.core.provider.student.service.impl.CourseServiceImpl;
@@ -63,7 +63,7 @@ public class CourseServiceTest {
 
 	@Test
 	public void whenCreateIsError() throws TransactionException {
-		doThrow(new TransactionException(CourseEnum.CREATE_ERROR.getCode(), CourseEnum.CREATE_ERROR.getDescription()))
+		doThrow(new TransactionException(CourseMessage.CREATE_ERROR.getCode(), CourseMessage.CREATE_ERROR.getDescription()))
 				.when(courseConnector).create(Mockito.any(), Mockito.any());
 
 		CourseApi courseApi = CourseApi.builder().year(10).division("C").countStudent(40).schoolId(85252).build();
@@ -71,7 +71,7 @@ public class CourseServiceTest {
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 
 			courseServiceImpl.create(schoolId, courseApi);
-		}).withMessage(CourseEnum.CREATE_ERROR.getDescription());
+		}).withMessage(CourseMessage.CREATE_ERROR.getDescription());
 
 	}
 
@@ -88,7 +88,7 @@ public class CourseServiceTest {
 
 	@Test
 	public void whenAddStudentIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentEnum.UPDATE_ERROR.getCode(), StudentEnum.UPDATE_ERROR.getDescription()))
+		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()))
 				.when(courseConnector).addStudent(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
 		;
 		String otherId = "";
@@ -96,7 +96,7 @@ public class CourseServiceTest {
 
 			courseServiceImpl.addStudent(otherId, idCourse, idStudent);
 			;
-		}).withMessage(StudentEnum.UPDATE_ERROR.getDescription());
+		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 
 	}
 
@@ -113,7 +113,7 @@ public class CourseServiceTest {
 
 	@Test
 	public void whenDeleteStudentIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentEnum.UPDATE_ERROR.getCode(), StudentEnum.UPDATE_ERROR.getDescription()))
+		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()))
 				.when(courseConnector).deleteStudent(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
 		;
 		String otherId = "";
@@ -121,7 +121,7 @@ public class CourseServiceTest {
 
 			courseServiceImpl.deleteStudent(otherId, idCourse, idStudent);
 			;
-		}).withMessage(StudentEnum.UPDATE_ERROR.getDescription());
+		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 
 	}
 

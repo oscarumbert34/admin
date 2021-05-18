@@ -14,7 +14,7 @@ import click.escuela.admin.core.provider.student.dto.SchoolDTO;
 public class Mapper {
 
 	private Mapper() {
-		throw new IllegalStateException("Utility class");
+		
 	}
 
 	private static ModelMapper modelMapper = new ModelMapper();
