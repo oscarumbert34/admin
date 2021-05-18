@@ -17,7 +17,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import click.escuela.admin.core.enumator.GenderType;
-import click.escuela.admin.core.enumator.StudentEnum;
+import click.escuela.admin.core.enumator.StudentMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
@@ -86,20 +86,20 @@ public class StudentServiceTest {
 
 	@Test
 	public void whenUpdateIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentEnum.UPDATE_ERROR.getCode(), StudentEnum.UPDATE_ERROR.getDescription()))
+		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()))
 				.when(studentConnector).update(Mockito.any());
 
 		studentUpdateApi.setId("7fsd7fsaf809s8fs8f9sd");
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 
 			studentServiceImpl.update(studentUpdateApi);
-		}).withMessage(StudentEnum.UPDATE_ERROR.getDescription());
+		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 
 	}
 
 	@Test
 	public void whenCreateIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentEnum.CREATE_ERROR.getCode(), StudentEnum.CREATE_ERROR.getDescription()))
+		doThrow(new TransactionException(StudentMessage.CREATE_ERROR.getCode(), StudentMessage.CREATE_ERROR.getDescription()))
 				.when(studentConnector).create(Mockito.any());
 
 		StudentApi studentApi = StudentApi.builder().adressApi(new AdressApi()).birthday(LocalDate.now())
@@ -109,7 +109,7 @@ public class StudentServiceTest {
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 
 			studentServiceImpl.create(studentApi);
-		}).withMessage(StudentEnum.CREATE_ERROR.getDescription());
+		}).withMessage(StudentMessage.CREATE_ERROR.getDescription());
 
 	}
 

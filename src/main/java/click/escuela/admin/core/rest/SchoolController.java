@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import click.escuela.admin.core.enumator.CourseEnum;
+import click.escuela.admin.core.enumator.CourseMessage;
 import click.escuela.admin.core.provider.student.api.SchoolApi;
 import click.escuela.admin.core.service.impl.SchoolServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,9 +27,9 @@ public class SchoolController {
 	@Operation(summary = "Create Course", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<CourseEnum> create(@RequestBody @Validated SchoolApi schoolApi){
+	public ResponseEntity<CourseMessage> create(@RequestBody @Validated SchoolApi schoolApi){
 		schoolService.create(schoolApi);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseEnum.CREATE_OK);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseMessage.CREATE_OK);
 	}
 
 }

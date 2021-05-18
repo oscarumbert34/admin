@@ -1,4 +1,4 @@
-package click.escuela.admin.core.service;
+package click.escuela.admin.core.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import click.escuela.admin.core.enumator.BillEnum;
-import click.escuela.admin.core.enumator.CourseEnum;
+import click.escuela.admin.core.enumator.BillMessage;
+import click.escuela.admin.core.enumator.CourseMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.service.impl.BillServiceImpl;
@@ -76,7 +76,7 @@ public class BillControllerTest {
 						.contentType(MediaType.APPLICATION_JSON).content(toJson(billApi)))
 				.andExpect(status().is2xxSuccessful()).andReturn();
 		String response = result.getResponse().getContentAsString();
-		assertThat(response).contains(CourseEnum.CREATE_OK.name());
+		assertThat(response).contains(CourseMessage.CREATE_OK.name());
 
 	}
 
@@ -122,7 +122,7 @@ public class BillControllerTest {
 	@Test
 	public void whenCreateError() throws JsonProcessingException, Exception {
 
-		doThrow(new TransactionException(BillEnum.CREATE_ERROR.getCode(), BillEnum.CREATE_ERROR.getDescription()))
+		doThrow(new TransactionException(BillMessage.CREATE_ERROR.getCode(), BillMessage.CREATE_ERROR.getDescription()))
 				.when(billService).create(Mockito.anyString(), Mockito.any(),Mockito.any());
 
 		MvcResult result = mockMvc
@@ -130,7 +130,7 @@ public class BillControllerTest {
 						.contentType(MediaType.APPLICATION_JSON).content(toJson(billApi)))
 				.andExpect(status().isBadRequest()).andReturn();
 		String response = result.getResponse().getContentAsString();
-		assertThat(response).contains(BillEnum.CREATE_ERROR.getDescription());
+		assertThat(response).contains(BillMessage.CREATE_ERROR.getDescription());
 
 	}
 

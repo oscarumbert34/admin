@@ -1,6 +1,6 @@
 package click.escuela.admin.core.enumator;
 
-public enum CourseEnum {
+public enum CourseMessage {
 
 	CREATE_OK("CREATED_STUDENT","Se creó el curso correctamente"),
 	CREATE_ERROR("CREATE_ERROR","No se pudo crear el curso correctamente"),
@@ -11,7 +11,7 @@ public enum CourseEnum {
 	private String code;
 	private String description;
 	
-	CourseEnum(String code, String description) {
+	CourseMessage(String code, String description) {
 		this.code = code;
 		this.description = description;
 	}

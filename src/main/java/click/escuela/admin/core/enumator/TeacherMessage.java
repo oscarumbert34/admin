@@ -1,14 +1,14 @@
 package click.escuela.admin.core.enumator;
 
-public enum BillEnum {
+public enum TeacherMessage {
 
-	CREATE_OK("CREATED_BILL", "Se creó la factura correctamente"),
-	CREATE_ERROR("CREATE_ERROR", "No se pudo crear la factura correctamente");
-	
+	CREATE_OK("CREATED_OK", "Se creó el profesor correctamente"),
+	CREATE_ERROR("CREATE_ERROR", "No se pudo crear el profesor correctamente");
+
 	private String code;
 	private String description;
-	
-	BillEnum(String code, String description) {
+
+	TeacherMessage(String code, String description) {
 		this.code = code;
 		this.description = description;
 	}
@@ -20,6 +20,5 @@ public enum BillEnum {
 	public String getDescription() {
 		return description;
 	}
-	
-	
+
 }

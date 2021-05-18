@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import click.escuela.admin.core.enumator.StudentEnum;
+import click.escuela.admin.core.enumator.StudentMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
@@ -65,19 +65,19 @@ public class StudentController {
 	@Operation(summary = "Create student", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<StudentEnum> create(@RequestBody @Validated StudentApi studentApi)
+	public ResponseEntity<StudentMessage> create(@RequestBody @Validated StudentApi studentApi)
 			throws TransactionException {
 		studentService.create(studentApi);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.CREATE_OK);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentMessage.CREATE_OK);
 	}
 
 	@Operation(summary = "Update student by studentId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<StudentEnum> update(@RequestBody @Validated StudentUpdateApi studentUpdateApi)
+	public ResponseEntity<StudentMessage> update(@RequestBody @Validated StudentUpdateApi studentUpdateApi)
 			throws TransactionException {
 		studentService.update(studentUpdateApi);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentEnum.UPDATE_OK);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentMessage.UPDATE_OK);
 	}
 
 	@DeleteMapping(value = "/{schoolId}")
