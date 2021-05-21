@@ -17,4 +17,8 @@ public class TeacherConnector {
 		teacherController.createTeacher(schoolId, teacherApi);
 	}
 
+	public void update(String schoolId, TeacherApi teacherApi) throws TransactionException {
+		teacherController.updateTeacher(schoolId, teacherApi);
+	}
+
 }
