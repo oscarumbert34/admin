@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Getter
@@ -57,6 +58,7 @@ public class StudentApi extends PersonApi {
 	@JsonProperty(value = "division", required = true)
 	private String division;
 
+	@ApiModelProperty(dataType = "enum", example ="PREESCOLAR, PRIMARIO, SECUNDARIO, TERCIARIO")
 	@NotBlank(message = "Level cannot be null")
 	@JsonProperty(value = "level", required = true)
 	private String level;
