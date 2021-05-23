@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class TeacherApi extends PersonApi {
 		this.courseId = courseId;
 	}
 
+	@ApiModelProperty(dataType = "enum", example ="DNI, PASAPORT, CI, LE, LI ")
 	@NotBlank(message = "Document type cannot be empty")
 	@JsonProperty(value = "documentType", required = true)
 	private String documentType;
