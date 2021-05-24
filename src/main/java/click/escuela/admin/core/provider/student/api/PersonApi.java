@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class PersonApi {
 	@JsonProperty(value = "document", required = true)
 	private String document;
 
+	@ApiModelProperty(dataType = "enum", example ="MALE, FEMALE, OTHER")
 	@NotBlank(message = "Gender cannot be null")
 	@JsonProperty(value = "gender", required = true)
 	private String gender;
