@@ -28,6 +28,7 @@ public class TeacherConnectorTest {
 
 	private TeacherConnector teacherConnector = new TeacherConnector();
 	private TeacherApi teacherApi;
+
 	private String schoolId;
 
 	@Before
@@ -87,4 +88,5 @@ public class TeacherConnectorTest {
 			teacherConnector.update(schoolId, teacherApi);
 		}).withMessage(TeacherMessage.UPDATE_ERROR.getDescription());
 	}
+
 }

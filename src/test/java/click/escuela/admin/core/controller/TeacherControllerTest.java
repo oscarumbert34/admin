@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,6 +69,7 @@ public class TeacherControllerTest {
 				.birthday(LocalDate.now()).documentType("DNI").document("25897863").cellPhone("1589632485")
 				.schoolId(1234).email("mariAna@gmail.com").adressApi(adressApi).build();
 
+
 		doNothing().when(teacherService).create(Mockito.any(), Mockito.any());
 	}
 
@@ -79,6 +81,7 @@ public class TeacherControllerTest {
 				.andExpect(status().is2xxSuccessful()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains(TeacherMessage.CREATE_OK.name());
+
 	}
 
 	@Test
@@ -162,6 +165,7 @@ public class TeacherControllerTest {
 				.andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("School ID cannot be null");
+
 
 	}
 

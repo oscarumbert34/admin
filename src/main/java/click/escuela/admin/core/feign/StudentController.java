@@ -19,7 +19,7 @@ import click.escuela.admin.core.provider.student.api.TeacherApi;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 
-@FeignClient(name = "students", url = "localhost:8090")
+@FeignClient(name = "students", url = "https://click-school-admin.herokuapp.com")
 public interface StudentController {
 
 	// StudentController
@@ -71,6 +71,6 @@ public interface StudentController {
 	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
 	public String updateTeacher(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
-	
+
 
 }

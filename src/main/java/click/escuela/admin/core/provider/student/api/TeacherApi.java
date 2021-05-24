@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import io.swagger.annotations.ApiModelProperty;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,4 +45,5 @@ public class TeacherApi extends PersonApi {
 	@NotNull(message = "School ID cannot be null")
 	@JsonProperty(value = "schoolId", required = true)
 	private Integer schoolId;
+
 }

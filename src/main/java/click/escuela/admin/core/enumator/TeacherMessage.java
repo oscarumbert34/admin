@@ -8,6 +8,7 @@ public enum TeacherMessage {
 	UPDATE_ERROR("UPDATE_ERROR", "No se pudo modificar el profesor correctamente"),
 	GET_ERROR("GET_ERROR", "No se pudo encontrar el profesor");
 
+
 	private String code;
 	private String description;
 
