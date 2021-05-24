@@ -17,4 +17,8 @@ public class TeacherServiceImpl {
 		teacherConnector.create(schoolId, teacherApi);
 	}
 
+	public void update(String schoolId, TeacherApi teacherApi) throws TransactionException {
+		teacherConnector.update(schoolId, teacherApi);
+	}
+
 }

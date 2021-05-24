@@ -67,5 +67,10 @@ public interface StudentController {
 	@PostMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
 	public String createTeacher(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
+	
+	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
+	public String updateTeacher(@PathVariable("schoolId") String schoolId,
+			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
+
 
 }

@@ -6,7 +6,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,19 +30,16 @@ public class TeacherServiceTest {
 
 	private TeacherServiceImpl teacherServiceImpl = new TeacherServiceImpl();
 	private TeacherApi teacherApi;
-	private UUID courseId;
 	private String schoolId;
 
 	@Before
 	public void setUp() throws TransactionException {
 
 		schoolId = "1234";
-		courseId = UUID.randomUUID();
 
-		teacherApi = TeacherApi.builder().name("Mariana").surname("Lopez").birthday(LocalDate.now())
-				.documentType("DNI").document("25897863").cellPhone("1589632485").email("mariAna@gmail.com")
-				.courseId(courseId.toString()).adressApi(new AdressApi()).build();
-
+		teacherApi = TeacherApi.builder().name("Mariana").surname("Lopez").birthday(LocalDate.now()).documentType("DNI")
+				.document("25897863").cellPhone("1589632485").email("mariAna@gmail.com").adressApi(new AdressApi())
+				.build();
 		doNothing().when(teacherConnector).create(Mockito.any(), Mockito.any());
 
 		ReflectionTestUtils.setField(teacherServiceImpl, "teacherConnector", teacherConnector);
@@ -53,7 +49,7 @@ public class TeacherServiceTest {
 	public void whenCreateIsOk() {
 		boolean hasError = false;
 		try {
-			teacherServiceImpl.create(schoolId,teacherApi);
+			teacherServiceImpl.create(schoolId, teacherApi);
 		} catch (Exception e) {
 			hasError = true;
 		}
@@ -62,12 +58,35 @@ public class TeacherServiceTest {
 
 	@Test
 	public void whenCreateIsError() throws TransactionException {
-		doThrow(new TransactionException(TeacherMessage.CREATE_ERROR.getCode(), TeacherMessage.CREATE_ERROR.getDescription()))
-				.when(teacherConnector).create(Mockito.any(), Mockito.any());
+		doThrow(new TransactionException(TeacherMessage.CREATE_ERROR.getCode(),
+				TeacherMessage.CREATE_ERROR.getDescription())).when(teacherConnector).create(Mockito.any(),
+						Mockito.any());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 
 			teacherServiceImpl.create(schoolId, teacherApi);
 		}).withMessage(TeacherMessage.CREATE_ERROR.getDescription());
+	}
+
+	@Test
+	public void whenUpdateIsOk() {
+		boolean hasError = false;
+		try {
+			teacherServiceImpl.update(schoolId, teacherApi);
+		} catch (Exception e) {
+			hasError = true;
+		}
+		assertThat(hasError).isFalse();
+	}
+
+	@Test
+	public void whenUpdateIsError() throws TransactionException {
+		doThrow(new TransactionException(TeacherMessage.UPDATE_ERROR.getCode(),
+				TeacherMessage.UPDATE_ERROR.getDescription())).when(teacherConnector).update(Mockito.any(),
+						Mockito.any());
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+
+			teacherServiceImpl.update(schoolId, teacherApi);
+		}).withMessage(TeacherMessage.UPDATE_ERROR.getDescription());
 
 	}
 }
