@@ -17,9 +17,10 @@ import click.escuela.admin.core.provider.student.api.CourseApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
+import click.escuela.admin.core.provider.student.dto.TeacherDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 
-@FeignClient(name = "students", url = "https://click-school-admin.herokuapp.com")
+@FeignClient(name = "students", url = "localhost:8090")
 public interface StudentController {
 
 	// StudentController
@@ -71,6 +72,16 @@ public interface StudentController {
 	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
 	public String updateTeacher(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
+	
+	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/{teacherId}")
+	public TeacherDTO getByTeacherId(@PathVariable("schoolId") String schoolId, @PathVariable("teacherId") String teacherId) throws TransactionException;
+
+	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
+	public List<TeacherDTO> getBySchoolId(@PathVariable("schoolId") String schoolId);
+
+	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/course/{courseId}")
+	public List<TeacherDTO> getByCourseId(@PathVariable("schoolId") String schoolId,
+			@PathVariable("courseId") String courseId);
 
 
 }
