@@ -32,7 +32,7 @@ public class TeacherConnector {
 		return teacherController.getBySchoolId(schoolId);
 	}
 
-	public List<TeacherDTO> getByCourseId(String schoolId, String courseId) throws TransactionException {
+	public List<TeacherDTO> getByCourseId(String schoolId, String courseId){
 		return teacherController.getByCourseId(schoolId, courseId);
 	}
 
