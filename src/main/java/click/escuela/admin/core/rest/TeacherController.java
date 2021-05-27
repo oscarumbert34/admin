@@ -52,7 +52,7 @@ public class TeacherController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TeacherDTO.class))) })
 	@GetMapping(value = "course/{courseId}")
 	public ResponseEntity<List<TeacherDTO>> getByCourseId(@PathVariable("schoolId") String schoolId,
-			@PathVariable("courseId") String courseId) throws TransactionException {
+			@PathVariable("courseId") String courseId){
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(teacherService.getByCourseId(schoolId, courseId));
 	}
 
