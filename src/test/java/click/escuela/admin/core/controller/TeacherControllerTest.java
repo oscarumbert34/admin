@@ -8,7 +8,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,23 +19,29 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import click.escuela.admin.core.enumator.DocumentType;
 import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.TeacherMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
+import click.escuela.admin.core.provider.student.dto.AdressDTO;
+import click.escuela.admin.core.provider.student.dto.TeacherDTO;
 import click.escuela.admin.core.provider.student.service.impl.TeacherServiceImpl;
 import click.escuela.admin.core.rest.TeacherController;
 import click.escuela.admin.core.rest.handler.Handler;
@@ -54,6 +62,9 @@ public class TeacherControllerTest {
 	private TeacherApi teacherApi;
 	private AdressApi adressApi;
 	private static String EMPTY = "";
+	private String id;
+	private String schoolId;
+	private String courseId;
 
 	@Before
 	public void setup() throws TransactionException {
@@ -63,14 +74,23 @@ public class TeacherControllerTest {
 				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		ReflectionTestUtils.setField(teacherController, "teacherService", teacherService);
 
+		id = UUID.randomUUID().toString();
+		schoolId = "1234";
+		courseId = UUID.randomUUID().toString();
 		adressApi = new AdressApi("Calle falsa", "6458", "Nogues");
-
 		teacherApi = TeacherApi.builder().gender(GenderType.FEMALE.toString()).name("Mariana").surname("Lopez")
 				.birthday(LocalDate.now()).documentType("DNI").document("25897863").cellPhone("1589632485")
 				.schoolId(1234).email("mariAna@gmail.com").adressApi(adressApi).build();
-
+		TeacherDTO teacherDTO = TeacherDTO.builder().id(id.toString()).name("Mariana").surname("Lopez")
+				.birthday(LocalDate.now()).documentType(DocumentType.DNI).document("25897863").cellPhone("1589632485")
+				.email("mariAna@gmail.com").adress(new AdressDTO()).build();
+		List<TeacherDTO> teachersDTO = new ArrayList<>();
+		teachersDTO.add(teacherDTO);
 
 		doNothing().when(teacherService).create(Mockito.any(), Mockito.any());
+		Mockito.when(teacherService.getById(schoolId, id)).thenReturn(teacherDTO);
+		Mockito.when(teacherService.getBySchoolId(schoolId)).thenReturn(teachersDTO);
+		Mockito.when(teacherService.getByCourseId(schoolId, courseId)).thenReturn(teachersDTO);
 	}
 
 	@Test
@@ -165,7 +185,6 @@ public class TeacherControllerTest {
 				.andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("School ID cannot be null");
-
 
 	}
 
@@ -291,6 +310,81 @@ public class TeacherControllerTest {
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains(TeacherMessage.UPDATE_ERROR.getDescription());
 
+	}
+
+	@Test
+	public void getByIdIsOk() throws JsonProcessingException, Exception {
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.get("/school/{schoolId}/teacher/{teacherId}", schoolId, id)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.ACCEPTED.value())).andReturn();
+		TeacherDTO response = mapper.readValue(result.getResponse().getContentAsString(), TeacherDTO.class);
+		assertThat(response).hasFieldOrPropertyWithValue("id", id.toString());
+	}
+
+	@Test
+	public void getByIdIsError() throws JsonProcessingException, Exception {
+		id = UUID.randomUUID().toString();
+		doThrow(new TransactionException(TeacherMessage.GET_ERROR.getCode(), TeacherMessage.GET_ERROR.getDescription()))
+				.when(teacherService).getById(schoolId, id);
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+				.get("/school/{schoolId}/teacher/{teacherId}", schoolId, id).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains(TeacherMessage.GET_ERROR.getDescription());
+	}
+
+	@Test
+	public void getByIdSchoolIsOk() throws JsonProcessingException, Exception {
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.get("/school/{schoolId}/teacher", schoolId)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.ACCEPTED.value())).andReturn();
+
+		TypeReference<List<TeacherDTO>> typeReference = new TypeReference<List<TeacherDTO>>() {
+		};
+		List<TeacherDTO> results = mapper.readValue(result.getResponse().getContentAsString(), typeReference);
+		assertThat(results.get(0).getId()).contains(id.toString());
+	}
+
+	@Test
+	public void getByIdSchoolIsEmpty() throws JsonProcessingException, Exception {
+		schoolId = "6666";
+		Mockito.when(teacherService.getBySchoolId(schoolId)).thenReturn(new ArrayList<>());
+
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.get("/school/{schoolId}/teacher", schoolId)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.ACCEPTED.value())).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains("");
+	}
+
+	@Test
+	public void getByIdCourseIsOk() throws JsonProcessingException, Exception {
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.get("/school/{schoolId}/teacher/course/{courseId}", schoolId, courseId)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.ACCEPTED.value())).andReturn();
+
+		TypeReference<List<TeacherDTO>> typeReference = new TypeReference<List<TeacherDTO>>() {
+		};
+		List<TeacherDTO> results = mapper.readValue(result.getResponse().getContentAsString(), typeReference);
+		assertThat(results.get(0).getId()).contains(id.toString());
+	}
+
+	@Test
+	public void getByIdCourseIsEmpty() throws JsonProcessingException, Exception {
+		courseId = UUID.randomUUID().toString();
+		Mockito.when(teacherService.getByCourseId(schoolId, courseId)).thenReturn(new ArrayList<>());
+
+		MvcResult result = mockMvc
+				.perform(MockMvcRequestBuilders.get("/school/{schoolId}/teacher/course/{courseId}", schoolId, courseId)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is(HttpStatus.ACCEPTED.value())).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains("");
 	}
 
 	private String toJson(final Object obj) throws JsonProcessingException {
