@@ -34,7 +34,6 @@ public class SchoolServiceTest {
 		schoolApi = SchoolApi.builder().name("Colegio Nacional").cellPhone("1534567890").email("nacio@edu.com.ar")
 				.adress("Zuviria 2412").countCourses(23).countStudent(120).build();
 
-		Mockito.when(schoolRepository.save(school)).thenReturn(school);
 		ReflectionTestUtils.setField(schoolServiceImpl, "schoolRepository", schoolRepository);
 	}
 
@@ -52,12 +51,10 @@ public class SchoolServiceTest {
 	@Test
 	public void whenCreateIsError() {
 
-		Mockito.when(schoolRepository.save(null)).thenThrow(IllegalArgumentException.class);
+		assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> {
 
-		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-
-			schoolServiceImpl.create(schoolApi);
-		}).withMessage("");
+			schoolServiceImpl.create(null);
+		}).withMessage("source cannot be null");
 
 	}
 
