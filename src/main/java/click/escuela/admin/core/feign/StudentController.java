@@ -16,6 +16,7 @@ import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.api.CourseApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
+import click.escuela.admin.core.provider.student.dto.BillDTO;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
 import click.escuela.admin.core.provider.student.dto.TeacherDTO;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -64,17 +65,25 @@ public interface StudentController {
 			@Parameter(name = "Student id", required = true) @PathVariable("studentId") String studentId,
 			@RequestBody @Validated BillApi billApi) throws TransactionException;
 
+	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/bill/student/{studentId}")
+	public List<BillDTO> getByStudentId(@PathVariable("schoolId") String schoolId,
+			@PathVariable("studentId") String studentId,
+			@RequestParam(required = false, value = "status") String status,
+			@RequestParam(required = false, value = "month") Integer month,
+			@RequestParam(required = false, value = "year") Integer year);
+
 	// TeacherController
 	@PostMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
 	public String createTeacher(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
-	
+
 	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
 	public String updateTeacher(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
-	
+
 	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/{teacherId}")
-	public TeacherDTO getByTeacherId(@PathVariable("schoolId") String schoolId, @PathVariable("teacherId") String teacherId) throws TransactionException;
+	public TeacherDTO getByTeacherId(@PathVariable("schoolId") String schoolId,
+			@PathVariable("teacherId") String teacherId) throws TransactionException;
 
 	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher")
 	public List<TeacherDTO> getBySchoolId(@PathVariable("schoolId") String schoolId);
@@ -82,6 +91,5 @@ public interface StudentController {
 	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/course/{courseId}")
 	public List<TeacherDTO> getByCourseId(@PathVariable("schoolId") String schoolId,
 			@PathVariable("courseId") String courseId);
-
 
 }

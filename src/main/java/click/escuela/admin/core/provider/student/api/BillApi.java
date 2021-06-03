@@ -1,5 +1,7 @@
 package click.escuela.admin.core.provider.student.api;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,14 +25,20 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class BillApi {
-	@NotNull(message = "Period cannot be empty")
-	@JsonProperty(value = "period", required = true)
-	private Integer period;
+	@NotNull(message = "Month cannot be empty")
+	@Min(value = 1, message = "Month should not be less than 1")
+    @Max(value = 12, message = "Month should not be greater than 12")
+	@JsonProperty(value = "month", required = true)
+	private Integer month;
 	
+	@NotNull(message = "Year cannot be empty")
+	@JsonProperty(value = "year", required = true)
+	private Integer year;
+
 	@NotNull(message = "Amount cannot be empty")
 	@JsonProperty(value = "amount", required = true)
 	private Double amount;
-
+	
 	@NotBlank(message = "File cannot be empty")
 	@Size(max = 10, message = "File must be 50 characters")
 	@JsonProperty(value = "file", required = true)
