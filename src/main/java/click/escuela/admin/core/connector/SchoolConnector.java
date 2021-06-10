@@ -1,19 +1,20 @@
-package click.escuela.admin.core.service.impl;
+package click.escuela.admin.core.connector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import click.escuela.admin.core.connector.SchoolConnector;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.SchoolApi;
 
 @Service
-public class SchoolServiceImpl {
+public class SchoolConnector {
 
 	@Autowired
-	private SchoolConnector schoolConnector;
+	private StudentController schoolController;
 
 	public void create(SchoolApi schoolApi) throws TransactionException {
-		schoolConnector.create(schoolApi);
+		schoolController.createSchool(schoolApi);
 	}
+
 }

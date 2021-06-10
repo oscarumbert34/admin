@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.api.CourseApi;
+import click.escuela.admin.core.provider.student.api.SchoolApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
 import click.escuela.admin.core.provider.student.dto.BillDTO;
@@ -92,4 +93,7 @@ public interface StudentController {
 	public List<TeacherDTO> getByCourseId(@PathVariable("schoolId") String schoolId,
 			@PathVariable("courseId") String courseId);
 
+	// SchoolController
+	@PostMapping(value = "/click-escuela/school-admin/school")
+	public String createSchool(@RequestBody @Validated SchoolApi schoolApi) throws TransactionException;
 }
