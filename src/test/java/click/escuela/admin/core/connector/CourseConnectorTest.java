@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +75,7 @@ public class CourseConnectorTest {
 				StudentMessage.UPDATE_ERROR.getDescription())).when(courseController).addStudent(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseConnector.addStudent(EMPTY, courseId, studentId);
+			courseConnector.addStudent(StringUtils.EMPTY, courseId, studentId);
 		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 	}
 
