@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,6 @@ public class CourseServiceTest {
 	private String studentId;
 	private String courseId;
 	private String teacherId;
-	private String EMPTY = "";
 
 	@Before
 	public void setUp() throws TransactionException {
@@ -82,7 +82,7 @@ public class CourseServiceTest {
 				StudentMessage.UPDATE_ERROR.getDescription())).when(courseConnector).addStudent(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseServiceImpl.addStudent(EMPTY, courseId, studentId);
+			courseServiceImpl.addStudent(StringUtils.EMPTY, courseId, studentId);
 		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 	}
 
@@ -121,7 +121,7 @@ public class CourseServiceTest {
 				CourseMessage.UPDATE_ERROR.getDescription())).when(courseConnector).addTeacher(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseServiceImpl.addTeacher(EMPTY, EMPTY, EMPTY);
+			courseServiceImpl.addTeacher(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
 		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 
@@ -131,7 +131,7 @@ public class CourseServiceTest {
 				CourseMessage.UPDATE_ERROR.getDescription())).when(courseConnector).deleteTeacher(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseServiceImpl.deleteTeacher(EMPTY, EMPTY, EMPTY);
+			courseServiceImpl.deleteTeacher(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
 		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 }

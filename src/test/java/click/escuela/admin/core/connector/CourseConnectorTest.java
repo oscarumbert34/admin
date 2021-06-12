@@ -35,8 +35,7 @@ public class CourseConnectorTest {
 	private String studentId;
 	private String courseId;
 	private String teacherId;
-	private String EMPTY = "";
-
+	
 	@Before
 	public void setUp() throws TransactionException {
 		schoolId = UUID.randomUUID().toString();
@@ -91,7 +90,7 @@ public class CourseConnectorTest {
 				StudentMessage.UPDATE_ERROR.getDescription())).when(courseController).deleteStudent(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseConnector.deleteStudent(EMPTY, courseId, studentId);
+			courseConnector.deleteStudent(StringUtils.EMPTY, courseId, studentId);
 		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 	}
 
@@ -113,7 +112,7 @@ public class CourseConnectorTest {
 				CourseMessage.UPDATE_ERROR.getDescription())).when(courseController).addTeacher(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseConnector.addTeacher(EMPTY, EMPTY, EMPTY);
+			courseConnector.addTeacher(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
 		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 
@@ -123,7 +122,7 @@ public class CourseConnectorTest {
 				CourseMessage.UPDATE_ERROR.getDescription())).when(courseController).deleteTeacher(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseConnector.deleteTeacher(EMPTY, EMPTY, EMPTY);
+			courseConnector.deleteTeacher(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
 		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 

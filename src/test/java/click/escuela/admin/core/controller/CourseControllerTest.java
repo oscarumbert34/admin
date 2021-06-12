@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +55,6 @@ public class CourseControllerTest {
 	private String id;
 	private String studentId;
 	private String schoolId;
-	private final static String EMPTY = "";
 	private final static String EMPTY_COUNT_STUDENT = "CountStudent cannot be empty";
 	private final static String NULL_SCHOOL = "School cannot be null";
 	private final static String EMPTY_DIVISION = "Division cannot be empty";
@@ -97,7 +97,7 @@ public class CourseControllerTest {
 
 	@Test
 	public void whenCreateDivisonEmpty() throws JsonProcessingException, Exception {
-		courseApi.setDivision(EMPTY);
+		courseApi.setDivision(StringUtils.EMPTY);
 		String response = resultNotOk(
 				post(URL, schoolId).contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
 						.getContentAsString();
@@ -131,16 +131,16 @@ public class CourseControllerTest {
 
 	@Test
 	public void whenAddStudentIdCourseEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, EMPTY, studentId)
+		String response = resultNotFound(put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, StringUtils.EMPTY, studentId)
 				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(EMPTY);
+		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
 	@Test
 	public void whenAddStudentIdStudentEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, id, EMPTY)
+		String response = resultNotFound(put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, id, StringUtils.EMPTY)
 				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(EMPTY);
+		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
 	@Test
@@ -152,16 +152,16 @@ public class CourseControllerTest {
 
 	@Test
 	public void whenDeleteStudentIdCourseEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, EMPTY, studentId)
+		String response = resultNotFound(put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, StringUtils.EMPTY, studentId)
 				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(EMPTY);
+		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
 	@Test
 	public void whenDeleteStudentIdStudentEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, id, EMPTY)
+		String response = resultNotFound(put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, id, StringUtils.EMPTY)
 				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(EMPTY);
+		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
 	@Test
