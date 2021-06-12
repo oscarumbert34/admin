@@ -2,6 +2,7 @@ package click.escuela.admin.core.feign;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import click.escuela.admin.core.provider.student.dto.StudentDTO;
 import click.escuela.admin.core.provider.student.dto.TeacherDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 
-@FeignClient(name = "students", url = "localhost:8090")
+@FeignClient(name = "${provider.school-admin.name}", url = "${provider.school-admin.url}")
 public interface StudentController {
 
 	// StudentController
