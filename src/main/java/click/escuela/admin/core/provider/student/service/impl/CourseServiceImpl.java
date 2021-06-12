@@ -17,12 +17,19 @@ public class CourseServiceImpl {
 		courseConnector.create(schoolId, courseApi);
 	}
 
-	public void addStudent(String schoolId,String idCourse, String idStudent) throws TransactionException {
+	public void addStudent(String schoolId, String idCourse, String idStudent) throws TransactionException {
 		courseConnector.addStudent(schoolId, idCourse, idStudent);
 	}
 
-	public void deleteStudent(String schoolId,String idCourse, String idStudent) throws TransactionException {
-		courseConnector.deleteStudent(schoolId,idCourse, idStudent);
+	public void deleteStudent(String schoolId, String idCourse, String idStudent) throws TransactionException {
+		courseConnector.deleteStudent(schoolId, idCourse, idStudent);
+	}
 
+	public void addTeacher(String schoolId, String idCourse, String idTeacher) throws TransactionException {
+		courseConnector.addTeacher(schoolId, idCourse, idTeacher);
+	}
+
+	public void deleteTeacher(String schoolId, String idCourse, String idTeacher) throws TransactionException {
+		courseConnector.deleteTeacher(schoolId, idCourse, idTeacher);
 	}
 }
