@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,14 +54,23 @@ public class CourseController {
 		courseService.deleteStudent(schoolId,idCourse, idStudent);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseMessage.UPDATE_OK);
 	}
-
-	@PutMapping(value = "/{courseId}")
-	public ResponseEntity<?> update() {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	
+	@Operation(summary = "Update/Add course in student", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PutMapping(value = "/{idCourse}/teacher/add/{idTeacher}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<CourseMessage> addTeacher(@PathVariable("schoolId")String schoolId,@PathVariable("idCourse") String idCourse,
+			@PathVariable("idTeacher") String idTeacher) throws TransactionException {
+		courseService.addTeacher(schoolId,idCourse, idTeacher);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseMessage.UPDATE_OK);
 	}
 
-	@DeleteMapping(value = "/{courseId}")
-	public ResponseEntity<?> delete() {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	@Operation(summary = "Update/Delete course in student", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PutMapping(value = "/{idCourse}/teacher/del/{idTeacher}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<CourseMessage> deleteTeacher(@PathVariable("schoolId")String schoolId,@PathVariable("idCourse") String idCourse,
+			@PathVariable("idTeacher") String idTeacher) throws TransactionException {
+		courseService.deleteTeacher(schoolId,idCourse, idTeacher);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(CourseMessage.UPDATE_OK);
 	}
+
 }
