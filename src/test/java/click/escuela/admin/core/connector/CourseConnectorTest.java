@@ -109,10 +109,10 @@ public class CourseConnectorTest {
 	@Test
 	public void whenAddTeacherIsError() throws TransactionException {
 		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
-				CourseMessage.UPDATE_ERROR.getDescription())).when(courseController).deleteTeacher(Mockito.anyString(),
+				CourseMessage.UPDATE_ERROR.getDescription())).when(courseController).addTeacher(Mockito.anyString(),
 						Mockito.anyString(), Mockito.anyString());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseConnector.deleteTeacher(EMPTY, EMPTY, EMPTY);
+			courseConnector.addTeacher(EMPTY, EMPTY, EMPTY);
 		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 
