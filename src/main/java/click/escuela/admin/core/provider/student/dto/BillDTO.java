@@ -15,15 +15,18 @@ public class BillDTO {
 	@JsonProperty(value = "id")
 	private String id;
 
-	@JsonProperty(value = "period")
-	private Integer period;
-	
+	@JsonProperty(value = "month")
+	private Integer month;
+
+	@JsonProperty(value = "year")
+	private Integer year;
+
 	@JsonProperty(value = "amount")
 	private Double amount;
 
 	@JsonProperty(value = "file")
 	private String file;
-	
+
 	@JsonProperty(value = "status")
 	private PaymentStatus status;
 }

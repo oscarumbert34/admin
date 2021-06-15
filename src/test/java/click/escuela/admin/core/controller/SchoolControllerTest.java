@@ -123,7 +123,7 @@ public class SchoolControllerTest {
 	@Test
 	public void whenCreateErrorService() throws JsonProcessingException, Exception {
 
-		doThrow(new IllegalArgumentException()).when(schoolService).create(Mockito.any());
+		doThrow(TransactionException.class).when(schoolService).create(Mockito.any());
 
 		MvcResult result = mockMvc
 				.perform(post("/school").contentType(MediaType.APPLICATION_JSON).content(toJson(schoolApi)))

@@ -1,7 +1,6 @@
-package click.escuela.admin.core.service;
+package click.escuela.admin.core.connector;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -16,16 +15,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 import click.escuela.admin.core.connector.SchoolConnector;
 import click.escuela.admin.core.enumator.SchoolMessage;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.SchoolApi;
-import click.escuela.admin.core.service.impl.SchoolServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SchoolServiceTest {
+public class SchoolConnectorTest {
 
 	@Mock
-	private SchoolConnector schoolConnector;
+	private StudentController schoolController;
 
-	private SchoolServiceImpl schoolServiceImpl = new SchoolServiceImpl();
+	private SchoolConnector schoolConnector = new SchoolConnector();
 	private SchoolApi schoolApi;
 
 	@Before
@@ -34,22 +33,21 @@ public class SchoolServiceTest {
 		schoolApi = SchoolApi.builder().name("Colegio Nacional").cellPhone("47589869")
 				.email("colegionacional@edu.gob.com").adress("Entre Rios 1418").countCourses(10).countStudent(20)
 				.build();
-		doNothing().when(schoolConnector).create(schoolApi);
-		ReflectionTestUtils.setField(schoolServiceImpl, "schoolConnector", schoolConnector);
+		ReflectionTestUtils.setField(schoolConnector, "schoolController", schoolController);
 	}
 
 	@Test
 	public void whenCreateIsOk() throws TransactionException {
-		schoolServiceImpl.create(schoolApi);
-		verify(schoolConnector).create(schoolApi);
+		schoolConnector.create(schoolApi);
+		verify(schoolController).createSchool(schoolApi);
 	}
 
 	@Test
 	public void whenCreateIsError() throws TransactionException {
 		doThrow(new TransactionException(SchoolMessage.CREATE_ERROR.getCode(),
-				SchoolMessage.CREATE_ERROR.getDescription())).when(schoolConnector).create(Mockito.any());
+				SchoolMessage.CREATE_ERROR.getDescription())).when(schoolController).createSchool(Mockito.any());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			schoolServiceImpl.create(Mockito.any());
+			schoolConnector.create(Mockito.any());
 		}).withMessage(SchoolMessage.CREATE_ERROR.getDescription());
 	}
 
