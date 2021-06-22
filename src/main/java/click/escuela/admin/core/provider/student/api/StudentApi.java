@@ -27,11 +27,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @SuperBuilder
 public class StudentApi extends PersonApi {
 
-	public StudentApi(String name, String surname, String document, String gender, LocalDate birthday,
-			AdressApi adressApi, String cellPhone, String email, ParentApi parentApi, Integer schoolId, String grade,
+	public StudentApi(PersonApi personApi, ParentApi parentApi, Integer schoolId, String grade,
 			String division, String level) {
 
-		super(name, surname, document, gender, birthday, adressApi, cellPhone, email);
+		super(personApi.getName(), personApi.getSurname(), personApi.getDocument(), personApi.getGender(),
+				personApi.getBirthday(), personApi.getAdressApi(), personApi.getCellPhone(), personApi.getEmail());
 		this.parentApi = parentApi;
 		this.schoolId = schoolId;
 		this.grade = grade;

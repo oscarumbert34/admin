@@ -27,9 +27,13 @@ public class StudentUpdateApi extends StudentApi {
 	private String id;
 
 	public StudentUpdateApi(StudentApi studenApi) {
-		super(studenApi.getName(), studenApi.getSurname(), studenApi.getDocument(), studenApi.getGender(),
-				studenApi.getBirthday(), studenApi.getAdressApi(), studenApi.getCellPhone(), studenApi.getEmail(),
-				studenApi.getParentApi(), studenApi.getSchoolId(), studenApi.getGrade(), studenApi.getDivision(),
-				studenApi.getLevel());
+		super(buildPerson(studenApi), studenApi.getParentApi(), studenApi.getSchoolId(), studenApi.getGrade(),
+				studenApi.getDivision(), studenApi.getLevel());
+	}
+
+	private static PersonApi buildPerson(StudentApi studenApi) {
+		return PersonApi.builder().adressApi(studenApi.getAdressApi()).birthday(studenApi.getBirthday())
+				.cellPhone(studenApi.getCellPhone()).document(studenApi.getDocument()).email(studenApi.getEmail())
+				.gender(studenApi.getGender()).name(studenApi.getName()).surname(studenApi.getSurname()).build();
 	}
 }
