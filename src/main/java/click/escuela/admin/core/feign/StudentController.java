@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import click.escuela.admin.core.exception.ExcelException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.api.CourseApi;
+import click.escuela.admin.core.provider.student.api.ExcelApi;
+
 import click.escuela.admin.core.provider.student.api.SchoolApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
@@ -67,7 +70,7 @@ public interface StudentController {
 	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/course/{idCourse}/teacher/del/{idTeacher}")
 	public String deleteTeacher(@PathVariable("schoolId") String schoolId, @PathVariable("idCourse") String idCourse,
 			@PathVariable("idTeacher") String idTeacher) throws TransactionException;
-	
+
 	// BillController
 	@PostMapping(value = "/click-escuela/school-admin/school/{schoolId}/bill/{studentId}")
 	public String createBill(@PathVariable("schoolId") String schoolId,
@@ -104,4 +107,10 @@ public interface StudentController {
 	// SchoolController
 	@PostMapping(value = "/click-escuela/school-admin/school")
 	public String createSchool(@RequestBody @Validated SchoolApi schoolApi) throws TransactionException;
+
+	// ExcelController
+	@PostMapping(value = "/click-escuela/school-admin/school/{schoolId}/excel")
+	public String saveExcel(@PathVariable("schoolId") String schoolId, 
+			@RequestBody @Validated ExcelApi excelApi) throws ExcelException;
+
 }
