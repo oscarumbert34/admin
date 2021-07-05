@@ -1,9 +1,9 @@
 package click.escuela.admin.core.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -22,7 +22,6 @@ import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
-import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.connector.StudentConnector;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
 
@@ -34,17 +33,16 @@ public class StudentServiceTest {
 
 	private StudentServiceImpl studentServiceImpl = new StudentServiceImpl();
 	private StudentApi studentApi;
-	private StudentUpdateApi studentUpdateApi;
 	private UUID studentId;
 	private UUID idCourse;
-	private Integer schoolId;
+	private String schoolId;
 	private Boolean fullDetail;
 
 	@Before
 	public void setUp() throws TransactionException {
 		studentId = UUID.randomUUID();
 		idCourse = UUID.randomUUID();
-		schoolId = 1234;
+		schoolId = "1234";
 		fullDetail = true;
 
 		ParentApi parentApi = new ParentApi();
@@ -52,103 +50,70 @@ public class StudentServiceTest {
 
 		studentApi = StudentApi.builder().adressApi(new AdressApi()).birthday(LocalDate.now()).cellPhone("4534543")
 				.division("C").grade("3°").document("435345").email("oscar@gmail.com")
-				.gender(GenderType.MALE.toString()).name("oscar").parentApi(parentApi).schoolId(1234).build();
+				.gender(GenderType.MALE.toString()).name("oscar").parentApi(parentApi).build();
 
-		studentUpdateApi = new StudentUpdateApi(studentApi);
-		studentUpdateApi.setId(studentId.toString());
-		doNothing().when(studentConnector).create(Mockito.any());
+		doNothing().when(studentConnector).create(Mockito.anyString(), Mockito.any());
 
 		ReflectionTestUtils.setField(studentServiceImpl, "studentConnector", studentConnector);
 	}
 
 	@Test
-	public void whenCreateIsOk() {
-		boolean hasError = false;
-		try {
-			studentServiceImpl.create(studentApi);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whenCreateIsOk() throws TransactionException {
+		studentServiceImpl.create(schoolId, studentApi);
+		verify(studentConnector).create(schoolId, studentApi);
 	}
 
 	@Test
-	public void whenUpdateOk() {
-
-		boolean hasError = false;
-		try {
-			studentServiceImpl.update(studentUpdateApi);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whenUpdateOk() throws TransactionException {
+		studentServiceImpl.update(schoolId, studentApi);
+		verify(studentConnector).update(schoolId, studentApi);
 	}
 
 	@Test
 	public void whenUpdateIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()))
-				.when(studentConnector).update(Mockito.any());
-
-		studentUpdateApi.setId("7fsd7fsaf809s8fs8f9sd");
+		doThrow(new TransactionException(StudentMessage.UPDATE_ERROR.getCode(),
+				StudentMessage.UPDATE_ERROR.getDescription())).when(studentConnector).update(Mockito.anyString(),
+						Mockito.any());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-
-			studentServiceImpl.update(studentUpdateApi);
+			studentServiceImpl.update(schoolId, studentApi);
 		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
-
 	}
 
 	@Test
 	public void whenCreateIsError() throws TransactionException {
-		doThrow(new TransactionException(StudentMessage.CREATE_ERROR.getCode(), StudentMessage.CREATE_ERROR.getDescription()))
-				.when(studentConnector).create(Mockito.any());
-
-		StudentApi studentApi = StudentApi.builder().adressApi(new AdressApi()).birthday(LocalDate.now())
-				.cellPhone("4534543").document("55555").division("F").grade("3°").email("oscar@gmail.com")
-				.gender(GenderType.MALE.toString()).name("oscar").parentApi(new ParentApi()).schoolId(1234).build();
-
+		doThrow(new TransactionException(StudentMessage.CREATE_ERROR.getCode(),
+				StudentMessage.CREATE_ERROR.getDescription())).when(studentConnector).create(Mockito.anyString(),
+						Mockito.any());
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-
-			studentServiceImpl.create(studentApi);
+			studentServiceImpl.create(schoolId, studentApi);
 		}).withMessage(StudentMessage.CREATE_ERROR.getDescription());
 
 	}
 
 	@Test
-	public void whenGetByIdIsOk() {
-		boolean hasError = false;
-		try {
-			studentServiceImpl.getById(schoolId.toString(), studentId.toString(), fullDetail);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whenGetByIdIsOk() throws TransactionException {
+		studentServiceImpl.getById(schoolId.toString(), studentId.toString(), fullDetail);
+		verify(studentConnector).getById(schoolId, studentId.toString(), fullDetail);
 	}
 
 	@Test
 	public void whenGetByIdIsError() throws TransactionException {
-		schoolId = 1234;
 		studentId = UUID.randomUUID();
 		Mockito.when(studentConnector.getById(schoolId.toString(), studentId.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			studentServiceImpl.getById(schoolId.toString(), studentId.toString(), fullDetail);
+			studentServiceImpl.getById(schoolId, studentId.toString(), fullDetail);
 		}).withMessage(null);
 	}
 
 	@Test
-	public void whengetBySchoolIsOk() {
-		boolean hasError = false;
-		try {
-			studentServiceImpl.getBySchool(schoolId.toString(), fullDetail);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whengetBySchoolIsOk() throws TransactionException {
+		studentServiceImpl.getBySchool(schoolId, fullDetail);
+		verify(studentConnector).getBySchool(schoolId, fullDetail);
 	}
 
 	@Test
 	public void whenGetgetBySchoolIsError() throws TransactionException {
-		schoolId = 2143;
 		Mockito.when(studentConnector.getBySchool(schoolId.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
@@ -158,18 +123,12 @@ public class StudentServiceTest {
 
 	@Test
 	public void whenGetByIdCourseIsOK() throws TransactionException {
-		boolean hasError = false;
-		try {
-			studentServiceImpl.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+		studentServiceImpl.getByCourse(schoolId, idCourse.toString(), fullDetail);
+		verify(studentConnector).getByCourse(schoolId, idCourse.toString(), fullDetail);
 	}
 
 	@Test
 	public void whenGetByIdCourseIsError() throws TransactionException {
-		schoolId = 2143;
 		idCourse = UUID.randomUUID();
 		Mockito.when(studentConnector.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
