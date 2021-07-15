@@ -61,9 +61,7 @@ public class StudentController {
 				.body(studentService.getByCourse(schoolId, courseId, fullDetail));
 	}
 
-	@Operation(summary = "Get student by courseId", responses = {
-			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = StudentDTO.class))) })
-	@GetMapping(value = "prueba/")
+	@GetMapping(value = "prueba")
 	public ResponseEntity<String> prueba()
 			throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
