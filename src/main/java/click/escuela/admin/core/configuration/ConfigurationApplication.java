@@ -16,7 +16,7 @@ public class ConfigurationApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-					.allowedOrigins("http://localhost:4200","http://click-escuela-develop.herokuapp.com","https://click-escuela-develop.herokuapp.com","http://click-escuela-master.herokuapp.com/")
+					.allowedOrigins("http://click-escuela-develop.herokuapp.com","https://click-escuela-develop.herokuapp.com","http://click-escuela-master.herokuapp.com/")
 					.allowedMethods("GET", "POST", "PUT", "DELETE","OPTIONS")
 					.maxAge(3600);
 
