@@ -36,4 +36,11 @@ public class TeacherServiceImpl {
 		return teacherConnector.getByCourseId(schoolId, courseId);
 	}
 
+	public void addCourses(String schoolId, String idTeacher, List<String> listUUIDs) throws TransactionException {
+		teacherConnector.addCourses(schoolId, idTeacher, listUUIDs);
+	}
+
+	public void deleteCourses(String schoolId, String idTeacher, List<String> listUUIDs) throws TransactionException {
+		teacherConnector.deleteCourses(schoolId, idTeacher, listUUIDs);
+	}
 }

@@ -2,7 +2,6 @@ package click.escuela.admin.core.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +50,6 @@ public class CourseControllerTest {
 
 	private ObjectMapper mapper;
 	private CourseApi courseApi;
-	private String teacherId;
 	private String id;
 	private String studentId;
 	private String schoolId;
@@ -69,7 +67,6 @@ public class CourseControllerTest {
 				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
 		id = UUID.randomUUID().toString();
-		teacherId = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		schoolId = String.valueOf(1234);
 		courseApi = CourseApi.builder().year(8).division("B").countStudent(35).schoolId(45678).build();
@@ -131,15 +128,19 @@ public class CourseControllerTest {
 
 	@Test
 	public void whenAddStudentIdCourseEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, StringUtils.EMPTY, studentId)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
+		String response = resultNotFound(
+				put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, StringUtils.EMPTY, studentId)
+						.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
+								.getContentAsString();
 		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
 	@Test
 	public void whenAddStudentIdStudentEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, id, StringUtils.EMPTY)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
+		String response = resultNotFound(
+				put(URL + "/{idCourse}/student/add/{idStudent}", schoolId, id, StringUtils.EMPTY)
+						.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
+								.getContentAsString();
 		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
@@ -152,49 +153,20 @@ public class CourseControllerTest {
 
 	@Test
 	public void whenDeleteStudentIdCourseEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, StringUtils.EMPTY, studentId)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
+		String response = resultNotFound(
+				put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, StringUtils.EMPTY, studentId)
+						.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
+								.getContentAsString();
 		assertThat(response).contains(StringUtils.EMPTY);
 	}
 
 	@Test
 	public void whenDeleteStudentIdStudentEmpty() throws JsonProcessingException, Exception {
-		String response = resultNotFound(put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, id, StringUtils.EMPTY)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
+		String response = resultNotFound(
+				put(URL + "/{idCourse}/student/del/{idStudent}", schoolId, id, StringUtils.EMPTY)
+						.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
+								.getContentAsString();
 		assertThat(response).contains(StringUtils.EMPTY);
-	}
-
-	@Test
-	public void whenAddTeacherIsOk() throws JsonProcessingException, Exception {
-		String response = resultIsOK(put(URL + "/{idCourse}/teacher/add/{idTeacher}", schoolId, id, teacherId)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(CourseMessage.UPDATE_OK.name());
-	}
-
-	@Test
-	public void whenAddTeacherIsError() throws JsonProcessingException, Exception {
-		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
-				CourseMessage.UPDATE_ERROR.getDescription())).when(courseService).addTeacher(schoolId, id, teacherId);
-		String response = resultNotOk(put(URL + "/{idCourse}/teacher/add/{idTeacher}", schoolId, id, teacherId)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(CourseMessage.UPDATE_ERROR.getDescription());
-	}
-
-	@Test
-	public void whenDeleteTeacherIsOk() throws JsonProcessingException, Exception {
-		String response = resultIsOK(put(URL + "/{idCourse}/teacher/del/{idTeacher}", schoolId, id, teacherId)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(CourseMessage.UPDATE_OK.name());
-	}
-
-	@Test
-	public void whenDeleteTeacherIsError() throws JsonProcessingException, Exception {
-		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
-				CourseMessage.UPDATE_ERROR.getDescription())).when(courseService).deleteTeacher(schoolId, id,
-						teacherId);
-		String response = resultNotOk(put(URL + "/{idCourse}/teacher/del/{idTeacher}", schoolId, id, teacherId)
-				.contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse().getContentAsString();
-		assertThat(response).contains(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 
 	private String toJson(final Object obj) throws JsonProcessingException {
