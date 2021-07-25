@@ -25,11 +25,4 @@ public class CourseServiceImpl {
 		courseConnector.deleteStudent(schoolId, idCourse, idStudent);
 	}
 
-	public void addTeacher(String schoolId, String idCourse, String idTeacher) throws TransactionException {
-		courseConnector.addTeacher(schoolId, idCourse, idTeacher);
-	}
-
-	public void deleteTeacher(String schoolId, String idCourse, String idTeacher) throws TransactionException {
-		courseConnector.deleteTeacher(schoolId, idCourse, idTeacher);
-	}
 }

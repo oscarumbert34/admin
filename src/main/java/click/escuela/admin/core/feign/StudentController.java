@@ -63,14 +63,6 @@ public interface StudentController {
 	public String deleteStudent(@PathVariable("schoolId") String schoolId, @PathVariable("idCourse") String idCourse,
 			@PathVariable("idStudent") String idStudent) throws TransactionException;
 
-	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/course/{idCourse}/teacher/add/{idTeacher}")
-	public String addTeacher(@PathVariable("schoolId") String schoolId, @PathVariable("idCourse") String idCourse,
-			@PathVariable("idTeacher") String idTeacher) throws TransactionException;
-
-	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/course/{idCourse}/teacher/del/{idTeacher}")
-	public String deleteTeacher(@PathVariable("schoolId") String schoolId, @PathVariable("idCourse") String idCourse,
-			@PathVariable("idTeacher") String idTeacher) throws TransactionException;
-
 	// BillController
 	@PostMapping(value = "/click-escuela/school-admin/school/{schoolId}/bill/{studentId}")
 	public String createBill(@PathVariable("schoolId") String schoolId,
@@ -103,6 +95,14 @@ public interface StudentController {
 	@GetMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/course/{courseId}")
 	public List<TeacherDTO> getByCourseId(@PathVariable("schoolId") String schoolId,
 			@PathVariable("courseId") String courseId);
+	
+	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/{idTeacher}/add/courses")
+	public String addCourses(@PathVariable("schoolId") String schoolId, @PathVariable("idTeacher") String idTeacher,
+			@RequestBody @Validated List<String> listUUIDs) throws TransactionException;
+
+	@PutMapping(value = "/click-escuela/school-admin/school/{schoolId}/teacher/{idTeacher}/del/courses")
+	public String deleteCourses(@PathVariable("schoolId") String schoolId, @PathVariable("idTeacher") String idTeacher,
+			@RequestBody @Validated List<String> listUUIDs) throws TransactionException;
 
 	// SchoolController
 	@PostMapping(value = "/click-escuela/school-admin/school")

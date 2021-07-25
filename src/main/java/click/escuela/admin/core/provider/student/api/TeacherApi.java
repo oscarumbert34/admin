@@ -42,7 +42,7 @@ public class TeacherApi extends PersonApi {
 	@JsonProperty(value = "documentType", required = true)
 	private String documentType;
 	
-	@NotNull(message = "School ID cannot be null")
+	@NotNull(message = "School Id cannot be null")
 	@JsonProperty(value = "schoolId", required = true)
 	private Integer schoolId;
 

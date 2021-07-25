@@ -34,21 +34,17 @@ public class CourseServiceTest {
 	private String schoolId;
 	private String studentId;
 	private String courseId;
-	private String teacherId;
 
 	@Before
 	public void setUp() throws TransactionException {
 		schoolId = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		courseId = UUID.randomUUID().toString();
-		teacherId = UUID.randomUUID().toString();
 		courseApi = CourseApi.builder().year(8).division("B").countStudent(35).schoolId(45678).build();
 
 		doNothing().when(courseConnector).create(Mockito.any(), Mockito.any());
 		doNothing().when(courseConnector).addStudent(schoolId, courseId, studentId);
 		doNothing().when(courseConnector).deleteStudent(schoolId, courseId, studentId);
-		doNothing().when(courseConnector).addTeacher(schoolId, courseId, teacherId);
-		doNothing().when(courseConnector).deleteTeacher(schoolId, courseId, teacherId);
 
 		ReflectionTestUtils.setField(courseServiceImpl, "courseConnector", courseConnector);
 	}
@@ -103,35 +99,4 @@ public class CourseServiceTest {
 		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
 	}
 
-	@Test
-	public void whenAddTeacherIsOk() throws TransactionException {
-		courseServiceImpl.addTeacher(schoolId, courseId, teacherId);
-		verify(courseConnector).addTeacher(schoolId, courseId, teacherId);
-	}
-
-	@Test
-	public void whenDeleteTeacherIsOk() throws TransactionException {
-		courseServiceImpl.deleteTeacher(schoolId, courseId, teacherId);
-		verify(courseConnector).deleteTeacher(schoolId, courseId, teacherId);
-	}
-
-	@Test
-	public void whenAddTeacherIsError() throws TransactionException {
-		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
-				CourseMessage.UPDATE_ERROR.getDescription())).when(courseConnector).addTeacher(Mockito.anyString(),
-						Mockito.anyString(), Mockito.anyString());
-		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseServiceImpl.addTeacher(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
-		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
-	}
-
-	@Test
-	public void whenDeleteTeacherIsError() throws TransactionException {
-		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
-				CourseMessage.UPDATE_ERROR.getDescription())).when(courseConnector).deleteTeacher(Mockito.anyString(),
-						Mockito.anyString(), Mockito.anyString());
-		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			courseServiceImpl.deleteTeacher(StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY);
-		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
-	}
 }

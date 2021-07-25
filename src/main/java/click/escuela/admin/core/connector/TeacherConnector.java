@@ -35,5 +35,13 @@ public class TeacherConnector {
 	public List<TeacherDTO> getByCourseId(String schoolId, String courseId){
 		return teacherController.getByCourseId(schoolId, courseId);
 	}
+	
+	public void addCourses(String schoolId, String idTeacher, List<String> listUUIDs) throws TransactionException {
+		teacherController.addCourses(schoolId, idTeacher, listUUIDs);
+	}
+
+	public void deleteCourses(String schoolId, String idTeacher, List<String> listUUIDs) throws TransactionException {
+		teacherController.deleteCourses(schoolId, idTeacher, listUUIDs);
+	}
 
 }

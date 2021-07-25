@@ -52,7 +52,7 @@ public class TeacherController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TeacherDTO.class))) })
 	@GetMapping(value = "course/{courseId}")
 	public ResponseEntity<List<TeacherDTO>> getByCourseId(@PathVariable("schoolId") String schoolId,
-			@PathVariable("courseId") String courseId){
+			@PathVariable("courseId") String courseId) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(teacherService.getByCourseId(schoolId, courseId));
 	}
 
@@ -61,7 +61,6 @@ public class TeacherController {
 	@PostMapping(value = "", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<TeacherMessage> create(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException {
-
 		teacherService.create(schoolId, teacherApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(TeacherMessage.CREATE_OK);
 	}
@@ -71,9 +70,27 @@ public class TeacherController {
 	@PutMapping(value = "", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<TeacherMessage> update(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException {
-
 		teacherService.update(schoolId, teacherApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(TeacherMessage.UPDATE_OK);
+	}
 
+	@Operation(summary = "Add courses in Teacher", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PutMapping(value = "/{idTeacher}/add/courses")
+	public ResponseEntity<TeacherMessage> addCourses(@PathVariable("schoolId") String schoolId,
+			@PathVariable("idTeacher") String idTeacher, @RequestBody @Validated List<String> listUUIDs)
+			throws TransactionException {
+		teacherService.addCourses(schoolId, idTeacher, listUUIDs);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(TeacherMessage.UPDATE_OK);
+	}
+
+	@Operation(summary = "Delete courses from Teacher", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PutMapping(value = "/{idTeacher}/del/courses")
+	public ResponseEntity<TeacherMessage> deleteCourses(@PathVariable("schoolId") String schoolId,
+			@PathVariable("idTeacher") String idTeacher, @RequestBody @Validated List<String> listUUIDs)
+			throws TransactionException {
+		teacherService.deleteCourses(schoolId, idTeacher, listUUIDs);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(TeacherMessage.UPDATE_OK);
 	}
 }
