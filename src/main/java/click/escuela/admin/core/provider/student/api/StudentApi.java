@@ -1,7 +1,5 @@
 package click.escuela.admin.core.provider.student.api;
 
-import java.time.LocalDate;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,13 +25,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @SuperBuilder
 public class StudentApi extends PersonApi {
 
-	public StudentApi(PersonApi personApi, ParentApi parentApi, Integer schoolId, String grade,
-			String division, String level) {
-
+	public StudentApi(PersonApi personApi, ParentApi parentApi, String grade, String division,
+			String level) {
+		
 		super(personApi.getName(), personApi.getSurname(), personApi.getDocument(), personApi.getGender(),
-				personApi.getBirthday(), personApi.getAdressApi(), personApi.getCellPhone(), personApi.getEmail());
+			  personApi.getBirthday(), personApi.getAdressApi(), personApi.getCellPhone(), personApi.getEmail());
+		
 		this.parentApi = parentApi;
-		this.schoolId = schoolId;
 		this.grade = grade;
 		this.division = division;
 		this.level = level;
@@ -41,14 +39,11 @@ public class StudentApi extends PersonApi {
 
 	@JsonProperty(value = "id", required = false)
 	private String id;
-
+	
+	@NotNull(message = "Parent cannot be null")
 	@JsonProperty(value = "parent", required = true)
 	@Valid
 	private ParentApi parentApi;
-
-	@NotNull(message = "School cannot be null")
-	@JsonProperty(value = "schoolId", required = true)
-	private Integer schoolId;
 
 	@NotBlank(message = "Grade cannot be null")
 	@JsonProperty(value = "grade", required = true)
@@ -58,11 +53,11 @@ public class StudentApi extends PersonApi {
 	@JsonProperty(value = "division", required = true)
 	private String division;
 
-	@ApiModelProperty(dataType = "enum", example ="PREESCOLAR, PRIMARIO, SECUNDARIO, TERCIARIO")
+	@ApiModelProperty(dataType = "enum", example = "PREESCOLAR, PRIMARIO, SECUNDARIO, TERCIARIO")
 	@NotBlank(message = "Level cannot be null")
 	@JsonProperty(value = "level", required = true)
 	private String level;
-	
+
 	@JsonProperty(value = "courseApi", required = false)
 	private CourseApi courseApi;
 

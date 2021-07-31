@@ -1,7 +1,7 @@
 package click.escuela.admin.core.connector;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -22,7 +22,6 @@ import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
-import click.escuela.admin.core.provider.student.api.StudentUpdateApi;
 import click.escuela.admin.core.provider.student.connector.StudentConnector;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,17 +33,16 @@ public class StudentConnectorTest {
 	private StudentController studentController;
 
 	private StudentApi studentApi;
-	private StudentUpdateApi studentUpdateApi;
 	private UUID studentId;
 	private UUID idCourse;
-	private Integer schoolId;
+	private String schoolId;
 	private Boolean fullDetail;
 
 	@Before
 	public void setUp() throws TransactionException {
 		studentId = UUID.randomUUID();
 		idCourse = UUID.randomUUID();
-		schoolId = 1234;
+		schoolId = "1234";
 		fullDetail = false;
 
 		ParentApi parentApi = new ParentApi();
@@ -52,76 +50,49 @@ public class StudentConnectorTest {
 
 		studentApi = StudentApi.builder().adressApi(new AdressApi()).birthday(LocalDate.now()).cellPhone("4534543")
 				.division("C").grade("3°").document("435345").email("oscar@gmail.com")
-				.gender(GenderType.MALE.toString()).name("oscar").parentApi(parentApi).schoolId(1234).build();
-
-		studentUpdateApi = new StudentUpdateApi(studentApi);
-		studentUpdateApi.setId("5534r34rfwef433t434r");
-		// when(studentController.create("", studentApi)).thenReturn("");
+				.gender(GenderType.MALE.toString()).name("oscar").parentApi(parentApi).build();
 
 		ReflectionTestUtils.setField(studentConnector, "studentController", studentController);
 	}
 
 	@Test
-	public void whenCreateIsOk() {
-		boolean hasError = false;
-		try {
-			studentConnector.create(studentApi);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whenCreateIsOk() throws TransactionException {
+		studentConnector.create(schoolId, studentApi);
+		verify(studentController).createStudent(schoolId, studentApi);
 	}
 
 	@Test
-	public void whenUpdateOk() {
-
-		boolean hasError = false;
-		try {
-			studentConnector.update(studentUpdateApi);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whenUpdateOk() throws TransactionException {
+		studentConnector.update(schoolId, studentApi);
+		verify(studentController).updateStudent(schoolId, studentApi);
 	}
 
 	@Test
 	public void whenUpdateIsError() throws TransactionException {
 		when(studentController.updateStudent(Mockito.any(), Mockito.any())).thenThrow(new TransactionException(
 				StudentMessage.UPDATE_ERROR.getCode(), StudentMessage.UPDATE_ERROR.getDescription()));
-
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-
-			studentConnector.update(studentUpdateApi);
+			studentConnector.update(schoolId, studentApi);
 		}).withMessage(StudentMessage.UPDATE_ERROR.getDescription());
-
 	}
 
 	@Test
 	public void whenCreateIsError() throws TransactionException {
-
 		when(studentController.createStudent(Mockito.any(), Mockito.any())).thenThrow(new TransactionException(
 				StudentMessage.CREATE_ERROR.getCode(), StudentMessage.CREATE_ERROR.getDescription()));
-
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-
-			studentConnector.create(studentApi);
+			studentConnector.create(schoolId,studentApi);
 		}).withMessage(StudentMessage.CREATE_ERROR.getDescription());
 	}
 
 	@Test
-	public void whenGetByIdIsOk() {
-		boolean hasError = false;
-		try {
+	public void whenGetByIdIsOk() throws TransactionException {
 			studentConnector.getById(schoolId.toString(), studentId.toString(), fullDetail);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+			verify(studentController).getById(schoolId, studentId.toString(), fullDetail);
 	}
 
 	@Test
 	public void whenGetByIdIsError() throws TransactionException {
-		schoolId = 1234;
 		studentId = UUID.randomUUID();
 		Mockito.when(studentController.getById(schoolId.toString(), studentId.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
@@ -131,19 +102,14 @@ public class StudentConnectorTest {
 	}
 
 	@Test
-	public void whengetBySchoolIsOk() {
-		boolean hasError = false;
-		try {
-			studentConnector.getBySchool(schoolId.toString(), fullDetail);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+	public void whengetBySchoolIsOk() throws TransactionException {
+		studentConnector.getBySchool(schoolId, fullDetail);
+		verify(studentController).getBySchool(schoolId, fullDetail);
 	}
 
 	@Test
 	public void whenGetgetBySchoolIsError() throws TransactionException {
-		schoolId = 2143;
+		schoolId = "2143";
 		Mockito.when(studentController.getBySchool(schoolId.toString(), fullDetail))
 				.thenThrow(TransactionException.class);
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
@@ -153,18 +119,12 @@ public class StudentConnectorTest {
 
 	@Test
 	public void whenGetByIdCourseIsOK() throws TransactionException {
-		boolean hasError = false;
-		try {
-			studentConnector.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail);
-		} catch (Exception e) {
-			hasError = true;
-		}
-		assertThat(hasError).isFalse();
+		studentConnector.getByCourse(schoolId, idCourse.toString(), fullDetail);
+		verify(studentController).getByCourse(schoolId, idCourse.toString(), fullDetail);
 	}
 
 	@Test
 	public void whenGetByIdCourseIsError() throws TransactionException {
-		schoolId = 2143;
 		idCourse = UUID.randomUUID();
 		Mockito.when(studentController.getByCourse(schoolId.toString(), idCourse.toString(), fullDetail))
 				.thenThrow(TransactionException.class);

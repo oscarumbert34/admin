@@ -19,23 +19,24 @@ public class StudentConnector implements Connector<StudentDTO> {
 
 	@Override
 	public List<StudentDTO> getBySchool(String id, Boolean fullDetail) throws TransactionException {
-		return studentController.getBySchool(id,fullDetail);
+		return studentController.getBySchool(id, fullDetail);
 	}
 
 	public StudentDTO getById(String schoolId, String studentId, Boolean fullDetail) throws TransactionException {
 		return studentController.getById(schoolId, studentId, fullDetail);
 	}
 
-	public List<StudentDTO> getByCourse(String schoolId, String courseId, Boolean fullDetail) throws TransactionException {
-		return studentController.getByCourse(schoolId, courseId,fullDetail);
+	public List<StudentDTO> getByCourse(String schoolId, String courseId, Boolean fullDetail)
+			throws TransactionException {
+		return studentController.getByCourse(schoolId, courseId, fullDetail);
 	}
 
-	public void create(StudentApi studentApi) throws TransactionException {
-		studentController.createStudent(String.valueOf(studentApi.getSchoolId()), studentApi);
+	public void create(String schoolId, StudentApi studentApi) throws TransactionException {
+		studentController.createStudent(schoolId, studentApi);
 	}
 
-	public void update(StudentApi studentApi) throws TransactionException {
-		studentController.updateStudent(String.valueOf(studentApi.getSchoolId()), studentApi);
+	public void update(String schoolId, StudentApi studentApi) throws TransactionException {
+		studentController.updateStudent(schoolId, studentApi);
 	}
 
 }

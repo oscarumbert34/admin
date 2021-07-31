@@ -30,7 +30,7 @@ public class ExcelController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<ExcelMessage> create(@PathVariable("schoolId") String schoolId,
-			@RequestBody @Validated ExcelApi excelApi) throws ExcelException {
+			@RequestBody @Validated ExcelApi excelApi) throws Exception {
 		excelService.save(schoolId, excelApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ExcelMessage.CREATE_OK);
 	}

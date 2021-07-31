@@ -41,7 +41,7 @@ public class ExcelServiceTest {
 	}
 
 	@Test
-	public void whenCreateIsOk() throws TransactionException {
+	public void whenCreateIsOk() throws Exception {
 		excelServiceImpl.save(schoolId, excelApi);
 		verify(excelConnector).save(schoolId, excelApi);
 	}

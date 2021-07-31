@@ -25,11 +25,4 @@ public class CourseConnector {
 		courseController.deleteStudent(schoolId, idCourse, idStudent);
 	}
 
-	public void addTeacher(String schoolId, String idCourse, String idTeacher) throws TransactionException {
-		courseController.addTeacher(schoolId, idCourse, idTeacher);
-	}
-
-	public void deleteTeacher(String schoolId, String idCourse, String idTeacher) throws TransactionException {
-		courseController.deleteTeacher(schoolId, idCourse, idTeacher);
-	}
 }
