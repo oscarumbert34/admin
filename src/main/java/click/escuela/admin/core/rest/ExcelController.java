@@ -1,5 +1,7 @@
 package click.escuela.admin.core.rest;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,8 +32,8 @@ public class ExcelController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<ExcelMessage> create(@PathVariable("schoolId") String schoolId,
-			@RequestBody @Validated ExcelApi excelApi) throws Exception {
-		excelService.save(schoolId, excelApi);
+			@RequestBody @Validated File file) throws Exception {
+		excelService.save(schoolId, file);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ExcelMessage.CREATE_OK);
 	}
 

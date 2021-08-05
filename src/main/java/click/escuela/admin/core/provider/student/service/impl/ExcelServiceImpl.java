@@ -1,5 +1,6 @@
 package click.escuela.admin.core.provider.student.service.impl;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ public class ExcelServiceImpl {
 	private StudentBulkUpload studentBulkUpload;
 	
 	@Async
-	public void save(String schoolId, ExcelApi excelApi) throws Exception {
+	public void save(String schoolId, File excel) throws Exception {
 		
-		List<StudentApiFile> students = studentBulkUpload.readFile(null);
-		List<FileError> errors = studentBulkUpload.upload(schoolId, students);
-		
-		studentBulkUpload.writeErrors(errors);
+		List<StudentApiFile> students = studentBulkUpload.readFile(excel);
+		//List<FileError> errors = studentBulkUpload.upload(schoolId, students);
+		studentBulkUpload.upload(schoolId, students);
+		//studentBulkUpload.writeErrors(errors);
 		
 		
 		//excelConnector.save(schoolId, excelApi);
