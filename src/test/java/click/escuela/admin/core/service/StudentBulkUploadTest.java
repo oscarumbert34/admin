@@ -25,9 +25,9 @@ public class StudentBulkUploadTest {
 	@Test
 	public void whenReadFileIsOk() throws Exception {
 		
-		File file = new File("C:\\Users\\liend\\Desktop\\estudiantes.xlsx");
-		
-		List<StudentApiFile> list= studentBulkUpload.readFile(file);
+		File file2 = new File("Estudiantes.xlsx");
+
+		List<StudentApiFile> list= studentBulkUpload.readFile(file2);
 		assertThat(list).isNotEmpty();
 	}
 }

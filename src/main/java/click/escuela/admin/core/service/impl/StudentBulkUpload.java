@@ -57,7 +57,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 		
 		String name = row.getCell(0).getStringCellValue();
 		String surname = row.getCell(1).getStringCellValue();
-		//String document = row.getCell(2).getStringCellValue();
+		String document = row.getCell(2).getStringCellValue();
 		String gender = row.getCell(3).getStringCellValue();
 		if(gender.equals("Masculino")) {
 			gender = GenderType.MALE.toString();
@@ -66,11 +66,12 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 			gender = GenderType.FEMALE.toString();
 		}
 		String birthday = row.getCell(4).getStringCellValue();
-		//String cellPhone = row.getCell(5).getStringCellValue();
+		String cellPhone = row.getCell(5).getStringCellValue();
 		String email = row.getCell(6).getStringCellValue();
-		//String grade = row.getCell(7).getStringCellValue();
+		String grade = row.getCell(7).getStringCellValue();
 		String division = row.getCell(8).getStringCellValue();
 		String level = row.getCell(9).getStringCellValue();
+		
 		if(level.equals("Preescolar")) {
 			level = EducationLevels.PREESCOLAR.toString();
 		} else if (level.equals("Primario")) {
@@ -84,18 +85,18 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 		StudentApiFile student = StudentApiFile.builder()
 				.name(name)
 				.surname(surname)
-				//.document(document)
+				.document(document)
 				.gender(gender)
 				.birthday(LocalDate.parse(birthday))
-				//.cellPhone(cellPhone)
+				.cellPhone(cellPhone)
 				.division(division)
-				//.grade(grade)
+				.grade(grade)
 				.level(level)
 				.email(email)
 				.division(division)
+				.line(row.getRowNum())
 				.build();
-				/*.line(row.getRowNum())
-				.parentApi(parentApi)*/
+				//.parentApi(parentApi)*/
 		return student;
 				
 	}
