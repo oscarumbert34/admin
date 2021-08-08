@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import click.escuela.admin.core.enumator.DocumentType;
+import click.escuela.admin.core.enumator.GenderType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class TeacherDTO {
 
 	@JsonProperty(value = "documentType")
 	private DocumentType documentType;
+	
+	@JsonProperty(value = "genderType")
+	private GenderType genderType;
 
 	@JsonProperty(value = "document")
 	private String document;
@@ -44,5 +48,8 @@ public class TeacherDTO {
 
 	@JsonProperty(value = "email")
 	private String email;
+	
+	@JsonProperty(value = "schoolId")
+	private Integer schoolId;
 
 }
