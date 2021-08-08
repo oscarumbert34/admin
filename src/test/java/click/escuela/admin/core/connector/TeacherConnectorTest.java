@@ -2,6 +2,8 @@ package click.escuela.admin.core.connector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import click.escuela.admin.core.enumator.CourseMessage;
 import click.escuela.admin.core.enumator.DocumentType;
 import click.escuela.admin.core.enumator.TeacherMessage;
 import click.escuela.admin.core.exception.TransactionException;
@@ -34,29 +38,32 @@ public class TeacherConnectorTest {
 
 	private TeacherConnector teacherConnector = new TeacherConnector();
 	private TeacherApi teacherApi;
-	private UUID id;
+	private UUID teacherId;
 	private UUID courseId;
 	private Integer schoolId;
 	private List<TeacherDTO> teachersDTO;
+	private List<String> listUUIDs;
 
 	@Before
 	public void setUp() throws TransactionException {
 
-		id = UUID.randomUUID();
+		teacherId = UUID.randomUUID();
 		schoolId = 1234;
 		courseId = UUID.randomUUID();
 		teacherApi = TeacherApi.builder().name("Mariana").surname("Lopez").birthday(LocalDate.now()).documentType("DNI")
-				.document("25897863").schoolId(schoolId).cellPhone("1589632485").email("mariAna@gmail.com")
+				.document("25897863").cellPhone("1589632485").email("mariAna@gmail.com")
 				.adressApi(new AdressApi()).build();
 
-		TeacherDTO teacherDTO = TeacherDTO.builder().id(id.toString()).name("Mariana").surname("Lopez")
+		TeacherDTO teacherDTO = TeacherDTO.builder().id(teacherId.toString()).name("Mariana").surname("Lopez")
 				.birthday(LocalDate.now()).documentType(DocumentType.DNI).document("25897863").cellPhone("1589632485")
 				.email("mariAna@gmail.com").adress(new AdressDTO()).build();
 
 		teachersDTO = new ArrayList<>();
 		teachersDTO.add(teacherDTO);
+		listUUIDs =  new ArrayList<>();
+		listUUIDs.add(String.valueOf(teacherId));
 
-		Mockito.when(teacherController.getByTeacherId(schoolId.toString(), id.toString())).thenReturn(teacherDTO);
+		Mockito.when(teacherController.getByTeacherId(schoolId.toString(), teacherId.toString())).thenReturn(teacherDTO);
 		Mockito.when(teacherController.getByCourseId(schoolId.toString(), courseId.toString())).thenReturn(teachersDTO);
 		Mockito.when(teacherController.getBySchoolId(schoolId.toString())).thenReturn(teachersDTO);
 
@@ -113,7 +120,7 @@ public class TeacherConnectorTest {
 	public void whenGetByIsOk() {
 		boolean hasError = false;
 		try {
-			teacherConnector.getById(schoolId.toString(), id.toString());
+			teacherConnector.getById(schoolId.toString(), teacherId.toString());
 		} catch (Exception e) {
 			assertThat(hasError).isFalse();
 		}
@@ -121,11 +128,11 @@ public class TeacherConnectorTest {
 
 	@Test
 	public void whenGetByIdIsError() throws TransactionException {
-		id = UUID.randomUUID();
+		teacherId = UUID.randomUUID();
 		when(teacherController.getByTeacherId(Mockito.any(), Mockito.any())).thenThrow(new TransactionException(
 				TeacherMessage.GET_ERROR.getCode(), TeacherMessage.GET_ERROR.getDescription()));
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
-			teacherConnector.getById(schoolId.toString(), id.toString());
+			teacherConnector.getById(schoolId.toString(), teacherId.toString());
 		}).withMessage(TeacherMessage.GET_ERROR.getDescription());
 	}
 
@@ -171,6 +178,38 @@ public class TeacherConnectorTest {
 		} catch (Exception e) {
 			assertThat(hasEmpty).isFalse();
 		}
+	}
+	
+	@Test
+	public void whenAddCoursesIsOk() throws TransactionException {
+		teacherConnector.addCourses(schoolId.toString(), teacherId.toString(), listUUIDs);
+		verify(teacherController).addCourses(schoolId.toString(), teacherId.toString(), listUUIDs);
+	}
+
+	@Test
+	public void whenDeleteCoursesIsOk() throws TransactionException {
+		teacherConnector.deleteCourses(schoolId.toString(), teacherId.toString(), listUUIDs);
+		verify(teacherController).deleteCourses(schoolId.toString(), teacherId.toString(), listUUIDs);
+	}
+
+	@Test
+	public void whenAddCoursesIsError() throws TransactionException {
+		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
+				CourseMessage.UPDATE_ERROR.getDescription())).when(teacherController).addCourses(Mockito.anyString(),
+						Mockito.anyString(), Mockito.anyList());
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			teacherConnector.addCourses(StringUtils.EMPTY, StringUtils.EMPTY, new ArrayList<>());
+		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
+	}
+
+	@Test
+	public void whenDeleteCoursesIsError() throws TransactionException {
+		doThrow(new TransactionException(CourseMessage.UPDATE_ERROR.getCode(),
+				CourseMessage.UPDATE_ERROR.getDescription())).when(teacherController).deleteCourses(Mockito.anyString(),
+						Mockito.anyString(), Mockito.anyList());
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			teacherConnector.deleteCourses(StringUtils.EMPTY, StringUtils.EMPTY, new ArrayList<>());
+		}).withMessage(CourseMessage.UPDATE_ERROR.getDescription());
 	}
 
 }
