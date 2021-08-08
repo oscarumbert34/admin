@@ -255,7 +255,6 @@ public class TeacherControllerTest {
 	public void whenAddCoursesTests() throws JsonProcessingException, Exception {
 		assertThat(result(put(URL + "{idTeacher}/add/courses", schoolId, id).content(toJson(listStringIds))))
 				.contains(TeacherMessage.UPDATE_OK.name());
-
 		doThrow(new TransactionException(TeacherMessage.GET_ERROR.getCode(), TeacherMessage.GET_ERROR.getDescription()))
 				.when(teacherService).addCourses(Mockito.anyString(), Mockito.anyString(), Mockito.anyList());
 		assertThat(result(put(URL + "{idTeacher}/add/courses", schoolId, id).content(toJson(listStringIds))))

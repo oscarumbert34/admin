@@ -62,7 +62,6 @@ public interface StudentController {
 	@PutMapping(value = "/school/{schoolId}/course/{idCourse}/student/del/{idStudent}")
 	public String deleteStudent(@PathVariable("schoolId") String schoolId, @PathVariable("idCourse") String idCourse,
 			@PathVariable("idStudent") String idStudent) throws TransactionException;
-  
 	// BillController
 	@PostMapping(value = "/school/{schoolId}/bill/{studentId}")
 	public String createBill(@PathVariable("schoolId") String schoolId,
