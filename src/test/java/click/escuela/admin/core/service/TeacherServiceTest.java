@@ -54,7 +54,7 @@ public class TeacherServiceTest {
 		courseId = UUID.randomUUID();
 
 		teacherApi = TeacherApi.builder().name("Mariana").surname("Lopez").birthday(LocalDate.now()).documentType("DNI")
-				.document("25897863").schoolId(schoolId).cellPhone("1589632485").email("mariAna@gmail.com")
+				.document("25897863").cellPhone("1589632485").email("mariAna@gmail.com")
 				.adressApi(new AdressApi()).build();
 
 		TeacherDTO teacherDTO = TeacherDTO.builder().id(teacherId.toString()).name("Mariana").surname("Lopez")
