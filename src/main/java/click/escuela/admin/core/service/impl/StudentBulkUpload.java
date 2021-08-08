@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Row;
@@ -40,10 +41,13 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 			this.file = file;
 			inputStream = new FileInputStream(file);
 			wb = WorkbookFactory.create(inputStream);
-			//TODO ver como saltear primer row
 			Sheet sheet = wb.getSheetAt(0);
 			List<StudentApiFile> students = new ArrayList<>();
-			sheet.rowIterator().forEachRemaining(row -> students.add(buildStudentApi(row)));
+			Iterator<Row> sheetWithoutTitle = sheet.rowIterator();
+			sheetWithoutTitle.next();
+			
+			sheetWithoutTitle.forEachRemaining(row -> students.add(buildStudentApi(row)));
+
 			return students;
 			
 		}catch(EncryptedDocumentException|IOException ex) {
