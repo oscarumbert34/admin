@@ -14,11 +14,16 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Table.Cell;
+
 import org.apache.poi.ss.usermodel.Sheet;
 
 import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.student.api.AdressApi;
+import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.StudentApiFile;
 import click.escuela.admin.core.provider.student.dto.FileError;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
@@ -45,9 +50,16 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 			List<StudentApiFile> students = new ArrayList<>();
 			Iterator<Row> sheetWithoutTitle = sheet.rowIterator();
 			sheetWithoutTitle.next();
-			
-			sheetWithoutTitle.forEachRemaining(row -> students.add(buildStudentApi(row)));
-
+			while(sheetWithoutTitle.hasNext()) {
+				Row row = sheetWithoutTitle.next();
+				// cell = -1 si es null o cell = 0 si no es null
+				short cell = row.getFirstCellNum();
+				if(cell == 0) {
+					students.add(buildStudentApi(row));	
+				}else {
+					break;
+				}
+			}
 			return students;
 			
 		}catch(EncryptedDocumentException|IOException ex) {
@@ -58,15 +70,14 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 	}
 
 	private StudentApiFile buildStudentApi(Row row) {
-		
+
 		String name = row.getCell(0).getStringCellValue();
 		String surname = row.getCell(1).getStringCellValue();
 		String document = row.getCell(2).getStringCellValue();
 		String gender = row.getCell(3).getStringCellValue();
-		if(gender.equals("Masculino")) {
+		if (gender.equals("Masculino")) {
 			gender = GenderType.MALE.toString();
-		}
-		else {
+		} else {
 			gender = GenderType.FEMALE.toString();
 		}
 		String birthday = row.getCell(4).getStringCellValue();
@@ -75,34 +86,41 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 		String grade = row.getCell(7).getStringCellValue();
 		String division = row.getCell(8).getStringCellValue();
 		String level = row.getCell(9).getStringCellValue();
-		
-		if(level.equals("Preescolar")) {
+
+		if (level.equals("Preescolar")) {
 			level = EducationLevels.PREESCOLAR.toString();
 		} else if (level.equals("Primario")) {
 			level = EducationLevels.PRIMARIO.toString();
 		}
-		/*String parentName = row.getCell(13).getStringCellValue();
-		String parentSurname = row.getCell(14).getStringCellValue();
+		String street = row.getCell(10).getStringCellValue();
+		String number = row.getCell(11).getStringCellValue();
+		String locality = row.getCell(12).getStringCellValue();
 
-		ParentApi parentApi =  ParentApi.builder().name(parentName).surname(parentSurname).build();
-		*/
-		StudentApiFile student = StudentApiFile.builder()
-				.name(name)
-				.surname(surname)
-				.document(document)
-				.gender(gender)
-				.birthday(LocalDate.parse(birthday))
-				.cellPhone(cellPhone)
-				.division(division)
-				.grade(grade)
-				.level(level)
-				.email(email)
-				.division(division)
-				.line(row.getRowNum())
-				.build();
-				//.parentApi(parentApi)*/
+		String parentName = row.getCell(13).getStringCellValue();
+		String parentSurname = row.getCell(14).getStringCellValue();
+		String parentDocument = row.getCell(15).getStringCellValue();
+		String parentGender = row.getCell(16).getStringCellValue();
+		if (parentGender.equals("Masculino")) {
+			parentGender = GenderType.MALE.toString();
+		} else {
+			parentGender = GenderType.FEMALE.toString();
+		}
+		String parentBirthday = row.getCell(17).getStringCellValue();
+		String parentCellPhone = row.getCell(18).getStringCellValue();
+		String parentEmail = row.getCell(19).getStringCellValue();
+
+		AdressApi adressApi = AdressApi.builder().street(street).number(number).locality(locality).build();
+		ParentApi parentApi = ParentApi.builder().name(parentName).surname(parentSurname).document(parentDocument)
+				.gender(parentGender).birthday(LocalDate.parse(parentBirthday)).cellPhone(parentCellPhone)
+				.email(parentEmail).adressApi(adressApi).build();
+
+		StudentApiFile student = StudentApiFile.builder().name(name).surname(surname).document(document).gender(gender)
+				.birthday(LocalDate.parse(birthday)).cellPhone(cellPhone).division(division).grade(grade).level(level)
+				.email(email).division(division).adressApi(adressApi).parentApi(parentApi)
+				.line(row.getRowNum()).build();
+		
 		return student;
-				
+
 	}
 
 	@Override
@@ -112,9 +130,12 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile>{
 			try {
 				studentService.create(schoolId,student);
 			} catch (TransactionException e) {
+				List<String> errorsList = new ArrayList<>();
+				String error = e.getCause().toString();
+				errorsList.add(error);
 				//TODO crear un utils para extraer el error
 				FileError fileError = FileError.builder()
-				.errors(null)
+				.errors(errorsList)
 				.line(student.getLine())
 				.build();
 				
