@@ -3,8 +3,6 @@ package click.escuela.admin.core.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;

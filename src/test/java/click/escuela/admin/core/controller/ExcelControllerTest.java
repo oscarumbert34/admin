@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import click.escuela.admin.core.enumator.ExcelMessage;
 import click.escuela.admin.core.enumator.Validation;
 import click.escuela.admin.core.exception.ExcelException;
+import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.ExcelApi;
 import click.escuela.admin.core.provider.student.service.impl.ExcelServiceImpl;
 import click.escuela.admin.core.rest.ExcelController;
@@ -50,7 +51,7 @@ public class ExcelControllerTest {
 	private Integer idSchool;
 
 	@Before
-	public void setup() throws ExcelException {
+	public void setup() throws TransactionException, Exception {
 		mockMvc = MockMvcBuilders.standaloneSetup(excelController).setControllerAdvice(new Handler()).build();
 		mapper = new ObjectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 				.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false)
