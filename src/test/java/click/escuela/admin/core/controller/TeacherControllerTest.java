@@ -84,7 +84,7 @@ public class TeacherControllerTest {
 		adressApi = new AdressApi("Calle falsa", "6458", "Nogues");
 		teacherApi = TeacherApi.builder().gender(GenderType.FEMALE.toString()).name("Mariana").surname("Lopez")
 				.birthday(LocalDate.now()).documentType("DNI").document("25897863").cellPhone("1589632485")
-				.schoolId(1234).email("mariAna@gmail.com").adressApi(adressApi).build();
+				.email("mariAna@gmail.com").adressApi(adressApi).build();
 		TeacherDTO teacherDTO = TeacherDTO.builder().id(id.toString()).name("Mariana").surname("Lopez")
 				.birthday(LocalDate.now()).documentType(DocumentType.DNI).document("25897863").cellPhone("1589632485")
 				.email("mariAna@gmail.com").adress(new AdressDTO()).build();
@@ -137,13 +137,6 @@ public class TeacherControllerTest {
 		teacherApi.setDocument(EMPTY);
 		assertThat(result(post(URL, schoolId).content(toJson(teacherApi))))
 				.contains(Validation.DOCUMENT_EMPTY.getDescription());
-	}
-
-	@Test
-	public void whenCreateSchoolNull() throws JsonProcessingException, Exception {
-		teacherApi.setSchoolId(null);
-		assertThat(result(post(URL, schoolId).content(toJson(teacherApi))))
-				.contains(Validation.SCHOOL_ID_NULL.getDescription());
 	}
 
 	@Test
@@ -262,7 +255,6 @@ public class TeacherControllerTest {
 	public void whenAddCoursesTests() throws JsonProcessingException, Exception {
 		assertThat(result(put(URL + "{idTeacher}/add/courses", schoolId, id).content(toJson(listStringIds))))
 				.contains(TeacherMessage.UPDATE_OK.name());
-
 		doThrow(new TransactionException(TeacherMessage.GET_ERROR.getCode(), TeacherMessage.GET_ERROR.getDescription()))
 				.when(teacherService).addCourses(Mockito.anyString(), Mockito.anyString(), Mockito.anyList());
 		assertThat(result(put(URL + "{idTeacher}/add/courses", schoolId, id).content(toJson(listStringIds))))
