@@ -180,7 +180,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		}
 		StudentApiFile student = StudentApiFile.builder().name(name).surname(surname).document(document).gender(gender)
 				.cellPhone(cellPhone).division(division).grade(grade).level(level)
-				.email(email).division(division).adressApi(adressApi).parentApi(parentApi).line(row.getRowNum())
+				.email(email).adressApi(adressApi).parentApi(parentApi).line(row.getRowNum())
 				.build();
 		if(birthday != null) {
 			student.setBirthday(LocalDate.parse(birthday));
@@ -244,5 +244,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 		return this.file;
 	}
+	
+	
 
 }

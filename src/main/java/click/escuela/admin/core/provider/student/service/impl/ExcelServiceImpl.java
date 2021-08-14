@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import click.escuela.admin.core.connector.ExcelConnector;
 import click.escuela.admin.core.exception.TransactionException;
@@ -26,8 +25,8 @@ public class ExcelServiceImpl {
 	private StudentBulkUpload studentBulkUpload;
 	
 	@Async
-	public void save(String schoolId, MultipartFile excel) throws TransactionException {
-		File file = new File(excel.getOriginalFilename());
+	public void save(String schoolId, String path) throws TransactionException {
+		File file = new File(path);
 		List<StudentApiFile> students = new ArrayList<>();
 		try {
 			students = studentBulkUpload.readFile(file);
@@ -36,8 +35,9 @@ public class ExcelServiceImpl {
 		}
 		List<FileError> errors = studentBulkUpload.upload(schoolId, students); 
 		studentBulkUpload.writeErrors(errors, file);
-		ExcelApi excelApi= ExcelApi.builder().name(file.getName()).schoolId(123).file(file.getAbsolutePath()).studentCount(students.size()).build();
+		ExcelApi excelApi= ExcelApi.builder().name(file.getName()).schoolId(Integer.valueOf(schoolId)).file(file.getAbsolutePath()).studentCount(students.size()).build();
+
 		excelConnector.save(schoolId, excelApi);
 	}
-
+	
 }

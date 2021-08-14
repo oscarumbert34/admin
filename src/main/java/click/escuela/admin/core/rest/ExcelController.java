@@ -29,8 +29,8 @@ public class ExcelController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<ExcelMessage> create(@PathVariable("schoolId") String schoolId,
-			@RequestParam("file") MultipartFile file) throws TransactionException {
-		excelService.save(schoolId, file);
+			@RequestParam("file") MultipartFile excel) throws TransactionException {
+		excelService.save(schoolId, excel.getOriginalFilename());
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ExcelMessage.CREATE_OK);
 	}
 
