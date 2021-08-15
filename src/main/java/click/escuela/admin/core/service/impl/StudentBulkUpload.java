@@ -2,7 +2,6 @@ package click.escuela.admin.core.service.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,14 +37,9 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 	private File file;
 
 	@Override
-	public List<StudentApiFile> readFile(File file) throws Exception {
-
-		InputStream inputStream = null;
-		Workbook wb = null;
-		try {
-			this.file = file;
-			inputStream = new FileInputStream(file);
-			wb = WorkbookFactory.create(inputStream);
+	public List<StudentApiFile> readFile(File file) throws EncryptedDocumentException, IOException{
+			InputStream inputStream = new FileInputStream(file);
+			Workbook wb = WorkbookFactory.create(inputStream);
 			Sheet sheet = wb.getSheetAt(0);
 			List<StudentApiFile> students = new ArrayList<>();
 			Iterator<Row> sheetWithoutTitle = sheet.rowIterator();
@@ -60,133 +54,112 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 					break;
 				}
 			}
-			return students;
-
-		} catch (EncryptedDocumentException | IOException ex) {
-			throw ex;
-
-		}
-
+			wb.close();
+			return students;			
 	}
 
 	private StudentApiFile buildStudentApi(Row row) {
+		StudentApiFile student = new StudentApiFile();
+		
+		Cell name = row.getCell(0);
+		if (name != null)
+			student.setName(name.getStringCellValue());
+		Cell surname = row.getCell(1);
+		if (surname != null)
+			student.setSurname(surname.getStringCellValue());
+		Cell document = row.getCell(2);
+		if (document != null)
+			student.setDocument(document.getStringCellValue());
+		Cell gender = row.getCell(3);
+		if (gender != null)
+			student.setGender(getGender(gender.getStringCellValue()));
+		Cell birthday = row.getCell(4);
+		if (birthday != null)
+			student.setBirthday(LocalDate.parse(birthday.getStringCellValue()));
+		Cell cellPhone = row.getCell(5);
+		if (cellPhone != null)
+			student.setCellPhone(cellPhone.getStringCellValue());
+		Cell email = row.getCell(6);
+		if (email != null)
+			student.setEmail(email.getStringCellValue());
+		Cell grade = row.getCell(7);
+		if (grade != null)
+			student.setGrade(grade.getStringCellValue());
+		Cell division = row.getCell(8);
+		if (division != null)
+			student.setDivision(division.getStringCellValue());
+		Cell level = row.getCell(9);
+		if (level != null)
+			student.setLevel(getLevel(level.getStringCellValue()));
 
-		String name = null;
-		if(row.getCell(0) != null) {
-			name =  row.getCell(0).getStringCellValue();
-		}
-		String surname = null;
-		if(row.getCell(1) != null) {
-			surname =  row.getCell(1).getStringCellValue();
-		}
-		String document = null;
-		if(row.getCell(2) != null) {
-			document =  row.getCell(2).getStringCellValue();
-		}
-		String gender = null;
-		if(row.getCell(3) != null) {
-			gender =  row.getCell(3).getStringCellValue();
-			if (gender != null && gender.equals("Masculino")) {
-				gender = GenderType.MALE.toString();
-			} else {
-				gender = GenderType.FEMALE.toString();
-			}
-		}
-		String birthday = null ;
-		if(row.getCell(4) != null) {
-			birthday =   row.getCell(4).getStringCellValue();
-		}
-		String cellPhone = null;
-		if(row.getCell(5) != null) {
-			cellPhone =   row.getCell(5).getStringCellValue();
-		}
-		String email =null;
-		if( row.getCell(6) != null) {
-			email =  row.getCell(6).getStringCellValue();
-		}
-		String grade =null;
-		if( row.getCell(7) != null) {
-			grade =  row.getCell(7).getStringCellValue();
-		}
-		String division =null;
-		if( row.getCell(8) != null) {
-			division =  row.getCell(8).getStringCellValue();
-		}
-		String level = null;
-		if(row.getCell(9) != null) {
-			level =  row.getCell(9).getStringCellValue();
-			if (level.equals("Preescolar")) {
-				level = EducationLevels.PREESCOLAR.toString();
-			} else if (level.equals("Primario")) {
-				level = EducationLevels.PRIMARIO.toString();
-			}else if (level.equals("Secundario")) {
-				level = EducationLevels.SECUNDARIO.toString();
-			}else if( level.equals("Terciario")){
-				level = EducationLevels.TERCIARIO.toString();
-			}
-		}
-		String street = null;
-		if( row.getCell(10) != null) {
-			street =  row.getCell(10).getStringCellValue();
-		}
-		String number = null;
-		if( row.getCell(11) != null) {
-			number =  row.getCell(11).getStringCellValue();
-		}
-		String locality = null;
-		if( row.getCell(12) != null) {
-			locality =  row.getCell(12).getStringCellValue();
-		}
-		String parentName =null;
-		if( row.getCell(13) != null) {
-			parentName =  row.getCell(13).getStringCellValue();
-		}
-		String parentSurname =null;
-		if( row.getCell(14) != null) {
-			parentSurname =  row.getCell(14).getStringCellValue();
-		}
-		String parentDocument =null;
-		if( row.getCell(15) != null) {
-			parentDocument =  row.getCell(15).getStringCellValue();
-		}
-		String parentGender =  null;
-		if(row.getCell(16) != null) {
-			parentGender =  row.getCell(16).getStringCellValue();
-			if (gender.equals("Masculino")) {
-				parentGender = GenderType.MALE.toString();
-			} else {
-				parentGender = GenderType.FEMALE.toString();
-			}
-		}
-		String parentBirthday = null;
-		if( row.getCell(17) != null) {
-			parentBirthday =  row.getCell(17).getStringCellValue();
-		}
-		String parentCellPhone =  null;
-		if( row.getCell(18) != null) {
-			parentCellPhone =  row.getCell(18).getStringCellValue();
-		}
-		String parentEmail =  null;
-		if( row.getCell(19) != null) {
-			parentEmail =  row.getCell(19).getStringCellValue();
-		}
+		student.setAdressApi(getAdress(row));
+		student.setParentApi(getParent(row));
 
-		AdressApi adressApi = AdressApi.builder().street(street).number(number).locality(locality).build();
-		ParentApi parentApi = ParentApi.builder().name(parentName).surname(parentSurname).document(parentDocument)
-				.gender(parentGender).cellPhone(parentCellPhone)
-				.email(parentEmail).adressApi(adressApi).build();
-		if(parentBirthday != null) {
-			parentApi.setBirthday(LocalDate.parse(parentBirthday));
-		}
-		StudentApiFile student = StudentApiFile.builder().name(name).surname(surname).document(document).gender(gender)
-				.cellPhone(cellPhone).division(division).grade(grade).level(level)
-				.email(email).adressApi(adressApi).parentApi(parentApi).line(row.getRowNum())
-				.build();
-		if(birthday != null) {
-			student.setBirthday(LocalDate.parse(birthday));
-		}
 		return student;
+	}
 
+	private ParentApi getParent(Row row) {
+		ParentApi parent = new ParentApi();
+		Cell parentName = row.getCell(13);
+		if (parentName != null)
+			parent.setName(parentName.getStringCellValue());
+		Cell parentSurname = row.getCell(14);
+		if (parentSurname != null)
+			parent.setSurname(parentSurname.getStringCellValue());
+		Cell parentDocument = row.getCell(15);
+		if (parentDocument != null)
+			parent.setDocument(parentDocument.getStringCellValue());
+		Cell parentGender = row.getCell(16);
+		if (parentGender != null)
+			parent.setGender(getGender(parentGender.getStringCellValue()));
+		Cell parentBirthday = row.getCell(17);
+		if (parentBirthday != null)
+			parent.setBirthday(LocalDate.parse(parentBirthday.getStringCellValue()));
+		Cell parentCellPhone = row.getCell(18);
+		if (parentCellPhone != null)
+			parent.setCellPhone(parentCellPhone.getStringCellValue());
+		Cell parentEmail = row.getCell(19);
+		if (parentEmail != null)
+			parent.setEmail(parentEmail.getStringCellValue());
+		
+		parent.setAdressApi(getAdress(row));
+		return parent;
+	}
+
+	private AdressApi getAdress(Row row) {
+		AdressApi adress = new AdressApi();
+		Cell street = row.getCell(10);
+		if (street != null)
+			adress.setStreet(street.getStringCellValue());
+		Cell number = row.getCell(11);
+		if (number != null)
+			adress.setNumber(number.getStringCellValue());
+		Cell locality = row.getCell(12);
+		if (locality != null)
+			adress.setLocality(locality.getStringCellValue());
+		return adress;
+	}
+
+	private String getGender(String gender) {
+		if (gender.equals("Masculino")) {
+			gender = GenderType.MALE.toString();
+		} else {
+			gender = GenderType.FEMALE.toString();
+		}
+		return gender;
+	}
+
+	private String getLevel(String level) {
+		if (level.equals("Preescolar")) {
+			level = EducationLevels.PREESCOLAR.toString();
+		} else if (level.equals("Primario")) {
+			level = EducationLevels.PRIMARIO.toString();
+		} else if (level.equals("Secundario")) {
+			level = EducationLevels.SECUNDARIO.toString();
+		} else if (level.equals("Terciario")) {
+			level = EducationLevels.TERCIARIO.toString();
+		}
+		return level;
 	}
 
 	@Override
@@ -200,7 +173,6 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 				String error = e.getMessage();
 				errorsList.add(error);
 				FileError fileError = FileError.builder().errors(errorsList).line(student.getLine()).build();
-
 				errors.add(fileError);
 			}
 		});
@@ -209,42 +181,23 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 	}
 
 	@Override
-	public File writeErrors(List<FileError> errors, File file) {
-		InputStream inputStream = null;
-		Workbook wb = null;
-		try {
-			inputStream = new FileInputStream(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			wb = WorkbookFactory.create(inputStream);
-			Sheet sheet = wb.getSheetAt(0);
-			errors.stream().forEach(error -> {
-				Row row = sheet.getRow(error.getLine());
-				List<String> messages = error.getErrors();
-				Cell cell = row.createCell(20);
-				cell.setCellValue(messages.toString());
-			});
-		} catch (EncryptedDocumentException | IOException e) {
-			e.printStackTrace();
-		}
+	public File writeErrors(List<FileError> errors, File file) throws EncryptedDocumentException, IOException {
+		InputStream inputStream = new FileInputStream(file);
+		Workbook wb = WorkbookFactory.create(inputStream);
+		Sheet sheet = wb.getSheetAt(0);
+		errors.stream().forEach(error -> {
+			Row row = sheet.getRow(error.getLine());
+			List<String> messages = error.getErrors();
+			Cell cell = row.createCell(20);
+			cell.setCellValue(messages.toString());
+		});
 
-		FileOutputStream outputStream = null;
-		try {
-			outputStream = new FileOutputStream(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			wb.write(outputStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileOutputStream outputStream = new FileOutputStream(file);
+		wb.write(outputStream);
+		wb.close();
 
 		return this.file;
 	}
-	
 	
 
 }
