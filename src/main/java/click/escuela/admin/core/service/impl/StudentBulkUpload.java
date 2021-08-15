@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -223,8 +225,9 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 			errors.stream().forEach(error -> {
 				Row row = sheet.getRow(error.getLine());
 				List<String> messages = error.getErrors();
+				List<String> messageFormat = messages.stream().map(p -> extractError(p)).collect(Collectors.toList());
 				Cell cell = row.createCell(20);
-				cell.setCellValue(messages.toString());
+				cell.setCellValue(messageFormat.toString());
 			});
 		} catch (EncryptedDocumentException | IOException e) {
 			e.printStackTrace();
@@ -243,6 +246,10 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		}
 
 		return this.file;
+	}
+	private String extractError(String error) {
+		String[] array = error.split(":");
+		return array[2].replace("[", "").replace("]", "");
 	}
 	
 	
