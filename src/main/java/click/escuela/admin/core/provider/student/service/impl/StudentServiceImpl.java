@@ -17,7 +17,6 @@ public class StudentServiceImpl {
 	private StudentConnector studentConnector;
 
 	public List<StudentDTO> getBySchool(String schoolId, Boolean fullDetail) throws TransactionException {
-		System.out.println("get by school");
 		return studentConnector.getBySchool(schoolId, fullDetail);
 	}
 

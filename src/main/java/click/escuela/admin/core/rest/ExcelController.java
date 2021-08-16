@@ -34,8 +34,8 @@ public class ExcelController {
 	public ResponseEntity<ExcelMessage> create(@PathVariable("schoolId") String schoolId,
 			@RequestParam("file") MultipartFile excel)
 			throws TransactionException, EncryptedDocumentException, IOException {
-		String path = excel.getOriginalFilename();
-		excelService.save(schoolId, path);
+		
+		excelService.save(schoolId, excel);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ExcelMessage.CREATE_OK);
 	}
 	

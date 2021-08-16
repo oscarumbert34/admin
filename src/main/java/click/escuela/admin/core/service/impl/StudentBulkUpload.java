@@ -23,7 +23,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
-import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.StudentApiFile;
@@ -171,7 +170,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		students.stream().forEach(student -> {
 			try {
 				studentService.create(schoolId, student);
-			} catch (TransactionException e) {
+			} catch (Exception e) {
 				List<String> errorsList = new ArrayList<>();
 				String error = e.getMessage();
 				errorsList.add(error);
@@ -179,7 +178,6 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 				errors.add(fileError);
 			}
 		});
-
 		return errors;
 	}
 
