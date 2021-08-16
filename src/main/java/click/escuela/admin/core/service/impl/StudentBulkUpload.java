@@ -94,6 +94,8 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		if (level != null)
 			student.setLevel(getLevel(level.getStringCellValue()));
 
+		student.setLine(20);
+		
 		student.setAdressApi(getAdress(row));
 		student.setParentApi(getParent(row));
 
@@ -186,7 +188,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		InputStream inputStream = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(inputStream);
 		Sheet sheet = wb.getSheetAt(0);
-		wb.close();
+		//wb.close();
 		errors.stream().forEach(error -> {
 			Row row = sheet.getRow(error.getLine());
 			List<String> messages = error.getErrors();
