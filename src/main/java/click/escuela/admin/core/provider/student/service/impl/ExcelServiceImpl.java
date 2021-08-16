@@ -2,7 +2,6 @@ package click.escuela.admin.core.provider.student.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
@@ -29,12 +28,10 @@ public class ExcelServiceImpl {
 	@Async
 	public void save(String schoolId, String path) throws TransactionException, EncryptedDocumentException, IOException {
 		File file = new File(path);
-		List<StudentApiFile> students = new ArrayList<>();
-		students = studentBulkUpload.readFile(file);
+		List<StudentApiFile> students = studentBulkUpload.readFile(file);
 		List<FileError> errors = studentBulkUpload.upload(schoolId, students); 
 		studentBulkUpload.writeErrors(errors, file);
 		ExcelApi excelApi= ExcelApi.builder().name(file.getName()).schoolId(Integer.valueOf(schoolId)).file(file.getAbsolutePath()).studentCount(students.size()).build();
-
 		excelConnector.save(schoolId, excelApi);
 	}
 	
