@@ -25,8 +25,7 @@ import click.escuela.admin.core.provider.student.dto.StudentDTO;
 import click.escuela.admin.core.provider.student.dto.TeacherDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 
-//@FeignClient(name = "${provider.school-admin.name}")
-@FeignClient(name = "localhost:8090/click-escuela/school-admin")
+@FeignClient(name = "${provider.school-admin.name}")
 public interface StudentController {
 
 	// StudentController

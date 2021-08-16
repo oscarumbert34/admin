@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -21,6 +23,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
+import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.StudentApiFile;
@@ -168,7 +171,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		students.stream().forEach(student -> {
 			try {
 				studentService.create(schoolId, student);
-			} catch (Exception e) {
+			} catch (TransactionException e) {
 				List<String> errorsList = new ArrayList<>();
 				String error = e.getMessage();
 				errorsList.add(error);
@@ -181,15 +184,17 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 	}
 
 	@Override
-	public File writeErrors(List<FileError> errors, File file) throws EncryptedDocumentException, IOException {
+	public File writeErrors(List<FileError> errors, File file) throws IOException {
 		InputStream inputStream = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(inputStream);
 		Sheet sheet = wb.getSheetAt(0);
+		wb.close();
 		errors.stream().forEach(error -> {
 			Row row = sheet.getRow(error.getLine());
 			List<String> messages = error.getErrors();
+			List<String> messageFormat = messages.stream().map(this::extractError).collect(Collectors.toList());
 			Cell cell = row.createCell(20);
-			cell.setCellValue(messages.toString());
+			cell.setCellValue(messageFormat.toString());
 		});
 
 		FileOutputStream outputStream = new FileOutputStream(file);
@@ -197,6 +202,11 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		wb.close();
 
 		return this.file;
+	}
+	
+	private String extractError(String error) {
+		String[] array = error.split(":");
+		return array[2].replace("[", "").replace("]", "");
 	}
 	
 
