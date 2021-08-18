@@ -1,6 +1,9 @@
 package click.escuela.admin.core.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
+import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.StudentApiFile;
 import click.escuela.admin.core.provider.student.dto.FileError;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
@@ -27,6 +31,7 @@ public class StudentBulkUploadTest {
 	private List<FileError> errors = new ArrayList<>();
 	private File file;
 	private String schoolId = "1234";
+	private StudentApiFile student;
 	
 	private StudentBulkUpload studentBulkUpload;
 	
@@ -37,7 +42,7 @@ public class StudentBulkUploadTest {
 	public void setUp() throws Exception  {
 		
 		studentBulkUpload = new StudentBulkUpload();
-		StudentApiFile student =StudentApiFile.builder().name("Tony").surname("Liendro").document("377758269").gender(GenderType.MALE.toString())
+		student =StudentApiFile.builder().name("Tony").surname("Liendro").document("377758269").gender(GenderType.MALE.toString())
 				.cellPhone("1523554622").division("3").grade("7").level(EducationLevels.TERCIARIO.toString())
 				.email("tony@gmail.com").adressApi(null).parentApi(null).line(1)
 				.build();
@@ -45,7 +50,7 @@ public class StudentBulkUploadTest {
 		List<String> errorsList = new ArrayList<>();
 		String error = "Ya existe el estudiante";
 		errorsList.add(error);
-		FileError fileError = FileError.builder().line(1).errors(errorsList).build();
+		FileError fileError = FileError.builder().line(student.getLine()).errors(errorsList).build();
 		errors.add(fileError);
 		
 		file = new File("EstudiantesTest.xlsx");
@@ -61,7 +66,10 @@ public class StudentBulkUploadTest {
 	
 	@Test
 	public void whenUploadIsOk() throws Exception {		
-		assertThat(studentBulkUpload.upload(schoolId, students)).isEmpty();
+		TransactionException e = mock(TransactionException.class);
+		when(e.getMessage()).thenReturn("Ya existe el estudiante");
+		doThrow(e).when(studentService).create(schoolId, student);
+		assertThat(studentBulkUpload.upload(schoolId, students)).isNotEmpty();
 	}
 	
 	@Test
