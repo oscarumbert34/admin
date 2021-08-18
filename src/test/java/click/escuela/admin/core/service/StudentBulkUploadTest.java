@@ -15,6 +15,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
+import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.api.StudentApiFile;
 import click.escuela.admin.core.provider.student.dto.FileError;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;

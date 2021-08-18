@@ -23,18 +23,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @SuperBuilder
 public class StudentApi extends PersonApi {
 
-	public StudentApi(PersonApi personApi, ParentApi parentApi, String grade, String division,
-			String level) {
-		
-		super(personApi.getName(), personApi.getSurname(), personApi.getDocument(), personApi.getGender(),
-			  personApi.getBirthday(), personApi.getAdressApi(), personApi.getCellPhone(), personApi.getEmail());
-		
-		this.parentApi = parentApi;
-		this.grade = grade;
-		this.division = division;
-		this.level = level;
-	}
-
 	@JsonProperty(value = "id", required = false)
 	private String id;
 	
