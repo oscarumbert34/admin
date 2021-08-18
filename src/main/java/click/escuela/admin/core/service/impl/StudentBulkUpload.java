@@ -191,19 +191,23 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 	@Override
 	public File writeErrors(List<FileError> errors, File file) throws IOException {
-		InputStream inputStream = new FileInputStream(file);
-		Workbook wb = WorkbookFactory.create(inputStream);
-		Sheet sheet = wb.getSheetAt(0);
-		errors.stream().forEach(error -> {
-			Row row = sheet.getRow(error.getLine());
-			List<String> messages = error.getErrors();
-			Cell cell = row.createCell(20);
-			cell.setCellValue(messages.toString());
-		});
-
-		OutputStream outputStream = new FileOutputStream(file);
-		wb.write(outputStream);
-		wb.close();
+		try (Workbook wb = WorkbookFactory.create(new FileInputStream(file))){
+			Sheet sheet = wb.getSheetAt(0);
+			if(!errors.isEmpty()) {
+				errors.stream().forEach(error -> {
+					Row row = sheet.getRow(error.getLine());
+					List<String> messages = error.getErrors();
+					Cell cell = row.createCell(20);
+					cell.setCellValue(messages.toString());
+				});
+				OutputStream outputStream = new FileOutputStream(file);
+				wb.write(outputStream);
+			
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return file;
 	}
 
