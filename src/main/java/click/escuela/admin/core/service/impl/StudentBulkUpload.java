@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,8 +35,6 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 	@Autowired
 	private StudentServiceImpl studentService;
-
-	private File file;
 
 	@Override
 	public List<StudentApiFile> readFile(File file) throws EncryptedDocumentException, IOException{
@@ -76,8 +74,12 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		if (gender != null)
 			student.setGender(getGender(gender.getStringCellValue()));
 		Cell birthday = row.getCell(4);
-		if (birthday != null)
-			student.setBirthday(LocalDate.parse(birthday.getStringCellValue()));
+		if (birthday != null) {
+			String date = birthday.getStringCellValue();
+			if(!date.isEmpty()) {
+				student.setBirthday(LocalDate.parse(date));
+			}
+		}
 		Cell cellPhone = row.getCell(5);
 		if (cellPhone != null)
 			student.setCellPhone(cellPhone.getStringCellValue());
@@ -94,7 +96,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		if (level != null)
 			student.setLevel(getLevel(level.getStringCellValue()));
 
-		student.setLine(20);
+		student.setLine(row.getRowNum());
 		
 		student.setAdressApi(getAdress(row));
 		student.setParentApi(getParent(row));
@@ -117,8 +119,12 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		if (parentGender != null)
 			parent.setGender(getGender(parentGender.getStringCellValue()));
 		Cell parentBirthday = row.getCell(17);
-		if (parentBirthday != null)
-			parent.setBirthday(LocalDate.parse(parentBirthday.getStringCellValue()));
+		if (parentBirthday != null) {
+			String date = parentBirthday.getStringCellValue();
+			if(!date.isEmpty()) {
+				parent.setBirthday(LocalDate.parse(date));
+			}
+		}
 		Cell parentCellPhone = row.getCell(18);
 		if (parentCellPhone != null)
 			parent.setCellPhone(parentCellPhone.getStringCellValue());
@@ -192,22 +198,21 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		errors.stream().forEach(error -> {
 			Row row = sheet.getRow(error.getLine());
 			List<String> messages = error.getErrors();
-			List<String> messageFormat = messages.stream().map(this::extractError).collect(Collectors.toList());
 			Cell cell = row.createCell(20);
-			cell.setCellValue(messageFormat.toString());
+			cell.setCellValue(messages.toString());
 		});
 
-		FileOutputStream outputStream = new FileOutputStream(file);
+		OutputStream outputStream = new FileOutputStream(file);
 		wb.write(outputStream);
 		wb.close();
-
-		return this.file;
+		//inputStream.close();
+		return file;
 	}
 	
-	private String extractError(String error) {
+	/*private String extractError(String error) {
 		String[] array = error.split(":");
 		return array[2].replace("[", "").replace("]", "");
-	}
+	}*/
 	
 
 }

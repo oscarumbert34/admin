@@ -1,7 +1,6 @@
 package click.escuela.admin.core.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,11 +50,7 @@ public class StudentBulkUploadTest {
 		
 		file = new File("EstudiantesTest.xlsx");
 		
-		//when(studentBulkUpload.readFile(file)).thenReturn(students);
-		//when(studentBulkUpload.upload(schoolId, students)).thenReturn(errors);
-		//when(studentBulkUpload.writeErrors(errors, file)).thenReturn(file);
 		ReflectionTestUtils.setField(studentBulkUpload, "studentService", studentService);
-
 	}
 	
 	@Test
@@ -65,7 +60,7 @@ public class StudentBulkUploadTest {
 	
 	@Test
 	public void whenUploadIsOk() throws Exception {		
-		assertThat(studentBulkUpload.upload(schoolId, students)).isNotEmpty();
+		assertThat(studentBulkUpload.upload(schoolId, students)).isEmpty();
 	}
 	
 	@Test
