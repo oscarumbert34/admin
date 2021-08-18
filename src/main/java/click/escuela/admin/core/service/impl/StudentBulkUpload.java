@@ -194,7 +194,6 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		InputStream inputStream = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(inputStream);
 		Sheet sheet = wb.getSheetAt(0);
-		//wb.close();
 		errors.stream().forEach(error -> {
 			Row row = sheet.getRow(error.getLine());
 			List<String> messages = error.getErrors();
@@ -205,14 +204,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 		OutputStream outputStream = new FileOutputStream(file);
 		wb.write(outputStream);
 		wb.close();
-		//inputStream.close();
 		return file;
 	}
-	
-	/*private String extractError(String error) {
-		String[] array = error.split(":");
-		return array[2].replace("[", "").replace("]", "");
-	}*/
-	
 
 }
