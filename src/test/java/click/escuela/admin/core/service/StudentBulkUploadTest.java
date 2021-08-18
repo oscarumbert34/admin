@@ -54,7 +54,8 @@ public class StudentBulkUploadTest {
 	}
 	
 	@Test
-	public void whenReadFileIsOk() throws Exception {		
+	public void whenReadFileIsOk() throws Exception {
+		
 		assertThat(studentBulkUpload.readFile(file)).isNotEmpty();
 	}
 	
