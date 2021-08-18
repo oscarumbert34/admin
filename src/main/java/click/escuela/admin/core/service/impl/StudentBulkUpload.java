@@ -191,7 +191,8 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 	@Override
 	public File writeErrors(List<FileError> errors, File file) throws IOException {
-		try (Workbook wb = WorkbookFactory.create(new FileInputStream(file))){
+		InputStream inputStream = new FileInputStream(file);
+		try (Workbook wb = WorkbookFactory.create(inputStream)){
 			Sheet sheet = wb.getSheetAt(0);
 			if(!errors.isEmpty()) {
 				errors.stream().forEach(error -> {
@@ -202,10 +203,9 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 				});
 				OutputStream outputStream = new FileOutputStream(file);
 				wb.write(outputStream);
-			
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IOException("No se pudo escribir los errores en el arvhivo");
 		}
 		
 		return file;
