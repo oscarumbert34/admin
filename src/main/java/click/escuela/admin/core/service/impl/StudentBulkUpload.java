@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -193,7 +192,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 	@Override
 	public File writeErrors(List<FileError> errors, File file) throws IOException {
-		InputStream inputStream = new FileInputStream(file);
+		InputStream inputStream = new FileInputStream(file);//NOSONAR
 		try (Workbook wb = WorkbookFactory.create(inputStream)){
 			Sheet sheet = wb.getSheetAt(0);
 			if(!errors.isEmpty()) {
@@ -203,7 +202,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 					Cell cell = row.createCell(20);
 					cell.setCellValue(messages.toString());
 				});
-				OutputStream outputStream = new FileOutputStream(file);
+				OutputStream outputStream = new FileOutputStream(file);//NOSONAR
 				wb.write(outputStream);
 			}
 		} catch (IOException e) {
