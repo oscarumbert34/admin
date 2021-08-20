@@ -10,7 +10,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -59,43 +61,23 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 			return students;			
 	}
 
+	private String getCell(Row row, int index) {
+		Cell cell = row.getCell(index);
+		return Objects.isNull(cell) ? StringUtils.EMPTY : cell.getStringCellValue(); 
+	}
 	private StudentApiFile buildStudentApi(Row row) {
 		StudentApiFile student = new StudentApiFile();
 		
-		Cell name = row.getCell(0);
-		if (name != null)
-			student.setName(name.getStringCellValue());
-		Cell surname = row.getCell(1);
-		if (surname != null)
-			student.setSurname(surname.getStringCellValue());
-		Cell document = row.getCell(2);
-		if (document != null)
-			student.setDocument(document.getStringCellValue());
-		Cell gender = row.getCell(3);
-		if (gender != null)
-			student.setGender(getGender(gender.getStringCellValue()));
-		Cell birthday = row.getCell(4);
-		if (birthday != null) {
-			String date = birthday.getStringCellValue();
-			if(!date.isEmpty()) {
-				student.setBirthday(LocalDate.parse(date));
-			}
-		}
-		Cell cellPhone = row.getCell(5);
-		if (cellPhone != null)
-			student.setCellPhone(cellPhone.getStringCellValue());
-		Cell email = row.getCell(6);
-		if (email != null)
-			student.setEmail(email.getStringCellValue());
-		Cell grade = row.getCell(7);
-		if (grade != null)
-			student.setGrade(grade.getStringCellValue());
-		Cell division = row.getCell(8);
-		if (division != null)
-			student.setDivision(division.getStringCellValue());
-		Cell level = row.getCell(9);
-		if (level != null)
-			student.setLevel(getLevel(level.getStringCellValue()));
+		student.setName(getCell(row, 0));
+		student.setSurname(getCell(row, 1));
+		student.setDocument(getCell(row, 2));
+		student.setGender(getGender(row, 3));
+		student.setBirthday(getDate(row, 4));
+		student.setCellPhone(getCell(row, 5));
+		student.setEmail(getCell(row, 6));
+		student.setGrade(getCell(row, 7));
+		student.setDivision(getCell(row, 8));
+		student.setLevel(getLevel(row,9));
 
 		student.setLine(row.getRowNum());
 		
@@ -107,60 +89,72 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 	private ParentApi getParent(Row row) {
 		ParentApi parent = new ParentApi();
-		Cell parentName = row.getCell(13);
-		if (parentName != null)
-			parent.setName(parentName.getStringCellValue());
-		Cell parentSurname = row.getCell(14);
-		if (parentSurname != null)
-			parent.setSurname(parentSurname.getStringCellValue());
-		Cell parentDocument = row.getCell(15);
-		if (parentDocument != null)
-			parent.setDocument(parentDocument.getStringCellValue());
-		Cell parentGender = row.getCell(16);
-		if (parentGender != null)
-			parent.setGender(getGender(parentGender.getStringCellValue()));
-		Cell parentBirthday = row.getCell(17);
-		if (parentBirthday != null) {
-			String date = parentBirthday.getStringCellValue();
-			if(!date.isEmpty()) {
-				parent.setBirthday(LocalDate.parse(date));
-			}
-		}
-		Cell parentCellPhone = row.getCell(18);
-		if (parentCellPhone != null)
-			parent.setCellPhone(parentCellPhone.getStringCellValue());
-		Cell parentEmail = row.getCell(19);
-		if (parentEmail != null)
-			parent.setEmail(parentEmail.getStringCellValue());
 		
+		parent.setName(getCell(row, 13));
+		parent.setSurname(getCell(row, 14));
+		parent.setDocument(getCell(row, 15));
+		parent.setGender(getGender(row, 16));
+		parent.setBirthday(getDate(row, 17));
+		parent.setCellPhone(getCell(row, 18));
+		parent.setEmail(getCell(row, 19));
 		parent.setAdressApi(getAdress(row));
+		
 		return parent;
 	}
 
 	private AdressApi getAdress(Row row) {
 		AdressApi adress = new AdressApi();
-		Cell street = row.getCell(10);
-		if (street != null)
-			adress.setStreet(street.getStringCellValue());
-		Cell number = row.getCell(11);
-		if (number != null)
-			adress.setNumber(number.getStringCellValue());
-		Cell locality = row.getCell(12);
-		if (locality != null)
-			adress.setLocality(locality.getStringCellValue());
+		
+		adress.setStreet(getCell(row, 10));
+		adress.setNumber(getCell(row, 11));
+		adress.setLocality(getCell(row, 12));
+
 		return adress;
 	}
 
-	private String getGender(String gender) {
+	private LocalDate getDate(Row row, int index) {
+		Cell cell = row.getCell(index);
+		LocalDate localDate = null;
+		
+		if (cell != null) {
+			String date = cell.getStringCellValue();
+			
+			if(!date.isEmpty()) {
+				localDate = LocalDate.parse(date);
+			}
+		}
+		return localDate;
+	} 
+	private String getGender(Row row, int index) {
+		Cell cell = row.getCell(index);
+		String gender = StringUtils.EMPTY;
+		
+		if (cell != null)
+			gender = getGenderType(cell.getStringCellValue());
+		
+		return gender;
+			
+	}
+	private String getGenderType(String gender) {
+		
 		if (gender.equals("Masculino")) {
 			gender = GenderType.MALE.toString();
-		} else {
+		}else{
 			gender = GenderType.FEMALE.toString();
 		}
 		return gender;
 	}
 
-	private String getLevel(String level) {
+	private String getLevel(Row row, int index) {
+		Cell cell = row.getCell(9);
+		String level = StringUtils.EMPTY;
+		
+		if (cell != null)
+			level = getEducationLevel(cell.getStringCellValue());
+		
+		return level;
+	}
+	private String getEducationLevel(String level) {
 		if (level.equals("Preescolar")) {
 			level = EducationLevels.PREESCOLAR.toString();
 		} else if (level.equals("Primario")) {
