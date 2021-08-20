@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,7 +39,8 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 
 	@Override
 	public List<StudentApiFile> readFile(File file) throws EncryptedDocumentException, IOException{
-			InputStream inputStream = new FileInputStream(file);
+			InputStream inputStream = new FileInputStream(file);//NOSONAR
+			
 			Workbook wb = WorkbookFactory.create(inputStream);
 			Sheet sheet = wb.getSheetAt(0);
 			List<StudentApiFile> students = new ArrayList<>();
