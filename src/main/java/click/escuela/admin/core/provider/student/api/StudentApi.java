@@ -1,7 +1,5 @@
 package click.escuela.admin.core.provider.student.api;
 
-import java.time.LocalDate;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,19 +20,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @NoArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
 @Schema(description = "Student Api")
-@AllArgsConstructor
 @SuperBuilder
 public class StudentApi extends PersonApi {
-
-	public StudentApi(String name, String surname, String document, String gender, LocalDate birthday,
-			AdressApi adressApi, String cellPhone, String email, ParentApi parentApi, String grade, String division,
-			String level) {
-		super(name, surname, document, gender, birthday, adressApi, cellPhone, email);
-		this.parentApi = parentApi;
-		this.grade = grade;
-		this.division = division;
-		this.level = level;
-	}
 
 	@JsonProperty(value = "id", required = false)
 	private String id;
