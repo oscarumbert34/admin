@@ -146,7 +146,7 @@ public class StudentBulkUpload implements BulkUpload<StudentApiFile> {
 	}
 
 	private String getLevel(Row row, int index) {
-		Cell cell = row.getCell(9);
+		Cell cell = row.getCell(index);
 		String level = StringUtils.EMPTY;
 		
 		if (cell != null)
