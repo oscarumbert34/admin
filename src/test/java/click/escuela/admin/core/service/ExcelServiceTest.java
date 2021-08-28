@@ -55,7 +55,7 @@ public class ExcelServiceTest {
 				.email("tony@gmail.com").adressApi(null).parentApi(null).line(1)
 				.build();
 		students.add(student);		
-		when(studentBulkUpload.readFile(file)).thenReturn(students);
+		//when(studentBulkUpload.readFile(file)).thenReturn(students);
 		doNothing().when(excelConnector).save( Mockito.anyString(),Mockito.any());
 		ReflectionTestUtils.setField(excelServiceImpl, "excelConnector", excelConnector);
 		ReflectionTestUtils.setField(excelServiceImpl, "studentBulkUpload", studentBulkUpload);
