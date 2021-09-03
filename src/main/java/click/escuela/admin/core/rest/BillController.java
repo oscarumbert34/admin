@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import click.escuela.admin.core.enumator.BillEnum;
 import click.escuela.admin.core.enumator.BillMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
@@ -63,10 +62,10 @@ public class BillController {
 	@Operation(summary = "Update Payment Bill", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PutMapping(value = "/{billId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<BillEnum> updatePayment(
+	public ResponseEntity<BillMessage> updatePayment(
 			@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
 			@Parameter(name = "Bill id", required = true) @PathVariable("billId") String billId, @RequestBody @Validated BillStatusApi billStatusApi) throws TransactionException {
 		billService.updatePayment(schoolId, billId,billStatusApi);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(BillEnum.PAYMENT_STATUS_CHANGED);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(BillMessage.PAYMENT_STATUS_CHANGED);
 	}
 }

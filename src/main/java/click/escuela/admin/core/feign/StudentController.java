@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import click.escuela.admin.core.enumator.BillEnum;
+import click.escuela.admin.core.enumator.BillMessage;
 import click.escuela.admin.core.exception.ExcelException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
@@ -80,7 +80,7 @@ public interface StudentController {
 			@RequestParam(required = false, value = "year") Integer year);
 	
 	@PutMapping(value = "/school/{schoolId}/bill/{billId}")
-	public ResponseEntity<BillEnum> updatePayment(
+	public ResponseEntity<BillMessage> updatePayment(
 			@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
 			@Parameter(name = "Bill id", required = true) @PathVariable("billId") String billId,
 			@RequestBody @Validated BillStatusApi billStatusApi) throws TransactionException;
