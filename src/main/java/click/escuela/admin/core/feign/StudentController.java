@@ -3,6 +3,7 @@ package click.escuela.admin.core.feign;
 import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import click.escuela.admin.core.enumator.BillEnum;
 import click.escuela.admin.core.exception.ExcelException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
+import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.api.CourseApi;
 import click.escuela.admin.core.provider.student.api.ExcelApi;
 
@@ -62,6 +65,7 @@ public interface StudentController {
 	@PutMapping(value = "/school/{schoolId}/course/{idCourse}/student/del/{idStudent}")
 	public String deleteStudent(@PathVariable("schoolId") String schoolId, @PathVariable("idCourse") String idCourse,
 			@PathVariable("idStudent") String idStudent) throws TransactionException;
+	
 	// BillController
 	@PostMapping(value = "/school/{schoolId}/bill/{studentId}")
 	public String createBill(@PathVariable("schoolId") String schoolId,
@@ -74,6 +78,12 @@ public interface StudentController {
 			@RequestParam(required = false, value = "status") String status,
 			@RequestParam(required = false, value = "month") Integer month,
 			@RequestParam(required = false, value = "year") Integer year);
+	
+	@PutMapping(value = "/school/{schoolId}/bill/{billId}")
+	public ResponseEntity<BillEnum> updatePayment(
+			@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
+			@Parameter(name = "Bill id", required = true) @PathVariable("billId") String billId,
+			@RequestBody @Validated BillStatusApi billStatusApi) throws TransactionException;
 
 	// TeacherController
 	@PostMapping(value = "/school/{schoolId}/teacher")
