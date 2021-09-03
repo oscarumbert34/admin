@@ -62,7 +62,7 @@ public class BillControllerTest {
 	private UUID id;
 	private String schoolId;
 	private String studentId;
-	private BillStatusApi billStatus = new BillStatusApi();
+	private BillStatusApi billStatus;
 
 	@Before
 	public void setup() throws TransactionException {
@@ -76,7 +76,7 @@ public class BillControllerTest {
 		id = UUID.randomUUID();
 		studentId = UUID.randomUUID().toString();
 		billApi = BillApi.builder().month(6).year(2021).file("Mayo").amount((double) 12000).build();
-		billStatus.setStatus(PaymentStatus.CANCELED.name());
+		billStatus = BillStatusApi.builder().status(PaymentStatus.CANCELED.name()).build();
 
 		doNothing().when(billService).create(Mockito.any(), Mockito.any(), Mockito.any());
 	}
