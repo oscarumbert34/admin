@@ -2,6 +2,7 @@ package click.escuela.admin.core.connector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import click.escuela.admin.core.enumator.PaymentStatus;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.BillApi;
+import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.dto.BillDTO;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,6 +36,8 @@ public class BillConnectorTest {
 	private BillApi billApi;
 	private String schoolId;
 	private String studentId;
+	private String id = UUID.randomUUID().toString();
+	private BillStatusApi billStatus = new BillStatusApi();
 
 	@Before
 	public void setUp() throws TransactionException {
@@ -41,7 +45,8 @@ public class BillConnectorTest {
 		schoolId = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		billApi = BillApi.builder().year(2021).month(6).file("Mayo").amount((double) 12000).build();
-
+		billStatus.setStatus(PaymentStatus.CANCELED.name());
+		
 		ReflectionTestUtils.setField(billConnector, "billController", billController);
 	}
 
@@ -84,5 +89,21 @@ public class BillConnectorTest {
 				2021);
 		assertThat(billsDTO.isEmpty()).isTrue();
 	}
+	
+	@Test
+	public void whenUpdatePaymenOk() throws TransactionException {
+		billConnector.updatePayment(schoolId, id, billStatus);
+		verify(billController).updatePayment(schoolId, id, billStatus);
+	}
+
+	@Test
+	public void whenUpdatePaymenIsError() throws TransactionException {
+		when(billController.updatePayment(Mockito.any(),Mockito.any(), Mockito.any())).thenThrow(new TransactionException(
+				BillMessage.PAYMENT_STATUS_CHANGED.getCode(), BillMessage.PAYMENT_STATUS_CHANGED.getDescription()));
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			billConnector.updatePayment(schoolId, id,  billStatus);
+		}).withMessage(BillMessage.PAYMENT_STATUS_CHANGED.getDescription());
+	}
+
 
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import click.escuela.admin.core.connector.BillConnector;
+import click.escuela.admin.core.enumator.BillMessage;
 import click.escuela.admin.core.enumator.CourseMessage;
 import click.escuela.admin.core.enumator.PaymentStatus;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
+import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.dto.BillDTO;
 import click.escuela.admin.core.provider.student.service.impl.BillServiceImpl;
 
@@ -35,10 +38,13 @@ public class BillServiceTest {
 	private BillApi billApi;
 	private String schoolId;
 	private String studentId;
+	private String id = UUID.randomUUID().toString();
+	private BillStatusApi billStatus = new BillStatusApi();
 
 	@Before
 	public void setUp() throws TransactionException {
-
+		
+		billStatus.setStatus(PaymentStatus.CANCELED.name());
 		schoolId = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		billApi = BillApi.builder().month(6).year(2021).file("Mayo").amount((double) 12000).build();
@@ -85,4 +91,21 @@ public class BillServiceTest {
 		List<BillDTO> billsDTO= billServiceImpl.getByStudentId(schoolId, studentId, PaymentStatus.PENDING.toString(), 2, 2021);
 		assertThat(billsDTO.isEmpty()).isTrue();
 	}
+	
+	@Test
+	public void whenUpdatePaymenOk() throws TransactionException {
+		billServiceImpl.updatePayment(schoolId, id, billStatus);
+		verify(billConnector).updatePayment(schoolId, id, billStatus);
+	}
+
+	@Test
+	public void whenUpdatePaymenIsError() throws TransactionException {
+		doThrow(new TransactionException(BillMessage.PAYMENT_STATUS_CHANGED.getCode(),
+				BillMessage.PAYMENT_STATUS_CHANGED.getDescription())).when(billConnector).updatePayment(schoolId, id,
+						billStatus);
+		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
+			billServiceImpl.updatePayment(schoolId, id, billStatus);
+		}).withMessage(BillMessage.PAYMENT_STATUS_CHANGED.getDescription());
+	}
+	
 }

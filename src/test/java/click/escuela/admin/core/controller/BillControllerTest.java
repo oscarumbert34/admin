@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import click.escuela.admin.core.enumator.CourseMessage;
 import click.escuela.admin.core.enumator.PaymentStatus;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
+import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.dto.BillDTO;
 import click.escuela.admin.core.provider.student.service.impl.BillServiceImpl;
 import click.escuela.admin.core.rest.BillController;
@@ -60,6 +62,7 @@ public class BillControllerTest {
 	private UUID id;
 	private String schoolId;
 	private String studentId;
+	private BillStatusApi billStatus;
 
 	@Before
 	public void setup() throws TransactionException {
@@ -73,6 +76,7 @@ public class BillControllerTest {
 		id = UUID.randomUUID();
 		studentId = UUID.randomUUID().toString();
 		billApi = BillApi.builder().month(6).year(2021).file("Mayo").amount((double) 12000).build();
+		billStatus = BillStatusApi.builder().status(PaymentStatus.CANCELED.name()).build();
 
 		doNothing().when(billService).create(Mockito.any(), Mockito.any(), Mockito.any());
 	}
@@ -222,6 +226,28 @@ public class BillControllerTest {
 				.andExpect(status().isBadRequest()).andReturn();
 		String response = result.getResponse().getContentAsString();
 		assertThat(response).contains("");
+	}
+	
+	@Test
+	public void getUpdatePaymentIsOk() throws JsonProcessingException, Exception {
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/bill/{billId}", schoolId, id.toString())
+						.contentType(MediaType.APPLICATION_JSON).content(toJson(billStatus)))
+				.andExpect(status().is2xxSuccessful()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains(BillMessage.PAYMENT_STATUS_CHANGED.name());
+	}
+
+	@Test
+	public void whenUpdatePaymentIsError() throws JsonProcessingException, Exception {
+		doThrow(new TransactionException(BillMessage.GET_ERROR.getCode(),BillMessage.GET_ERROR.getDescription())).when(billService).updatePayment(Mockito.anyString(),
+				Mockito.anyString(), Mockito.any());
+		MvcResult result = mockMvc
+				.perform(put("/school/{schoolId}/bill/{billId}", schoolId, id.toString())
+						.contentType(MediaType.APPLICATION_JSON).content(toJson(billStatus)))
+				.andExpect(status().isBadRequest()).andReturn();
+		String response = result.getResponse().getContentAsString();
+		assertThat(response).contains(BillMessage.GET_ERROR.getDescription());
 	}
 
 	private String toJson(final Object obj) throws JsonProcessingException {

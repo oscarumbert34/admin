@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import click.escuela.admin.core.enumator.BillMessage;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
+import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.dto.BillDTO;
 import click.escuela.admin.core.provider.student.service.impl.BillServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,5 +57,15 @@ public class BillController {
 			@RequestParam(required = false, value = "year") Integer year) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(billService.getByStudentId(schoolId, studentId, status, month, year));
+	}
+	
+	@Operation(summary = "Update Payment Bill", responses = {
+			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
+	@PutMapping(value = "/{billId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<BillMessage> updatePayment(
+			@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
+			@Parameter(name = "Bill id", required = true) @PathVariable("billId") String billId, @RequestBody @Validated BillStatusApi billStatusApi) throws TransactionException {
+		billService.updatePayment(schoolId, billId,billStatusApi);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(BillMessage.PAYMENT_STATUS_CHANGED);
 	}
 }
