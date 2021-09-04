@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.feign.StudentController;
 import click.escuela.admin.core.provider.student.api.BillApi;
+import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.dto.BillDTO;
 
 @Service
@@ -22,6 +23,10 @@ public class BillConnector {
 
 	public List<BillDTO> getByStudentId(String schoolId, String studentId, String status, Integer month, Integer year) {
 		return billController.getByStudentId(schoolId, studentId, status, month, year);
+	}
+	
+	public void updatePayment(String schoolId, String billId, BillStatusApi billApi) throws TransactionException {
+		billController.updatePayment(schoolId, billId, billApi);
 	}
 
 }
