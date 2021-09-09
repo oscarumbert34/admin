@@ -53,8 +53,6 @@ public class CourseControllerTest {
 	private String id;
 	private String studentId;
 	private String schoolId;
-	private final static String EMPTY_COUNT_STUDENT = "CountStudent cannot be empty";
-	private final static String NULL_SCHOOL = "School cannot be null";
 	private final static String EMPTY_DIVISION = "Division cannot be empty";
 	private final static String EMPTY_YEAR = "Year cannot be empty";
 	private final static String URL = "/school/{schoolId}/course";
@@ -69,7 +67,7 @@ public class CourseControllerTest {
 		id = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		schoolId = String.valueOf(1234);
-		courseApi = CourseApi.builder().year(8).division("B").countStudent(35).schoolId(45678).build();
+		courseApi = CourseApi.builder().year(8).division("B").build();
 
 		doNothing().when(courseService).create(Mockito.any(), Mockito.any());
 		ReflectionTestUtils.setField(courseController, "courseService", courseService);
@@ -99,24 +97,6 @@ public class CourseControllerTest {
 				post(URL, schoolId).contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
 						.getContentAsString();
 		assertThat(response).contains(EMPTY_DIVISION);
-	}
-
-	@Test
-	public void whenCreateCountStudentEmpty() throws JsonProcessingException, Exception {
-		courseApi.setCountStudent(null);
-		String response = resultNotOk(
-				post(URL, schoolId).contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
-						.getContentAsString();
-		assertThat(response).contains(EMPTY_COUNT_STUDENT);
-	}
-
-	@Test
-	public void whenCreateSchoolNull() throws JsonProcessingException, Exception {
-		courseApi.setSchoolId(null);
-		String response = resultNotOk(
-				post(URL, schoolId).contentType(MediaType.APPLICATION_JSON).content(toJson(courseApi))).getResponse()
-						.getContentAsString();
-		assertThat(response).contains(NULL_SCHOOL);
 	}
 
 	@Test
