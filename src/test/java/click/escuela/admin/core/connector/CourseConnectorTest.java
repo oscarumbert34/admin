@@ -40,7 +40,7 @@ public class CourseConnectorTest {
 		schoolId = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		courseId = UUID.randomUUID().toString();
-		courseApi = CourseApi.builder().year(8).division("B").countStudent(35).schoolId(45678).build();
+		courseApi = CourseApi.builder().year(8).division("B").build();
 
 		ReflectionTestUtils.setField(courseConnector, "courseController", courseController);
 	}

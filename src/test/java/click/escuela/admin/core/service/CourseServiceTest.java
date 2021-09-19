@@ -40,7 +40,7 @@ public class CourseServiceTest {
 		schoolId = UUID.randomUUID().toString();
 		studentId = UUID.randomUUID().toString();
 		courseId = UUID.randomUUID().toString();
-		courseApi = CourseApi.builder().year(8).division("B").countStudent(35).schoolId(45678).build();
+		courseApi = CourseApi.builder().year(8).division("B").build();
 
 		doNothing().when(courseConnector).create(Mockito.any(), Mockito.any());
 		doNothing().when(courseConnector).addStudent(schoolId, courseId, studentId);
@@ -60,7 +60,7 @@ public class CourseServiceTest {
 		doThrow(new TransactionException(CourseMessage.CREATE_ERROR.getCode(),
 				CourseMessage.CREATE_ERROR.getDescription())).when(courseConnector).create(Mockito.any(),
 						Mockito.any());
-		CourseApi courseApi = CourseApi.builder().year(10).division("C").countStudent(40).schoolId(85252).build();
+		CourseApi courseApi = CourseApi.builder().year(10).division("C").build();
 		assertThatExceptionOfType(TransactionException.class).isThrownBy(() -> {
 			courseServiceImpl.create(schoolId, courseApi);
 		}).withMessage(CourseMessage.CREATE_ERROR.getDescription());

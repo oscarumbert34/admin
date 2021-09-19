@@ -35,12 +35,4 @@ public class CourseApi {
 	@JsonProperty(value = "division", required = true)
 	private String division;
 
-	@NotNull(message = "CountStudent cannot be empty")
-	
-	@JsonProperty(value = "countStudent", required = true)
-	private Integer countStudent;
-	
-	@NotNull(message = "School cannot be null")
-	@JsonProperty(value = "schoolId", required = true)
-	private Integer schoolId;
 }
