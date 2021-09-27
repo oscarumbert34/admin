@@ -27,22 +27,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.processor.service.impl.ProcessorServiceImpl;
 import click.escuela.admin.core.provider.student.api.ExcelApi;
-import click.escuela.admin.core.provider.student.service.impl.ExcelServiceImpl;
-import click.escuela.admin.core.rest.ExcelController;
+import click.escuela.admin.core.rest.ProcessorController;
 import click.escuela.admin.core.rest.handler.Handler;
 
 @EnableWebMvc
 @RunWith(MockitoJUnitRunner.class)
-public class ExcelControllerTest {
+public class ProcessorControllerTest {
 
 	private MockMvc mockMvc;
 
 	@InjectMocks
-	private ExcelController excelController;
+	private ProcessorController processorController;
 
 	@Mock
-	private ExcelServiceImpl excelService;
+	private ProcessorServiceImpl processorService;
 
 	private ObjectMapper mapper;
 	private ExcelApi excelApi;
@@ -52,7 +52,7 @@ public class ExcelControllerTest {
 	
 	@Before
 	public void setup() throws TransactionException, Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup(excelController).setControllerAdvice(new Handler()).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(processorController).setControllerAdvice(new Handler()).build();
 		mapper = new ObjectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 				.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false)
 				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -63,12 +63,12 @@ public class ExcelControllerTest {
 		multipart = new MockMultipartFile("EstudiantesTest.xlsx", file.getName(), "application/vnd.ms-excel",fileInp);
 	
 		//doNothing().when(excelService).save(Mockito.anyString(), Mockito.any());
-		ReflectionTestUtils.setField(excelController, "excelService", excelService);
+		ReflectionTestUtils.setField(processorController, "processorService", processorService);
 	}
 
 	@Test
 	public void whenCreateOk() throws JsonProcessingException, Exception {
-		assertThat(resultExcelApi(post("/school/{schoolId}/excel", idSchool.toString()).content(multipart.getBytes())))
+		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
 	
@@ -76,28 +76,28 @@ public class ExcelControllerTest {
 	@Test
 	public void whenCreateErrorNameEmpty() throws JsonProcessingException, Exception {
 		excelApi.setName(StringUtils.EMPTY);
-		assertThat(resultExcelApi(post("/school/{schoolId}/excel", idSchool.toString()).content(multipart.getBytes())))
+		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
 
 	@Test
 	public void whenCreateErrorSchoolNull() throws JsonProcessingException, Exception {
 		excelApi.setSchoolId(null);
-		assertThat(resultExcelApi(post("/school/{schoolId}/excel", idSchool.toString()).content(multipart.getBytes())))
+		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
 
 	@Test
 	public void whenCreateErrorFileEMpty() throws JsonProcessingException, Exception {
 		excelApi.setFile(StringUtils.EMPTY);
-		assertThat(resultExcelApi(post("/school/{schoolId}/excel", idSchool.toString()).content(multipart.getBytes())))
+		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
 
 	@Test
 	public void whenCreateErrorStudentCountNull() throws JsonProcessingException, Exception {
 		excelApi.setStudentCount(null);
-		assertThat(resultExcelApi(post("/school/{schoolId}/excel", idSchool.toString()).content(multipart.getBytes())))
+		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
 
@@ -105,7 +105,7 @@ public class ExcelControllerTest {
 	public void whenCreateErrorService() throws JsonProcessingException, Exception {
 		/*doThrow(new ExcelException(ExcelMessage.CREATE_ERROR)).when(excelService).save(Mockito.anyString(),
 				Mockito.any());*/
-		assertThat(resultExcelApi(post("/school/{schoolId}/excel", idSchool.toString()).content(multipart.getBytes())))
+		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
 
