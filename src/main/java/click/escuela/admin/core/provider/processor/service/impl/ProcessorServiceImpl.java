@@ -42,6 +42,7 @@ public class ProcessorServiceImpl {
 	
 	public byte[] getFileById(String schoolId, String processId) throws IOException {
 		return processorConnector.getFileById(schoolId, processId);
+
 	}
 	
 }

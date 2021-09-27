@@ -35,5 +35,6 @@ public class ProcessorConnector {
 	
 	public byte[] getFileById(String schoolId,String processId) throws IOException {	
 		return processorController.getFileById(schoolId,processId);
+
 	}
 }
