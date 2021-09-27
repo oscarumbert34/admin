@@ -33,7 +33,8 @@ public class ProcessorConnector {
 		return processorController.getBySchoolId(schoolId);
 	}
 	
-	public byte[] getFileById(String processId) throws IOException {	
-		return processorController.getFileById(processId);
+	public byte[] getFileById(String schoolId,String processId) throws IOException {	
+		return processorController.getFileById(schoolId,processId);
+
 	}
 }
