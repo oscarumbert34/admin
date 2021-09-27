@@ -40,8 +40,8 @@ public class ProcessorServiceImpl {
 		return processorConnector.getBySchoolId(schoolId);
 	}
 	
-	public byte[] getFileById(String processId) throws IOException {
-		return processorConnector.getFileById(processId);
+	public byte[] getFileById(String schoolId, String processId) throws IOException {
+		return processorConnector.getFileById(schoolId, processId);
 	}
 	
 }
