@@ -19,12 +19,12 @@ public class ProcessorConnector {
 	@Autowired
 	private ProcessorController processorController;
 
-	public ResponseCreateProcessDTO create(String name, Integer schoolId, MultipartFile file) throws ProcessException {
+	public ResponseCreateProcessDTO create(String name, Integer schoolId, MultipartFile file) {
 		
 		return processorController.saveAndRead(file,name,schoolId);
 	}
 	
-	public String update(String processId,Integer schoolId, List<FileError> errors, String status) throws ProcessException {	
+	public String update(String processId,Integer schoolId, List<FileError> errors, String status) {	
 		return processorController.update( schoolId, processId, errors, status);
 	}
 	

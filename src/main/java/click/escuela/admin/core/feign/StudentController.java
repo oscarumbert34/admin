@@ -17,7 +17,6 @@ import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.api.BillStatusApi;
 import click.escuela.admin.core.provider.student.api.CourseApi;
-import click.escuela.admin.core.provider.student.api.ExcelApi;
 
 import click.escuela.admin.core.provider.student.api.SchoolApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;

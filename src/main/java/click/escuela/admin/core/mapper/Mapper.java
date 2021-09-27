@@ -28,11 +28,7 @@ public class Mapper {
 	public static Blob multipartToBlob(File file)
 			throws SQLException, IOException {
 		byte[] fileContent = null;
-		try {
-			fileContent = FileUtils.readFileToByteArray(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		fileContent = FileUtils.readFileToByteArray(file);
 		return new javax.sql.rowset.serial.SerialBlob(fileContent);
 	}
 

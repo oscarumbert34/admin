@@ -1,7 +1,6 @@
 package click.escuela.admin.core.rest;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
