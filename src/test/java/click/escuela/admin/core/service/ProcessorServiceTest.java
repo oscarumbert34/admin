@@ -23,7 +23,6 @@ import click.escuela.admin.core.connector.ProcessorConnector;
 import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.ProcessMessage;
-import click.escuela.admin.core.exception.ExcelException;
 import click.escuela.admin.core.exception.ProcessException;
 import click.escuela.admin.core.provider.processor.dto.ResponseCreateProcessDTO;
 import click.escuela.admin.core.provider.processor.service.impl.ProcessorServiceImpl;
@@ -74,7 +73,7 @@ public class ProcessorServiceTest {
 	}
 
 	@Test
-	public void whenCreateIsError() throws ExcelException, ProcessException {
+	public void whenCreateIsError() throws ProcessException {
 		when(processorConnector.create(Mockito.anyString(),Mockito.anyInt(),Mockito.any())).thenThrow(new ProcessException(ProcessMessage.CREATE_ERROR));
 
 		assertThatExceptionOfType(ProcessException.class).isThrownBy(() -> {

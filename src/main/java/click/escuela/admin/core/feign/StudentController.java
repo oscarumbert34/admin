@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import click.escuela.admin.core.enumator.BillMessage;
-import click.escuela.admin.core.exception.ExcelException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.BillApi;
 import click.escuela.admin.core.provider.student.api.BillStatusApi;
@@ -117,9 +116,5 @@ public interface StudentController {
 	@PostMapping(value = "/school")
 	public String createSchool(@RequestBody @Validated SchoolApi schoolApi) throws TransactionException;
 
-	// ExcelController
-	@PostMapping(value = "/school/{schoolId}/excel")
-	public String saveExcel(@PathVariable("schoolId") String schoolId, 
-			@RequestBody @Validated ExcelApi excelApi) throws ExcelException;
 
 }
