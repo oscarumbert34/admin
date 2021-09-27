@@ -53,8 +53,9 @@ public class ProcessorController {
 	@Operation(summary = "Get by schoolId", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProcessDTO.class))) })
 	@GetMapping(value = "/{processId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<byte[]> getFileById(@PathVariable("processId") String processId) throws IOException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(processorService.getFileById(processId));
+	public ResponseEntity<byte[]> getFileById(@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
+			@PathVariable("processId") String processId) throws IOException {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(processorService.getFileById(schoolId, processId));
 	}
 	
 
