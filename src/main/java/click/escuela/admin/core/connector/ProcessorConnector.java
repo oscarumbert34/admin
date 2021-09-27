@@ -19,7 +19,7 @@ public class ProcessorConnector {
 	@Autowired
 	private ProcessorController processorController;
 
-	public ResponseCreateProcessDTO create(String name, Integer schoolId, MultipartFile file) {
+	public ResponseCreateProcessDTO create(String name, Integer schoolId, MultipartFile file) throws ProcessException {
 		
 		return processorController.saveAndRead(file,name,schoolId);
 	}

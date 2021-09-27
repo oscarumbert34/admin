@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import click.escuela.admin.core.configuration.FeignInterceptor;
+import click.escuela.admin.core.exception.ProcessException;
 import click.escuela.admin.core.provider.processor.dto.ProcessDTO;
 import click.escuela.admin.core.provider.processor.dto.ResponseCreateProcessDTO;
 import click.escuela.admin.core.provider.student.dto.FileError;
@@ -27,7 +28,7 @@ public interface ProcessorController{
 	@PostMapping(value="/school/{schoolId}/process", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseCreateProcessDTO saveAndRead(@RequestPart(value = "file") MultipartFile file,
 			@Parameter(name = "Name", required = true) @RequestParam("name") String name,
-			@Parameter(name = "School id", required = true) @PathVariable("schoolId") Integer schoolId);
+			@Parameter(name = "School id", required = true) @PathVariable("schoolId") Integer schoolId) throws ProcessException;
 	
 	@PutMapping(value = "/school/{schoolId}/process/{processId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String update(
