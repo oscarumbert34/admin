@@ -28,10 +28,6 @@ public class ExcelApi {
 	@Size(max = 50, message = "Name must be 50 characters")
 	@JsonProperty(value = "name", required = true)
 	private String name;
-
-	@NotNull(message = "School Id cannot be null")
-	@JsonProperty(value = "schoolId", required = true)
-	private Integer schoolId;
 	
 	@NotBlank(message = "File cannot be empty")
 	@JsonProperty(value = "file", required = true)

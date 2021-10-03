@@ -58,7 +58,7 @@ public class ProcessorControllerTest {
 				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
 		idSchool = 1234;
-		excelApi =ExcelApi.builder().name(file.getName()).schoolId(Integer.valueOf("1234")).file(file.getAbsolutePath()).studentCount(1).build();
+		excelApi =ExcelApi.builder().name(file.getName()).file(file.getAbsolutePath()).studentCount(1).build();
 		InputStream fileInp = new FileInputStream(file);
 		multipart = new MockMultipartFile("EstudiantesTest.xlsx", file.getName(), "application/vnd.ms-excel",fileInp);
 	
@@ -76,13 +76,6 @@ public class ProcessorControllerTest {
 	@Test
 	public void whenCreateErrorNameEmpty() throws JsonProcessingException, Exception {
 		excelApi.setName(StringUtils.EMPTY);
-		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
-				.contains("");
-	}
-
-	@Test
-	public void whenCreateErrorSchoolNull() throws JsonProcessingException, Exception {
-		excelApi.setSchoolId(null);
 		assertThat(resultExcelApi(post("/school/{schoolId}/processor", idSchool.toString()).content(multipart.getBytes())))
 				.contains("");
 	}
