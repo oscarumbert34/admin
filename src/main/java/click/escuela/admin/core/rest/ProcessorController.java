@@ -56,7 +56,6 @@ public class ProcessorController {
 	public ResponseEntity<byte[]> getFileById(@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
 			@PathVariable("processId") String processId) throws IOException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(processorService.getFileById(schoolId, processId));
-
 	}
 	
 
