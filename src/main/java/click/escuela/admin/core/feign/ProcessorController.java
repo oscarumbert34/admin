@@ -45,5 +45,4 @@ public interface ProcessorController{
 	@GetMapping(value = "/school/{schoolId}/process/{processId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public byte[] getFileById(@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
 			@PathVariable("processId") String processId) throws IOException;
-
 }
