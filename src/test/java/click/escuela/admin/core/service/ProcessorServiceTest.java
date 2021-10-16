@@ -55,7 +55,7 @@ public class ProcessorServiceTest {
 		students.add(student);		
 		//when(studentBulkUpload.readFile(file)).thenReturn(students);
 
-		when(processorConnector.create(Mockito.anyString(),Mockito.anyInt(),Mockito.any())).thenReturn(new ResponseCreateProcessDTO());
+		when(processorConnector.create(Mockito.anyString(),Mockito.anyString(),Mockito.any())).thenReturn(new ResponseCreateProcessDTO());
 
 		ReflectionTestUtils.setField(processorServiceImpl, "processorConnector", processorConnector);
 		ReflectionTestUtils.setField(processorServiceImpl, "studentBulkUpload", studentBulkUpload);
@@ -75,7 +75,7 @@ public class ProcessorServiceTest {
 
 	@Test
 	public void whenCreateIsError() throws ProcessException {
-		when(processorConnector.create(Mockito.anyString(),Mockito.anyInt(),Mockito.any())).thenThrow(new ProcessException(ProcessMessage.CREATE_ERROR));
+		when(processorConnector.create(Mockito.anyString(),Mockito.anyString(),Mockito.any())).thenThrow(new ProcessException(ProcessMessage.CREATE_ERROR));
 
 		assertThatExceptionOfType(ProcessException.class).isThrownBy(() -> {
 			processorServiceImpl.save(schoolId, multipart);
