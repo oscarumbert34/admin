@@ -5,4 +5,5 @@ sudo rm -rf /home/ec2-user/server/admin-core/admin-service.pid
 sudo rm -rf /home/ec2-user/server/admin-core/logs
 sudo rm -rf /home/ec2-user/server/admin-core/server_stop.sh
 sudo rm -rf /home/ec2-user/server/admin-core/fix_provileges.sh
+sudo rm -rf /home/ec2-user/server/admin-core/server_prestart.s
 sudo rm -rf /home/ec2-user/server/admin-core/server_clear.sh
