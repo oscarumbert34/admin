@@ -2,6 +2,7 @@ package click.escuela.admin.core.exception;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,4 +28,13 @@ public class ErrorStudent {
 	public List<ValidationError> getFieldErrors() {
 		return validationErrors;
 	}
+
+	@Override
+	public String toString() {
+		return validationErrors.stream()
+				.map(p -> p.toString().concat(","))
+				.collect(Collectors.toList())
+				.toString();
+	}
+	
 }

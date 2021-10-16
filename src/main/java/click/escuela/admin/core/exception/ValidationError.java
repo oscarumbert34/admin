@@ -14,4 +14,10 @@ public class ValidationError {
 		this.message = message;
 		this.field = field;
 	}
+
+	@Override
+	public String toString() {
+		return "field = " + field +" , message = " + message;
+	}
+	
 }
