@@ -30,9 +30,9 @@ public class ProcessorServiceImpl {
 	@Async
 	public void save(String schoolId, MultipartFile excel) throws TransactionException {
 		
-		ResponseCreateProcessDTO response = processorConnector.create(excel.getOriginalFilename(), Integer.valueOf(schoolId), excel);
+		ResponseCreateProcessDTO response = processorConnector.create(excel.getOriginalFilename(), schoolId, excel);
 		List<FileError> errors = studentBulkUpload.upload(schoolId, response.getStudents()); 
-		processorConnector.update(response.getProcessId(), Integer.valueOf(schoolId),
+		processorConnector.update(response.getProcessId(), schoolId,
 				errors, errors.isEmpty() ? SUCESS : ERROR );
 	}
 	

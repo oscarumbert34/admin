@@ -28,11 +28,11 @@ public interface ProcessorController{
 	@PostMapping(value="/school/{schoolId}/process", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseCreateProcessDTO saveAndRead(@RequestPart(value = "file") MultipartFile file,
 			@Parameter(name = "Name", required = true) @RequestParam("name") String name,
-			@Parameter(name = "School id", required = true) @PathVariable("schoolId") Integer schoolId) throws ProcessException;
+			@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId) throws ProcessException;
 	
 	@PutMapping(value = "/school/{schoolId}/process/{processId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String update(
-			@Parameter(name = "School id", required = true) @PathVariable("schoolId") Integer schoolId,
+			@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
 			@Parameter(name = "Process id", required = true) @PathVariable("processId") String processId,
 			@RequestBody List<FileError> errors,
 			@Parameter(name = "status", required = true) @RequestParam("status") String status
