@@ -16,8 +16,8 @@ public class TeacherConnector {
 	@Autowired
 	private StudentController teacherController;
 
-	public void create(String schoolId, TeacherApi teacherApi) throws TransactionException {
-		teacherController.createTeacher(schoolId, teacherApi);
+	public TeacherDTO create(String schoolId, TeacherApi teacherApi) throws TransactionException {
+		return teacherController.createTeacher(schoolId, teacherApi);
 	}
 
 	public void update(String schoolId, TeacherApi teacherApi) throws TransactionException {

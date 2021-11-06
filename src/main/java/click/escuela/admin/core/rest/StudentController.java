@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.enumator.StudentMessage;
+import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;
@@ -61,18 +62,18 @@ public class StudentController {
 				.body(studentService.getByCourse(schoolId, courseId, fullDetail));
 	}
 
-	@GetMapping(value = "prueba")
+	/*@GetMapping(value = "prueba")
 	public ResponseEntity<String> prueba()
 			throws TransactionException {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body("prueba exitosa");
-	}
+	}*/
 
 	@Operation(summary = "Create student", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<StudentMessage> create(@PathVariable("schoolId") String schoolId,
-			@RequestBody @Validated StudentApi studentApi) throws TransactionException {
+			@RequestBody @Validated StudentApi studentApi) throws TransactionException, SchoolException {
 		studentService.create(schoolId, studentApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(StudentMessage.CREATE_OK);
 	}

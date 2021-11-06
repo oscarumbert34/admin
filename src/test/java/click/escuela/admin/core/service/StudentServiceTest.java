@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.StudentMessage;
+import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
@@ -58,7 +59,7 @@ public class StudentServiceTest {
 	}
 
 	@Test
-	public void whenCreateIsOk() throws TransactionException {
+	public void whenCreateIsOk() throws TransactionException, SchoolException {
 		studentServiceImpl.create(schoolId, studentApi);
 		verify(studentConnector).create(schoolId, studentApi);
 	}

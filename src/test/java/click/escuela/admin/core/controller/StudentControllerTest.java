@@ -35,6 +35,7 @@ import click.escuela.admin.core.enumator.EducationLevels;
 import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.StudentMessage;
 import click.escuela.admin.core.enumator.Validation;
+import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.StudentException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
@@ -72,7 +73,7 @@ public class StudentControllerTest {
 	private final static String URL = "/school/{schoolId}/student";
 
 	@Before
-	public void setup() throws TransactionException {
+	public void setup() throws TransactionException, SchoolException {
 		mockMvc = MockMvcBuilders.standaloneSetup(studentController).setControllerAdvice(new Handler()).build();
 		mapper = new ObjectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 				.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false)

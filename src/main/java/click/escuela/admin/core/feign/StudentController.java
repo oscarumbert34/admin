@@ -44,7 +44,7 @@ public interface StudentController {
 			throws TransactionException;
 
 	@PostMapping(value = "/school/{schoolId}/student")
-	public String createStudent(@PathVariable("schoolId") String schoolId,
+	public StudentDTO createStudent(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated StudentApi studentApi) throws TransactionException;
 
 	@PutMapping(value = "/school/{schoolId}/student")
@@ -85,7 +85,7 @@ public interface StudentController {
 
 	// TeacherController
 	@PostMapping(value = "/school/{schoolId}/teacher")
-	public String createTeacher(@PathVariable("schoolId") String schoolId,
+	public TeacherDTO createTeacher(@PathVariable("schoolId") String schoolId,
 			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException;
 
 	@PutMapping(value = "/school/{schoolId}/teacher")

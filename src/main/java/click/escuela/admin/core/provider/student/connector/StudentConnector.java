@@ -31,8 +31,8 @@ public class StudentConnector implements Connector<StudentDTO> {
 		return studentController.getByCourse(schoolId, courseId, fullDetail);
 	}
 
-	public void create(String schoolId, StudentApi studentApi) throws TransactionException {
-		studentController.createStudent(schoolId, studentApi);
+	public StudentDTO create(String schoolId, StudentApi studentApi) throws TransactionException {
+		return studentController.createStudent(schoolId, studentApi);
 	}
 
 	public void update(String schoolId, StudentApi studentApi) throws TransactionException {

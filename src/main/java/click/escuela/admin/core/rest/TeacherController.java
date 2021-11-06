@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.enumator.TeacherMessage;
+import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
 import click.escuela.admin.core.provider.student.dto.TeacherDTO;
@@ -60,7 +61,7 @@ public class TeacherController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(value = "", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<TeacherMessage> create(@PathVariable("schoolId") String schoolId,
-			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException {
+			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException, SchoolException {
 		teacherService.create(schoolId, teacherApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(TeacherMessage.CREATE_OK);
 	}

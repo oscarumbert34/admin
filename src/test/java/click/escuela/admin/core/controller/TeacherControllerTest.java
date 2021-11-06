@@ -38,6 +38,7 @@ import click.escuela.admin.core.enumator.DocumentType;
 import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.TeacherMessage;
 import click.escuela.admin.core.enumator.Validation;
+import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
@@ -70,7 +71,7 @@ public class TeacherControllerTest {
 	private List<String> listStringIds = new ArrayList<String>();
 
 	@Before
-	public void setup() throws TransactionException {
+	public void setup() throws TransactionException, SchoolException {
 		mockMvc = MockMvcBuilders.standaloneSetup(teacherController).setControllerAdvice(new Handler()).build();
 		mapper = new ObjectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 				.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false)
