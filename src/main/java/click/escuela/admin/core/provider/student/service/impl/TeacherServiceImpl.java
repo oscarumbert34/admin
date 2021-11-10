@@ -1,6 +1,7 @@
 package click.escuela.admin.core.provider.student.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,9 @@ public class TeacherServiceImpl {
 
 	public void create(String schoolId, TeacherApi teacherApi) throws TransactionException, SchoolException {
 		TeacherDTO teacherDTO = teacherConnector.create(schoolId, teacherApi);
-		UserApi userStudentApi = securityServiceImpl.saveUser(teacherToUser(schoolId, teacherDTO));
-		if(userStudentApi != null) {
-			emailServiceImpl.sendEmail(userStudentApi.getPassword(), userStudentApi.getUserName(), userStudentApi.getEmail(), schoolId);
+		UserApi userApi = securityServiceImpl.saveUser(teacherToUser(schoolId, teacherDTO));
+		if(!Objects.isNull(userApi)) {
+			emailServiceImpl.sendEmail(userApi.getPassword(), userApi.getUserName(), userApi.getEmail(), schoolId);
 		}
 		
 	}

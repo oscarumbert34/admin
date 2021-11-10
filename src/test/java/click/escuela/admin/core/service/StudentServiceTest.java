@@ -1,7 +1,6 @@
 package click.escuela.admin.core.service;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
@@ -20,27 +19,44 @@ import click.escuela.admin.core.enumator.GenderType;
 import click.escuela.admin.core.enumator.StudentMessage;
 import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.processor.service.impl.SecurityServiceImpl;
 import click.escuela.admin.core.provider.student.api.AdressApi;
 import click.escuela.admin.core.provider.student.api.ParentApi;
 import click.escuela.admin.core.provider.student.api.StudentApi;
+import click.escuela.admin.core.provider.student.api.UserApi;
+import click.escuela.admin.core.provider.student.connector.SecurityConnector;
 import click.escuela.admin.core.provider.student.connector.StudentConnector;
+import click.escuela.admin.core.provider.student.dto.ParentDTO;
+import click.escuela.admin.core.provider.student.dto.StudentDTO;
+import click.escuela.admin.core.provider.student.service.impl.EmailServiceImpl;
 import click.escuela.admin.core.provider.student.service.impl.StudentServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StudentServiceTest {
 
 	@Mock
-	private StudentConnector studentConnector;
+	private StudentConnector studentConnector;	
 
+	@Mock
+	private SecurityConnector securityConnector;
+	
+	@Mock
+	private SecurityServiceImpl securityServiceImpl;
+	
+	@Mock
+	private EmailServiceImpl emailServiceImpl;
+	
 	private StudentServiceImpl studentServiceImpl = new StudentServiceImpl();
 	private StudentApi studentApi;
 	private UUID studentId;
 	private UUID idCourse;
 	private String schoolId;
 	private Boolean fullDetail;
+	private StudentDTO studentDTO;
+	private UserApi userApi;
 
 	@Before
-	public void setUp() throws TransactionException {
+	public void setUp() throws TransactionException, SchoolException {
 		studentId = UUID.randomUUID();
 		idCourse = UUID.randomUUID();
 		schoolId = "1234";
@@ -52,14 +68,29 @@ public class StudentServiceTest {
 		studentApi = StudentApi.builder().adressApi(new AdressApi()).birthday(LocalDate.now()).cellPhone("4534543")
 				.division("C").grade("3°").document("435345").email("oscar@gmail.com")
 				.gender(GenderType.MALE.toString()).name("oscar").parentApi(parentApi).build();
+		studentDTO = StudentDTO.builder().name("oscar").surname("gomez").email("oscar@gmail.com").document("435345").parent(new ParentDTO()).build();
 
-		doNothing().when(studentConnector).create(Mockito.anyString(), Mockito.any());
-
+		userApi = UserApi.builder().email("oscar@gmail.com").name("Oscar").password("Oscar2020").surname("gomez").schoolId(schoolId).role("STUDENT").build();
+		
+		Mockito.when(studentConnector.create(Mockito.anyString(), Mockito.any())).thenReturn(studentDTO);
+		Mockito.when(securityServiceImpl.saveUser(Mockito.any())).thenReturn(userApi);
+		
 		ReflectionTestUtils.setField(studentServiceImpl, "studentConnector", studentConnector);
+		ReflectionTestUtils.setField(studentServiceImpl, "securityServiceImpl", securityServiceImpl);
+		ReflectionTestUtils.setField(studentServiceImpl, "emailServiceImpl", emailServiceImpl);
+		ReflectionTestUtils.setField(securityServiceImpl, "securityConnector", securityConnector);
+
 	}
 
 	@Test
 	public void whenCreateIsOk() throws TransactionException, SchoolException {
+		studentServiceImpl.create(schoolId, studentApi);
+		verify(studentConnector).create(schoolId, studentApi);
+	}
+	
+	@Test
+	public void whenCreateIsOkButUserStudentApiNull() throws TransactionException, SchoolException {
+		Mockito.when(securityServiceImpl.saveUser(Mockito.any())).thenReturn(null);
 		studentServiceImpl.create(schoolId, studentApi);
 		verify(studentConnector).create(schoolId, studentApi);
 	}
