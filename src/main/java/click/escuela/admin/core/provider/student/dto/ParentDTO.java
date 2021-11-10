@@ -10,9 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ParentDTO {
-	
-	@JsonProperty(value = "id")
-	private String id;
 
 	@JsonProperty(value = "name")
 	private String name;
@@ -25,6 +22,9 @@ public class ParentDTO {
 	
 	@JsonProperty(value = "gender")
 	private String gender;
+	
+	@JsonProperty(value = "id")
+	private String id;
 	
 	@JsonProperty(value = "birthday")
 	private LocalDate birthday;

@@ -29,16 +29,15 @@ public class TeacherServiceImpl {
 	public void create(String schoolId, TeacherApi teacherApi) throws TransactionException, SchoolException {
 		TeacherDTO teacherDTO = teacherConnector.create(schoolId, teacherApi);
 		UserApi userApi = securityServiceImpl.saveUser(teacherToUser(schoolId, teacherDTO));
-		if(!Objects.isNull(userApi)) {
+		if (!Objects.isNull(userApi)) {
 			emailServiceImpl.sendEmail(userApi.getPassword(), userApi.getUserName(), userApi.getEmail(), schoolId);
 		}
-		
+
 	}
-	
+
 	private UserApi teacherToUser(String schoolId, TeacherDTO teacherDTO) {
-		UserApi userApi = UserApi.builder().name(teacherDTO.getName()).surname(teacherDTO.getSurname()).
-				email(teacherDTO.getEmail()).schoolId(schoolId).role("TEACHER").userId(teacherDTO.getId()).build();
-		return userApi;
+		return UserApi.builder().name(teacherDTO.getName()).surname(teacherDTO.getSurname())
+				.email(teacherDTO.getEmail()).schoolId(schoolId).role("TEACHER").userId(teacherDTO.getId()).build();
 	}
 
 	public void update(String schoolId, TeacherApi teacherApi) throws TransactionException {

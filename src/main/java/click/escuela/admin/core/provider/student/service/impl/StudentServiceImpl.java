@@ -53,15 +53,13 @@ public class StudentServiceImpl {
 	}
 
 	private UserApi studentToUser(String schoolId, StudentDTO studentDTO) {
-		UserApi userApi = UserApi.builder().name(studentDTO.getName()).surname(studentDTO.getSurname()).
+		return UserApi.builder().name(studentDTO.getName()).surname(studentDTO.getSurname()).
 				email(studentDTO.getEmail()).schoolId(schoolId).role("STUDENT").userId(studentDTO.getId()).build();
-		return userApi;
 	}
 	
 	private UserApi parentToUser(String schoolId, ParentDTO parentDTO) {
-		UserApi userApi = UserApi.builder().name(parentDTO.getName()).surname(parentDTO.getSurname()).
+		return UserApi.builder().name(parentDTO.getName()).surname(parentDTO.getSurname()).
 				email(parentDTO.getEmail()).schoolId(schoolId).role("PARENT").userId(parentDTO.getId()).build();
-		return userApi;
 	}
 
 	public void update(String schoolId, StudentApi studentApi) throws TransactionException {

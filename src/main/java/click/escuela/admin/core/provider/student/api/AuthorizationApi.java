@@ -22,5 +22,6 @@ public class AuthorizationApi implements Serializable {
 	private String email;
 
 	public AuthorizationApi() {
+		//empty
 	}
 }
