@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import click.escuela.admin.core.connector.TeacherConnector;
-import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.processor.service.impl.SecurityServiceImpl;
 import click.escuela.admin.core.provider.student.api.TeacherApi;

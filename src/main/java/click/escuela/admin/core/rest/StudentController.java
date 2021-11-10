@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.enumator.StudentMessage;
-import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.StudentApi;
 import click.escuela.admin.core.provider.student.dto.StudentDTO;

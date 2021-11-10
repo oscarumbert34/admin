@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import click.escuela.admin.core.enumator.TeacherMessage;
-import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
 import click.escuela.admin.core.provider.student.dto.TeacherDTO;
