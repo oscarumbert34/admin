@@ -10,18 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import click.escuela.admin.core.connector.SchoolConnector;
 import click.escuela.admin.core.enumator.EmailMessage;
-import click.escuela.admin.core.enumator.SchoolMessage;
 import click.escuela.admin.core.exception.EmailException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.feign.ProcessorController;
-import click.escuela.admin.core.feign.StudentController;
-import click.escuela.admin.core.provider.student.api.SchoolApi;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorConnectorTest {

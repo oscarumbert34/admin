@@ -1,14 +1,16 @@
 package click.escuela.admin.core.exception;
 
-public class SchoolException extends Exception{
+import click.escuela.admin.core.enumator.SchoolMessage;
+
+public class SchoolException extends TransactionException{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1735460522477676511L;
 
-	public SchoolException(String message) {
-		super(message);
+	public SchoolException(SchoolMessage message) {
+		super(message.getCode(), message.getDescription());
 	}
 	
 }
