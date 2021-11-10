@@ -6,7 +6,6 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import click.escuela.admin.core.exception.SchoolException;
 import click.escuela.admin.core.exception.TransactionException;
 import click.escuela.admin.core.provider.processor.service.impl.SecurityServiceImpl;
 import click.escuela.admin.core.provider.student.api.StudentApi;
@@ -40,7 +39,7 @@ public class StudentServiceImpl {
 		return studentConnector.getByCourse(schoolId, courseId, fullDetail);
 	}
 
-	public void create(String schoolId, StudentApi studentApi) throws TransactionException, SchoolException {
+	public void create(String schoolId, StudentApi studentApi) throws TransactionException {
 		StudentDTO studentDTO = studentConnector.create(schoolId, studentApi);
 		UserApi userStudentApi = securityServiceImpl.saveUser(studentToUser(schoolId, studentDTO));
 		if(!Objects.isNull(userStudentApi)) {

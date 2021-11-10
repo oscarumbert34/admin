@@ -61,7 +61,7 @@ public class TeacherController {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(value = "", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<TeacherMessage> create(@PathVariable("schoolId") String schoolId,
-			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException, SchoolException {
+			@RequestBody @Validated TeacherApi teacherApi) throws TransactionException {
 		teacherService.create(schoolId, teacherApi);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(TeacherMessage.CREATE_OK);
 	}

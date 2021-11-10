@@ -26,7 +26,7 @@ public class TeacherServiceImpl {
 	@Autowired
 	private EmailServiceImpl emailServiceImpl;
 
-	public void create(String schoolId, TeacherApi teacherApi) throws TransactionException, SchoolException {
+	public void create(String schoolId, TeacherApi teacherApi) throws TransactionException {
 		TeacherDTO teacherDTO = teacherConnector.create(schoolId, teacherApi);
 		UserApi userApi = securityServiceImpl.saveUser(teacherToUser(schoolId, teacherDTO));
 		if (!Objects.isNull(userApi)) {
