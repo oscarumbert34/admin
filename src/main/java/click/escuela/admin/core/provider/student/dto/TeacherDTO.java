@@ -50,6 +50,6 @@ public class TeacherDTO {
 	private String email;
 	
 	@JsonProperty(value = "schoolId")
-	private Integer schoolId;
+	private String schoolId;
 
 }
