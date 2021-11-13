@@ -40,5 +40,6 @@ public class ProcessorConnector {
 	
 	public void sendEmail(String password, String userName, String email, String schoolId) throws EmailException {
 		processorController.sendEmail(password, userName, email, schoolId);
+
 	}
 }

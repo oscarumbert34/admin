@@ -33,6 +33,7 @@ public interface ProcessorController {
 
 	@PutMapping(value = "/school/{schoolId}/process/{processId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public String update(@Parameter(name = "School id", required = true) @PathVariable("schoolId") String schoolId,
+
 			@Parameter(name = "Process id", required = true) @PathVariable("processId") String processId,
 			@RequestBody List<FileError> errors,
 			@Parameter(name = "status", required = true) @RequestParam("status") String status);
