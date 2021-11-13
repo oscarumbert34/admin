@@ -1,13 +1,16 @@
 package click.escuela.admin.core.provider.student.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import click.escuela.admin.core.connector.TeacherConnector;
 import click.escuela.admin.core.exception.TransactionException;
+import click.escuela.admin.core.provider.processor.service.impl.SecurityServiceImpl;
 import click.escuela.admin.core.provider.student.api.TeacherApi;
+import click.escuela.admin.core.provider.student.api.UserApi;
 import click.escuela.admin.core.provider.student.dto.TeacherDTO;
 
 @Service
@@ -15,9 +18,25 @@ public class TeacherServiceImpl {
 
 	@Autowired
 	private TeacherConnector teacherConnector;
+	
+	@Autowired
+	private SecurityServiceImpl securityServiceImpl;
+	
+	@Autowired
+	private EmailServiceImpl emailServiceImpl;
 
 	public void create(String schoolId, TeacherApi teacherApi) throws TransactionException {
-		teacherConnector.create(schoolId, teacherApi);
+		TeacherDTO teacherDTO = teacherConnector.create(schoolId, teacherApi);
+		UserApi userApi = securityServiceImpl.saveUser(teacherToUser(schoolId, teacherDTO));
+		if (!Objects.isNull(userApi)) {
+			emailServiceImpl.sendEmail(userApi.getPassword(), userApi.getUserName(), userApi.getEmail(), schoolId);
+		}
+
+	}
+
+	private UserApi teacherToUser(String schoolId, TeacherDTO teacherDTO) {
+		return UserApi.builder().name(teacherDTO.getName()).surname(teacherDTO.getSurname())
+				.email(teacherDTO.getEmail()).schoolId(schoolId).role("TEACHER").userId(teacherDTO.getId()).build();
 	}
 
 	public void update(String schoolId, TeacherApi teacherApi) throws TransactionException {

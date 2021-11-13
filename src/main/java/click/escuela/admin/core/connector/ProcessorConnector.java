@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import click.escuela.admin.core.exception.EmailException;
 import click.escuela.admin.core.exception.ProcessException;
 import click.escuela.admin.core.feign.ProcessorController;
 import click.escuela.admin.core.provider.processor.dto.ProcessDTO;
@@ -35,5 +36,10 @@ public class ProcessorConnector {
 	
 	public byte[] getFileById(String schoolId, String processId) throws IOException {	
 		return processorController.getFileById(schoolId,processId);
+	}
+	
+	public void sendEmail(String password, String userName, String email, String schoolId) throws EmailException {
+		processorController.sendEmail(password, userName, email, schoolId);
+
 	}
 }

@@ -61,13 +61,6 @@ public class StudentController {
 				.body(studentService.getByCourse(schoolId, courseId, fullDetail));
 	}
 
-	@GetMapping(value = "prueba")
-	public ResponseEntity<String> prueba()
-			throws TransactionException {
-		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body("prueba exitosa");
-	}
-
 	@Operation(summary = "Create student", responses = {
 			@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json")) })
 	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
